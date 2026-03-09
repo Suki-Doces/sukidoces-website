@@ -1,0 +1,194 @@
+/* --- HOVER NAV CONTAINER --- */
+.hover-nav {
+    display: grid;
+    height: 74px;
+    width: 90%;
+    max-width: 350px;
+    padding: 5px;
+    
+    /* Grid Layout */
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    justify-items: center;
+    
+    /* Glassmorphism Style */
+    background: rgba(247, 181, 204, 0.65); /* Rosa translúcido */
+    backdrop-filter: blur(10px); /* Desfoque de vidro forte */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Borda de vidro */
+    border-radius: 30px;
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+
+    /* Positioning */
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* --- BOTÕES DO NAV --- */
+.hnv-a-btn, 
+.hnv-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative; /* Importante para posicionar o menu dropdown */
+}
+
+.hnv-button {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: var(--t-color-5);
+}
+
+.hnv-button img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.hnv-button p {
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Efeito Hover e Active nos Botões */
+.hnv-button:hover,
+.hnv-button.active {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.hnv-button:hover img,
+.hnv-button.active img {
+    transform: scale(1.1);
+}
+
+/* --- MENUS SUSPENSOS (ACCORDIONS/DROPDOWNS) --- */
+.hnv-dropdown {
+    position: absolute;
+    bottom: 85px; /* Distância do menu principal */
+    right: 0%;
+    transform: translateX(0%) translateY(20px); /* Começa um pouco abaixo para animar subindo */
+    width: max-content;
+    min-width: 180px;
+    
+    /* Glassmorphism no Dropdown */
+    background: #ffcbddf2;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+
+    /* Animação Inicial (Escondido) */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Previne cliques quando invisível */
+    transition: 
+        opacity 0.3s ease,
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.3s;
+}
+
+/* Estado Aberto (Classe controlada via JS) */
+.hnv-dropdown.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0%) translateY(0);
+}
+
+/* --- ESTILOS ESPECÍFICOS DOS PAINÉIS --- */
+
+/* Painel de Pesquisa */
+.hnv-search-panel {
+    width: 260px;
+    left: -100%;
+}
+
+.hnv-search-form {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 18px;
+    padding: 5px 10px;
+    border: 1px solid rgba(247, 181, 204, 0.5);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.hnv-search-form input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    padding: 8px;
+    outline: none;
+    color: var(--t-color-3);
+    font-size: 0.9rem;
+}
+
+.hnv-search-form button {
+    background: var(--color-3);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.hnv-search-form button:hover {
+    background: var(--color-1);
+}
+
+/* Painel de Perfil */
+.hnv-profile-panel hr {
+    border: 0;
+    height: 1px;
+    background: rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+.hnv-pp-links {
+    text-align: center;
+    padding: 10px;
+    border-radius: 12px;
+    color: var(--t-color-3);
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+}
+
+.hnv-pp-links:hover {
+    background: var(--color-4);
+    color: white;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (min-width: 1050px) {
+    .hover-nav {
+        display: none;
+    }
+}

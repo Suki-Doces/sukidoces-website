@@ -1,0 +1,130 @@
+/* Orders Header */
+#content-notifications {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+#content-notifications h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+#content-notifications p {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notificationContainer {
+    background-color: aliceblue;
+    padding: 1rem;
+    gap: 20px;
+}
+
+.mark-as-read {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.notificationCard{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 50px;
+    border-radius: 1rem;
+    background-color: rgba(252, 215, 221, 0.361);
+}
+
+.notificationCard {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    gap: 20px;
+}
+
+.notificationCard img{
+    width: 50px;
+}
+
+.notificationCard .description{
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.unread{
+    background-color: rgba(252, 215, 221, 0.361);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 100px;
+    transition: color 0.3s;
+}
+  
+.close-btn:hover {
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    aside {
+        position: fixed;
+        width: 60px; /* ou 0 se quiser esconder completamente */
+        overflow: hidden;
+        transition: width 0.3s;
+    }
+
+    aside:hover {
+        width: 200px; /* expande ao passar o mouse */
+    }
+
+    .sidebar-text {
+        display: none;
+    }
+
+    aside:hover .sidebar-text {
+        display: inline-block;
+    }
+}
+
+
+
+@media (max-width: 600px) {
+    .notificationCard {
+        flex-direction: column; /* empilha o ícone e o texto */
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .notificationCard img {
+        width: 40px;
+        margin-bottom: 8px; /* espaçamento entre o ícone e o texto */
+    }
+
+    .notificationCard .description {
+        margin-left: 0;
+    }
+}
+
+#notif-time {
+    font-size: 12px;
+    color: gray;
+}
+

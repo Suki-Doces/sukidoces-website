@@ -1,0 +1,60 @@
+.content-table thead tr {
+    background-color: #fec8c8;
+    color: #333;
+    text-align: left;
+    font-weight: 600;
+}
+
+.content-table th {
+    padding: 16px 20px;
+    white-space: nowrap;
+   
+}
+
+.content-table td {
+    padding: 16px 20px;
+    
+}
+
+.kit-text {
+    position: static;
+    line-height: 1.4;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Action Buttons Styling */
+.btn-edit, .btn-trash {
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;
+}
+
+.btn-edit:hover {
+    background-color: #e3f2fd;
+}
+
+.btn-trash:hover {
+    background-color: #ffebee;
+}
+
+.btn-edit img, .btn-trash img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.btn-edit:hover img, .btn-trash:hover img {
+    opacity: 1;
+}

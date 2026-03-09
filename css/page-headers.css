@@ -1,0 +1,29 @@
+/* Page header styles applied to specific admin pages */
+#content-dashboard,
+#content-notifications,
+#content-settings {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+#content-dashboard h1,
+#content-notifications h1,
+#content-settings h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+#content-dashboard p,
+#content-notifications p,
+#content-settings p {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+.page-subtitle {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
