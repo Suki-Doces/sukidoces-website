@@ -53,4 +53,4 @@
 **Password:** 123456"
 
 
-  Developers by crizzila (database), danielfontz (customer side), TiagoAntunes-Dev (seller/administrator side), and Unidadeobvia (login system).
+  Developed by crizzila (database), danielfontz (customer side), TiagoAntunes-Dev (seller/administrator side), and Unidadeobvia (login system).
