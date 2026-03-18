@@ -1,0 +1,211 @@
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+}
+
+:root {
+    --white-color: #ffffff;
+    --black-color: #000000;
+
+    --box-shadow: #00000025;
+
+    /*Main*/
+    --color-1: #e9228f;
+    --color-2: #f06b9a;
+    --color-3: #fd84b2;
+    --color-4: #f7b5cc;
+    --color-5: #fff0fa;
+    --color-6: #201613;
+
+    /*Text*/
+    --t-color-1: #f06b9a;
+    --t-color-2: #fd8ab2;
+    --t-color-3: #533931;
+    --t-color-4: #050505;
+    --t-color-5: #222222;
+    --t-default: #464746;
+    --t-color-7: #828282;
+}
+
+/* TIPOGRAPHY MOBILE */
+h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+p {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+a {
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--color-4);
+}
+
+/* TIPOGRAPHY DESKTOP */
+@media (min-width: 1050px) {
+    h1 {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+    a {
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+
+/*Estrutura de Propriedades
+
+.exemplo-componente {
+  [Posicionamento]
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+
+  [Modelo de Caixa]
+  display: block;
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+
+  [Tipografia]
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+
+  [Visual]
+  background-color: #f0f0f0;
+  border-radius: 5px;
+
+  [Outros]
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+*/
+
+html {
+    scroll-behavior: smooth;
+}
+
+/*Templates*/
+.button-fill {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--white-color);
+    border-radius: 100px;
+    border: 0;
+    background-color: var(--color-3);
+    transition: filter 0.2s ease;
+}
+
+.button-fill:hover {
+    filter: brightness(0.9);
+}
+
+.button-contoured {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--t-color-7);
+    border-radius: 100px;
+    border: 1px solid var(--t-color-7);
+    background: rgba(255, 255, 255, 0.00);
+    transition: filter 0.2s ease;
+}
+
+.button-contoured:hover {
+    filter: brightness(0);
+}
+
+.button-fill-icon {
+    display: flex;
+    padding: 5px 5px 5px 10px;
+    align-items: center;
+    gap: 5px;
+
+    border-radius: 100px;
+    border: 0;
+    background: var(--color-3);
+
+    color: var(--white-color);
+    transition: filter 0.2s ease;
+}
+
+.button-fill-icon:hover {
+    filter: brightness(0.9);
+}
+
+@media (min-width: 1050px) {
+    .button-fill {
+        padding: 10px 20px;
+        border-radius: 18px;
+    }
+
+    .button-contoured {
+        padding: 10px 20px;
+        gap: 10px;
+
+        border-radius: 18px;
+    }
+
+    .button-fill-icon {
+        padding: 10px 10px 10px 20px;
+        gap: 10px;
+
+        border-radius: 18px;
+    }
+}
+
+.marketing-section>img {
+    width: 24px;
+    height: 24px;
+    aspect-ratio: 1/1;
+}
