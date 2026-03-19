@@ -1,0 +1,44 @@
+/*CONTOURED CONTAINER GLOBAL*/
+.contoured-container {
+    display: flex;
+    margin: 20px;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    border-radius: 20px;
+    border: 1px solid var(--t-color-3);
+    box-sizing: border-box;
+}
+
+.contoured-container>h1 {
+    color: var(--t-color-3);
+    text-align: center;
+}
+
+.contoured-container>p {
+    color: var(--t-color-7);
+    text-align: center;
+}
+
+/*ICE CREAM SECTION*/
+.ics-highlight-txt {
+    color: var(--color-1);
+}
+
+/* -- LOGIN PAGE -- */
+.login-container {
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+@media (min-width: 1050px) {
+
+    /*GLOBAL*/
+    .contoured-container {
+        margin: 20px 15rem;
+        padding: 10px 5rem;
+    }
+}

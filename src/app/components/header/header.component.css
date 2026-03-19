@@ -68,6 +68,7 @@
     color: white;
     width: 32px;
     height: 32px;
+    padding: 0.25rem;
     display: flex;
     align-items: center;
     justify-content: center;

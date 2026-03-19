@@ -159,6 +159,7 @@
     color: white;
     width: 32px;
     height: 32px;
+    padding: 0.25em;
     display: flex;
     align-items: center;
     justify-content: center;

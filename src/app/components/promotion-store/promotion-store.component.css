@@ -1,0 +1,86 @@
+/*Promotion Store*/
+.promotion-store {
+    display: flex;
+    width: 100%;
+    margin: 20px 0;
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    background-color: #FFE3EA;
+    box-sizing: border-box;
+}
+
+.promotion-store>h1 {
+    color: var(--t-color-3);
+    text-align: center;
+}
+
+.ps-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ps-info {
+    display: flex;
+    height: 52px;
+    padding: 6px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.ps-wave-icon {
+    display: none;
+    height: 45px;
+}
+
+.ps-info>h3 {
+    width: 200px;
+    height: 18px;
+}
+
+.ps-image-lbl {
+    display: flex;
+    width: 45px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #dedede;
+    border-radius: 100%;
+}
+
+@media (min-width: 1050px) {
+    .promotion-store {
+        flex-direction: column;
+    }
+
+    .ps-content {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .ps-info {
+        height: auto;
+        flex-direction: column;
+    }
+
+    .ps-wave-icon {
+        display: block;
+    }
+
+    .ps-info>h3 {
+        width: auto;
+    }
+
+    .ps-image-lbl {
+        width: 100px;
+        height: 100px;
+    }
+
+    .ps-image-lbl>svg {
+        width: 50%;
+    }
+}

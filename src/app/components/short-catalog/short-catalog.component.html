@@ -1,0 +1,67 @@
+<section class="short-catalog-section">
+    <h1>Recomendação de compra</h1>
+
+    <div class="sc-nav">
+        <button class="button-fill tab-btn" onclick="openCatalogTab(event, 'tab-mais-vendidos')">
+            <p>Mais Vendidos</p>
+        </button>
+        <button class="button-contoured tab-btn" onclick="openCatalogTab(event, 'tab-novos')">
+            <p>Novos</p>
+        </button>
+    </div>
+
+    <div class="sc-items">
+
+        <div id="tab-mais-vendidos" class="sc-scroll tab-content active">
+            <!-- <?php if (!empty($produtosMaisVendidos)): ?>
+            <?php foreach ($produtosMaisVendidos as $prod): ?>
+            <a class="product-card" href="./pages/detalhes.php?id">
+                <div class="ci-square-label">
+                    <img src="./assets/uploads/"
+                        alt="<?= htmlspecialchars($prod['nome']) ?>">
+                </div>
+                <div class="ci-product-info">
+                    <h3 class="card-i-h3">
+                        <?= htmlspecialchars($prod['nome']) ?>
+                    </h3>
+                    <h2 class="price">R$
+                        <?= number_format($prod['preco'], 2, ',', '.') ?>
+                    </h2>
+                    <span class="button-fill btn-see-more">Detalhes</span>
+                </div>
+            </a>
+            <?php endforeach; ?>
+            <?php else: ?> -->
+            <p style="padding: 20px;">Nenhum produto encontrado.</p>
+            <!-- <?php endif; ?> -->
+        </div>
+
+        <div id="tab-novos" class="sc-scroll tab-content">
+            <!-- <?php if (!empty($produtosNovos)): ?>
+            <?php foreach ($produtosNovos as $prod): ?>
+            <a class="product-card" href="./pages/detalhes.php?id">
+                <div class="ci-square-label">
+                    <img src="./assets/uploads/"
+                        alt="">
+                </div>
+                <div class="ci-product-info">
+                    <h3 class="card-i-h3">
+                        <?= htmlspecialchars($prod['nome']) ?>
+                    </h3>
+                    <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
+                        <h2 class="price">R$
+                            <?= number_format($prod['preco'], 2, ',', '.') ?>
+                        </h2>
+                        <span
+                            style="font-size: 0.7rem; background-color: #4CAF50; color: white; padding: 2px 6px; border-radius: 4px;">NOVO</span>
+                    </div>
+                    <span class="button-fill btn-see-more">Detalhes</span>
+                </div>
+            </a>
+            <?php endforeach; ?>
+            <?php else: ?> -->
+            <p style="padding: 20px;">Nenhum produto novo encontrado.</p>
+            <!-- <?php endif; ?> -->
+        </div>
+    </div>
+</section>
