@@ -55,8 +55,16 @@
 
 .fa-topic {
     display: flex;
+    align-items: center;
     padding: 10px;
     gap: 10px;
+}
+
+.fa-topic > svg, .fa-topic a svg {
+    width: 25px;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
 }
 
 .copyright-txt {

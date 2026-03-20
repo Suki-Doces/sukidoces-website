@@ -1,7 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
 .login-box,
 .welcome-box {
     background: white;
@@ -34,7 +30,7 @@
     display: block;
     width: 100%;
     height: -webkit-fill-available;
-    /* background-image: url(../../assets/images/candy-wallpaper.jpg); */
+    background-image: url(../../../../assets/images/candy-wallpaper.jpg);
     border-radius: 10px;
 }
 
