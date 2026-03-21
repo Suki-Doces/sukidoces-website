@@ -36,7 +36,6 @@
             ],
             "scripts": [
               "src/assets/scripts/header.js",
-              "src/assets/scripts/carousel.js",
               "src/assets/scripts/hover_nav.js",
               "src/assets/scripts/short_catalog.js"
             ]
