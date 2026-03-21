@@ -15,9 +15,10 @@
     z-index: 2;
 }
 
-.header-logo {
-    width: 89px;
-    height: 40px;
+.header-logo, .header-logo svg{
+    width: auto;
+    height: 100%;
+    aspect-ratio: 329 / 202;
 }
 
 :host>nav {
