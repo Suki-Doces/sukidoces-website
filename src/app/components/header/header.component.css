@@ -12,7 +12,7 @@
 
     box-shadow: var(--box-shadow) 0 4px 4px;
     box-sizing: border-box;
-    z-index: 2;
+    z-index: 10;
 }
 
 .header-logo, .header-logo svg{

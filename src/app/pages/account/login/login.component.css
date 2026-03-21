@@ -13,15 +13,29 @@
     gap: 10px;
 }
 
+.login-box>svg {
+    align-self: center;
+    width: 8rem;
+    height: auto;
+    aspect-ratio: 329 / 202;
+}
+
 .login-input,
 .login-select,
-.login-select-opt,
-.login-btn {
+.login-select-opt {
     background: var(--color-5);
     width: 100%;
     padding: 12px;
     border-radius: 10px;
     border: 1px solid var(--t-color-3);
+    margin: 3px 0 10px 0;
+    font-size: 18px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
     margin: 3px 0 10px 0;
     font-size: 18px;
 }
