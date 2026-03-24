@@ -1,0 +1,101 @@
+<main class="cart-container">
+    <h1>Seu Carrinho</h1>
+
+    <!-- <?php if (empty($carrinho_itens)): ?> -->
+    <div class="empty-cart">
+        <svg viewBox="-2.4 -2.4 28.8 28.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M12 26.033c2.063.268 4.04-.85 5.897-1.788 1.836-.927 3.71-1.958 4.879-3.652 1.147-1.664 1.718-3.746 1.616-5.765-.095-1.887-1.731-3.323-2.167-5.162-.43-1.82.39-3.818-.364-5.53-.803-1.818-2.2-3.465-3.987-4.333-1.79-.869-3.985-1.076-5.874-.455-1.83.602-2.447 3.163-4.269 3.788-2.18.747-5.307-1.717-6.827.015-1.48 1.685 1.06 4.315 1.057 6.558-.002 1.668-1.038 3.158-1.068 4.826-.035 1.92-.238 4.06.878 5.622 1.114 1.56 3.364 1.692 5.026 2.647C8.59 23.834 9.95 25.767 12 26.033"
+                fill="#fff0fa" />
+            <g stroke-linecap="round" stroke-linejoin="round" stroke="#ccc" stroke-width=".144" />
+            <g stroke="#e9228f" stroke-width=".672" stroke-linecap="round">
+                <path d="m14 12-4 4m0-4 4 4M9 6V5a3 3 0 1 1 6 0v1" />
+                <path
+                    d="M20.224 12.526c-.586-3.121-.878-4.682-1.99-5.604C17.125 6 15.537 6 12.36 6h-.72c-3.176 0-4.764 0-5.875.922s-1.403 2.483-1.989 5.604c-.823 4.389-1.234 6.583-.034 8.029S7.174 22 11.639 22h.722c4.465 0 6.698 0 7.897-1.445.696-.84.85-1.93.696-3.555" />
+            </g>
+        </svg>
+        <h3>Seu carrinho está vazio.</h3>
+        <a href="/produtos" class="btn-continuar">
+            <button class="button-fill">
+                <p>
+                    Voltar às compras
+                </p>
+            </button>
+        </a>
+    </div>
+    <!-- <?php else: ?>
+
+    <div class="cart-layout">
+        <div class="cart-items">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço</th>
+                        <th>Qtd</th>
+                        <th>Total</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($carrinho_itens as $item): ?>
+                    <tr>
+                        <td class="product-col">
+                            <img src="<?= !empty($item['imagem']) ? '../assets/uploads/' . $item['imagem'] : '../assets/images/img-ic.svg' ?>"
+                                alt="Foto do Produto">
+                            <span>
+                                <?= htmlspecialchars($item['nome']) ?>
+                            </span>
+                        </td>
+                        <td>R$
+                            <?= number_format($item['preco'], 2, ',', '.') ?>
+                        </td>
+                        <td>
+                            <form action="carrinho_actions.php" method="POST" class="qty-form">
+                                <input type="hidden" name="acao" value="atualizar">
+                                <input type="hidden" name="id_produto" value="<?= $item['id_produto'] ?>">
+                                <input type="number" name="qtd" value="<?= $item['qtd_carrinho'] ?>" min="1"
+                                    onchange="this.form.submit()">
+                            </form>
+                        </td>
+                        <td>R$
+                            <?= number_format($item['subtotal'], 2, ',', '.') ?>
+                        </td>
+                        <td>
+                            <a href="carrinho_actions.php?acao=remover&id=<?= $item['id_produto'] ?>"
+                                class="btn-remove">Remover</a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <aside class="cart-summary">
+            <h2>Resumo do Pedido</h2>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>R$
+                    <?= number_format($total_carrinho, 2, ',', '.') ?>
+                </span>
+            </div>
+            <div class="summary-row">
+                <span>Frete (Fixo)</span>
+                <span>R$ 10,00</span>
+            </div>
+            <hr>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span>R$
+                    <?= number_format($total_carrinho + 10, 2, ',', '.') ?>
+                </span>
+            </div>
+
+            <a href="checkoutPage/checkout.php" class="btn-checkout">
+                <h3>Finalizar Compra</h3>
+            </a>
+            <a href="/produtos" class="btn-continue">Continuar Comprando</a>
+        </aside>
+    </div>
+    <?php endif; ?> -->
+</main>
