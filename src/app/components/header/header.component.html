@@ -91,14 +91,15 @@
         </button>
 
         <div id="hdr-profile-menu" class="hdr-user-dropdown">
-            <!-- Se o usuário estiver logado, mostrar opções de perfil e logout
-                <a class="hdr-pp-links" href="/pages/client/perfil.php">Meus Dados</a>
+            @if (isLoggedIn) {
+                <a class="hdr-pp-links" href="/editar-dados">Meus Dados</a>
                 <hr>
                 <a class="hdr-pp-links" href="/pages/meus_pedidos.php">Pedidos</a>
                 <hr>
-                <a class="hdr-pp-links" href="/pages/conta/logout.php" style="color: #e9228f;">Sair</a> -->
-            <!-- Se o usuário não estiver logado, mostrar link para login/cadastro -->
-            <a class="hdr-pp-links" href="/login">Entrar / Cadastrar</a>
+                <a class="hdr-pp-links" href="/pages/conta/logout.php" style="color: #e9228f;">Sair</a>
+            } @else {
+                <a class="hdr-pp-links" href="/login">Entrar / Cadastrar</a>
+            }
         </div>
     </div>
 </div>
