@@ -35,21 +35,23 @@
             <a class="f-txt-w" href="#">Nossa Loja</a>
             <a class="f-txt-w" href="#">Termos e Condições</a>
             <a class="f-txt-w" href="#">Política de Troca e Devolução</a>
-            <a class="f-txt-w" href="#">Label 5</a>
         </nav>
     </div>
     <div class="footer-list">
         <h2 class="f-h2">Categorias</h2>
         <nav>
-            <!-- <?php if (!empty($categoriasFooter)): ?>
-                    <?php foreach ($categoriasFooter as $cat): ?>
-                    <a class="f-txt-w"
-                        href="<?php if(function_exists('DirDetect')) DirDetect();?>pages/produtos.php?categoria=<?= $cat['id_categoria'] ?>">
-                        <?= htmlspecialchars($cat['nome']) ?>
-                    </a>
-                    <?php endforeach; ?>
-                    <?php else: ?> -->
-            <a class="f-txt-w" href="#">Sem categorias</a>
+            @if (categoriasFooter != 0) {
+                <!-- <?php if (!empty($categoriasFooter)): ?>
+                        <?php foreach ($categoriasFooter as $cat): ?>
+                        <a class="f-txt-w"
+                            href="<?php if(function_exists('DirDetect')) DirDetect();?>pages/produtos.php?categoria=<?= $cat['id_categoria'] ?>">
+                            <?= htmlspecialchars($cat['nome']) ?>
+                        </a>
+                        <?php endforeach; ?>
+                        <?php else: ?> -->
+            } @else {
+                <a class="f-txt-w" href="#">Sem categorias</a>
+            }
         </nav>
     </div>
     <div class="footer-about" id="ftr-contacts">

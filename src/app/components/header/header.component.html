@@ -87,14 +87,14 @@
                         stroke="#fff0fa" stroke-width="1.5" stroke-linecap="round"></path>
                 </g>
             </svg>
-            <p>User</p>
+            <p>Perfil</p>
         </button>
 
         <div id="hdr-profile-menu" class="hdr-user-dropdown">
             @if (isLoggedIn) {
                 <a class="hdr-pp-links" href="/editar-dados">Meus Dados</a>
                 <hr>
-                <a class="hdr-pp-links" href="/pages/meus_pedidos.php">Pedidos</a>
+                <a class="hdr-pp-links" href="/pedidos">Pedidos</a>
                 <hr>
                 <a class="hdr-pp-links" href="/pages/conta/logout.php" style="color: #e9228f;">Sair</a>
             } @else {

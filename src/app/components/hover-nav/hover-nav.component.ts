@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './hover-nav.component.css'
 })
 export class HoverNavComponent {
-
+  isLoggedIn: boolean = false
 }

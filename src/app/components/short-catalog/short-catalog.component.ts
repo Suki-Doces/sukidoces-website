@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './short-catalog.component.css'
 })
 export class ShortCatalogComponent {
-
+  
 }

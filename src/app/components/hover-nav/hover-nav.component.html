@@ -91,20 +91,21 @@
                 </g>
             </svg>
             <p>
-                User
+                Perfil
             </p>
         </button>
 
         <!-- Painel Flutuante -->
         <div id="profile-menu" class="hnv-dropdown hnv-profile-panel">
-            <!-- Se o usuário estiver logado, mostrar opções de perfil e logout; caso contrário, mostrar opção de login/cadastro
-            <a class="hnv-pp-links" href="/pages/client/perfil.php">Meus Dados</a>
-            <hr>
-            <a class="hnv-pp-links" href="/pages/meus_pedidos.php">Pedidos</a>
-            <hr>
-            <a class="hnv-pp-links" href="/pages/conta/logout.php" style="color: #e9228f;">Sair</a>
-            se o usuário não estiver logado: -->
-            <a class="hnv-pp-links" href="/login">Entrar / Cadastrar</a>
+            @if (isLoggedIn == true) {
+                <a class="hnv-pp-links" href="/pages/client/perfil.php">Meus Dados</a>
+                <hr>
+                <a class="hnv-pp-links" href="/pages/meus_pedidos.php">Pedidos</a>
+                <hr>
+                <a class="hnv-pp-links" href="/pages/conta/logout.php" style="color: #e9228f;">Sair</a>
+            } @else {
+                <a class="hnv-pp-links" href="/login">Entrar / Cadastrar</a>
+            }
         </div>
     </div>
 </nav>
