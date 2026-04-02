@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/account/login/login.component';
-import { DataEditComponent } from './pages/account/data-edit/data-edit.component';
-import { OrdersComponent } from './pages/account/orders/orders.component';
-import { CartComponent } from './pages/cart/cart.component';
-
+import { HomeComponent } from './pages/client/home/home.component';
+import { LoginComponent } from './pages/client/account/login/login.component';
+import { DataEditComponent } from './pages/client/account/data-edit/data-edit.component';
+import { OrdersComponent } from './pages/client/account/orders/orders.component';
+import { CartComponent } from './pages/client/cart/cart.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' }, // First route to load
