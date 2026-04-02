@@ -30,7 +30,7 @@
     color: var(--color-5);
 }
 
-.hdr-desktop-view {
+.hdr-desktop-view, :host > nav {
     display: none;
     align-items: center;
     justify-content: center;
@@ -106,7 +106,7 @@
         border-radius: 30px;
     }
 
-    .hdr-desktop-view {
+    .hdr-desktop-view, :host > nav {
         display: flex;
     }
 }
