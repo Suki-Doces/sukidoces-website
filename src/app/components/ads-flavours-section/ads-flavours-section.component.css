@@ -66,12 +66,12 @@
         justify-content: space-between;
         border-radius: 20px;
         height: 250px;
-        padding: 10px 3rem;
+        padding: 1rem
     }
 
     .af-img {
         display: block;
-        aspect-ratio: auto;
-        height: 200px;
+        aspect-ratio: 213/160;
+        height: 80%;
     }
 }
