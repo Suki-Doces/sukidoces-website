@@ -3,7 +3,7 @@
 // Ajuste BASE_URL se o projeto for servido em um subdiretório diferente
 if (!defined('BASE_URL')) {
     // Assumimos que o projeto está em /Loja_Suki_Adm quando servido via localhost
-    define('BASE_URL', '/sukidoces-website-2.0');
+    define('BASE_URL', '/sukidoces-website-skd-v2.0');
 }
 
 // Caminho absoluto do diretório raiz do projeto (filesystem)
