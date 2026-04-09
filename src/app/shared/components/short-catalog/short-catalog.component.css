@@ -166,7 +166,6 @@
 }
 
 .sc-scroll {
-    display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(2, auto);
     gap: 10px;
