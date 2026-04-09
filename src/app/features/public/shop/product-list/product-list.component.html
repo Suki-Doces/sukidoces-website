@@ -1,0 +1,76 @@
+<main class="catalog-container">
+
+    <ng-container *ngIf="currentQuery; else defaultTitle">
+        <h1 class="catalog-title">Resultados para: "{{ currentQuery }}"</h1>
+        <a routerLink="/produtos" class="clear-search-link">Limpar pesquisa</a>
+    </ng-container>
+    <ng-template #defaultTitle>
+        <h1 class="catalog-title">Produtos</h1>
+    </ng-template>
+
+    <div class="filters-bar">
+        <a routerLink="/produtos"
+            [class]="(!currentFilter && !currentCategory && !currentQuery) ? 'button-fill' : 'button-contoured'">
+            Todos
+        </a>
+
+        <a routerLink="/produtos" [queryParams]="{ filtro: 'mais-vendidos' }"
+            [class]="(currentFilter === 'mais-vendidos') ? 'button-fill' : 'button-contoured'">
+            Mais Vendidos
+        </a>
+
+        <a routerLink="/produtos" [queryParams]="{ filtro: 'novos' }"
+            [class]="(currentFilter === 'novos') ? 'button-fill' : 'button-contoured'">
+            Novos
+        </a>
+
+        <div class="filter-separator">|</div>
+
+        <a *ngFor="let cat of categories" routerLink="/produtos" [queryParams]="{ categoria: cat.id_categoria }"
+            [class]="(currentCategory === cat.id_categoria) ? 'button-fill' : 'button-contoured'">
+            {{ cat.nome }}
+        </a>
+    </div>
+
+    <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
+        A carregar produtos...
+    </div>
+
+    <div class="product-grid" *ngIf="!isLoading">
+        <ng-container *ngIf="products.length > 0; else noProducts">
+
+            <a *ngFor="let prod of products" [routerLink]="['/produto', prod.id_produto]" class="product-card">
+
+                <div class="card-image">
+                    <img class="card-img-lbl" [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage"
+                        [alt]="prod.nome">
+                </div>
+
+                <div class="card-info">
+                    <h3 class="card-i-h3">{{ prod.nome }}</h3>
+
+                    <small *ngIf="prod.nome_categoria" style="color: #888; font-size: 0.8rem;">
+                        {{ prod.nome_categoria }}
+                    </small>
+
+                    <p class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+                    <span class="btn-see-more">Ver Detalhes</span>
+                </div>
+            </a>
+
+        </ng-container>
+    </div>
+
+    <ng-template #noProducts>
+        <div class="no-products">
+            <img src="assets/icons/interface/search-icon.svg" alt="Ícone de busca"
+                style="width: 50px; opacity: 0.5; margin-bottom: 10px;">
+            <p>Nenhum produto encontrado.</p>
+            <a *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos"
+                style="color: var(--color-1); text-decoration: underline; margin-top: 10px; display: inline-block;">
+                Ver todos os produtos
+            </a>
+        </div>
+    </ng-template>
+
+</main>

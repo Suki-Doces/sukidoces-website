@@ -59,4 +59,17 @@ export class AuthService {
     const user = this.userSubject.value;
     return user?.nivel === 'admin';
   }
+
+  // Método de Cadastro
+  register(userData: any): Observable<any> {
+    return this.http.post<{ token: string, user: User }>(`${this.API_URL}/register`, userData)
+      .pipe(
+        tap(res => {
+          // Já faz o login automaticamente após cadastrar
+          localStorage.setItem('suki_token', res.token);
+          localStorage.setItem('suki_user', JSON.stringify(res.user));
+          this.userSubject.next(res.user);
+        })
+      );
+  }
 }

@@ -1,0 +1,47 @@
+<main class="detail-container" *ngIf="!isLoading && product">
+    <a routerLink="/produtos" class="back-link">← Voltar para o cardápio</a>
+
+    <div class="product-detail-wrapper">
+        <div class="detail-image">
+            <img [src]="product.imagem ? (imageBaseUrl + product.imagem) : defaultImage" [alt]="product.nome">
+        </div>
+
+        <div class="detail-info">
+            <h1>{{ product.nome }}</h1>
+
+            <div class="detail-price">
+                {{ product.preco | currency:'BRL':'symbol':'1.2-2' }}
+            </div>
+
+            <div class="detail-description">
+                <h3>Sobre este doce:</h3>
+                <p style="white-space: pre-wrap;">{{ product.descricao }}</p>
+            </div>
+
+            <div class="purchase-actions">
+                <div class="qty-selector">
+                    <button type="button" (click)="decrement()">-</button>
+                    <input type="number" [value]="quantity" readonly>
+                    <button type="button" (click)="increment()">+</button>
+                </div>
+
+                <button type="button" class="btn-add-cart" (click)="addToCart()" [disabled]="product.quantidade === 0">
+                    Adicionar ao Carrinho
+                </button>
+            </div>
+
+            <div class="stock-info">
+                <ng-container *ngIf="product.quantidade > 0; else outOfStock">
+                    <span class="in-stock">Disponível em stock ({{ product.quantidade }} un.)</span>
+                </ng-container>
+                <ng-template #outOfStock>
+                    <span class="out-stock">Indisponível no momento</span>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div *ngIf="isLoading" style="text-align: center; padding: 50px;">
+    A carregar detalhes do produto...
+</div>

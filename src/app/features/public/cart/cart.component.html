@@ -1,0 +1,59 @@
+<main class="cart-container">
+    <h1 class="cart-title">Meu Carrinho</h1>
+
+    <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-content">
+
+        <div class="cart-items">
+            <div class="cart-item" *ngFor="let item of cartItems">
+                <img [src]="item.product.imagem ? (imageBaseUrl + item.product.imagem) : defaultImage"
+                    [alt]="item.product.nome" class="item-img">
+
+                <div class="item-info">
+                    <h3>{{ item.product.nome }}</h3>
+                    <p class="item-price">{{ item.product.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+                </div>
+
+                <div class="item-actions">
+                    <div class="qty-selector">
+                        <button (click)="decrement(item)">-</button>
+                        <input type="number" [value]="item.quantity" readonly>
+                        <button (click)="increment(item)"
+                            [disabled]="item.quantity >= item.product.quantidade">+</button>
+                    </div>
+
+                    <div class="item-subtotal">
+                        {{ (item.product.preco * item.quantity) | currency:'BRL':'symbol':'1.2-2' }}
+                    </div>
+
+                    <button class="btn-remove" (click)="removeItem(item.product.id_produto)">Excluir</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <h2>Resumo do Pedido</h2>
+            <div class="summary-line">
+                <span>Subtotal</span>
+                <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="summary-total">
+                <span>Total</span>
+                <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </div>
+
+            <a routerLink="/checkout" class="btn-checkout">Continuar para o Checkout</a>
+            <a routerLink="/produtos" class="btn-continue">Continuar Comprando</a>
+        </div>
+
+    </div>
+
+    <ng-template #emptyCart>
+        <div class="empty-state">
+            <img src="assets/icons/interface/cart-icon.svg" alt="Carrinho Vazio">
+            <h2>O seu carrinho está vazio!</h2>
+            <p>Que tal dar uma olhada nos nossos doces?</p>
+            <a routerLink="/produtos" class="btn-continue-shopping">Ver Produtos</a>
+        </div>
+    </ng-template>
+
+</main>

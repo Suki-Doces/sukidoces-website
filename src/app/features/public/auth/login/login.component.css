@@ -1,0 +1,122 @@
+/* Container Principal */
+.conta-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 40px 20px;
+    background-color: #fcfcfc;
+}
+
+/* Cartão do Formulário */
+.conta-card {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.conta-title {
+    text-align: center;
+    color: var(--t-color-3, #533931);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+}
+
+/* Campos de Formulário */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: var(--t-color-5, #444);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--color-1, #e9228f);
+}
+
+/* Botão Principal (Entrar / Cadastrar) */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background-color: var(--color-1, #e9228f);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: var(--color-2, #f06b9a);
+}
+
+.btn-submit:disabled {
+    background-color: #fec8c8;
+    cursor: not-allowed;
+}
+
+/* Alternador de Modo (Login -> Registro) */
+.toggle-mode {
+    margin-top: 25px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.toggle-mode p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.btn-toggle {
+    background: transparent;
+    border: 1px solid var(--color-1, #e9228f);
+    color: var(--color-1, #e9228f);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-toggle:hover {
+    background: var(--color-1, #e9228f);
+    color: white;
+}
+
+/* Mensagem de Erro do Angular */
+.error-msg {
+    background-color: #ffebeb;
+    color: #d32f2f;
+    border: 1px solid #ffcdd2;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+}

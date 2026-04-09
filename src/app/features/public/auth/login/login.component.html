@@ -1,0 +1,48 @@
+<main class="conta-container">
+    <div class="conta-card">
+        <h2 class="conta-title">{{ isLoginMode ? 'Acessar minha conta' : 'Criar nova conta' }}</h2>
+
+        <div *ngIf="errorMessage" class="error-msg">
+            {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #authForm="ngForm" class="conta-form">
+
+            <div class="form-group" *ngIf="!isLoginMode">
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" name="nome" [(ngModel)]="formData.nome" required
+                    placeholder="Ex: Maria Joaquina">
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" [(ngModel)]="formData.email" required
+                    placeholder="seu@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" [(ngModel)]="formData.senha" required minlength="6"
+                    placeholder="******">
+            </div>
+
+            <div class="form-group" *ngIf="!isLoginMode">
+                <label for="confirmar_senha">Confirmar Senha</label>
+                <input type="password" id="confirmar_senha" name="confirmar_senha"
+                    [(ngModel)]="formData.confirmar_senha" required placeholder="******">
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="!authForm.valid || isLoading">
+                {{ isLoading ? 'Aguarde...' : (isLoginMode ? 'Entrar' : 'Cadastrar') }}
+            </button>
+
+        </form>
+
+        <div class="toggle-mode">
+            <p>{{ isLoginMode ? 'Ainda não tem conta?' : 'Já possui uma conta?' }}</p>
+            <button class="btn-toggle" (click)="toggleMode()" type="button">
+                {{ isLoginMode ? 'Crie sua conta agora' : 'Faça login' }}
+            </button>
+        </div>
+    </div>
+</main>
