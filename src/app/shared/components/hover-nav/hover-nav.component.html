@@ -1,25 +1,35 @@
-<!-- HOVER NAV -->
 <nav class="hover-nav">
 
-    <!-- Item 1: Link Direto (Home) -->
-    <a class="hnv-a-btn" href="/" aria-label="Página inicial">
+    @if (isHomeRoute) {
+    <a class="hnv-a-btn" routerLink="/produtos" aria-label="Produtos">
+        <button class="hnv-button">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g stroke="#000" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 11v3c0 3.771 0 5.657 1.172 6.828S7.729 22 11.5 22h1c3.771 0 5.657 0 6.828-1.172M20.5 11v3c0 1.17 0 2.158-.035 3"/><path d="M9.5 2h5m-5 0-.652 6.517a3.167 3.167 0 1 0 6.304 0L14.5 2m-5 0H7.418c-.908 0-1.362 0-1.752.107a3 3 0 0 0-1.888 1.548M9.5 2l-.725 7.245a3.06 3.06 0 1 1-6.043-.904L2.8 8m11.7-6h2.082c.908 0 1.362 0 1.752.107a3 3 0 0 1 1.888 1.548c.181.36.27.806.448 1.696l.598 2.99a3.06 3.06 0 1 1-6.043.904zm-5 19.5v-3c0-.935 0-1.402.201-1.75a1.5 1.5 0 0 1 .549-.549C10.598 16 11.065 16 12 16s1.402 0 1.75.201a1.5 1.5 0 0 1 .549.549c.201.348.201.815.201 1.75v3"/></g></svg>
+            <p>Produtos</p>
+        </button>
+    </a>
+    } @else {
+    <a class="hnv-a-btn" routerLink="/" aria-label="Página inicial">
         <button class="hnv-button">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M15 18H9m12.636-5.042-.279 1.937c-.487 3.388-.731 5.081-1.906 6.093S16.553 22 13.106 22h-2.212c-3.447 0-5.17 0-6.345-1.012s-1.419-2.705-1.906-6.093l-.279-1.937c-.38-2.637-.57-3.956-.029-5.083s1.691-1.813 3.992-3.183l1.385-.825C9.8 2.622 10.846 2 12 2s2.199.622 4.288 1.867l1.385.825c2.3 1.37 3.451 2.056 3.992 3.183" stroke="#000" stroke-width="1.5" stroke-linecap="round"/></svg>
             <p>Home</p>
         </button>
     </a>
+    }
 
-    <!-- Item 2: Dropdown (Pesquisa) -->
     <div class="hnv-button-wrapper">
-        <button class="hnv-button hnv-toggle-btn" data-target="search-menu" aria-label="Abrir pesquisa">
+        <button class="hnv-button hnv-toggle-btn" 
+                [class.active]="openMenu === 'search'" 
+                (click)="toggleMenu('search', $event)" 
+                aria-label="Abrir pesquisa">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m20 20 2 2M6.75 3.27a9.5 9.5 0 1 1-3.48 3.48" stroke="#000" stroke-width="1.5" stroke-linecap="round"/></svg>
             <p>Procurar</p>
         </button>
 
-        <!-- Painel Flutuante -->
-        <div id="search-menu" class="hnv-dropdown hnv-search-panel">
-            <form action="/pages/produtos.php" method="get" class="hnv-search-form">
-                <input type="search" name="query" placeholder="O que você procura?" required>
+        <div id="search-menu" class="hnv-dropdown hnv-search-panel" 
+             [class.is-open]="openMenu === 'search'" 
+             (click)="$event.stopPropagation()">
+            <form (ngSubmit)="onSearch()" class="hnv-search-form">
+                <input type="search" name="query" [(ngModel)]="searchQuery" placeholder="O que você procura?" required>
                 <button type="submit" aria-label="Pesquisar">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m20 20 2 2M6.75 3.27a9.5 9.5 0 1 1-3.48 3.48" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </button>
@@ -27,31 +37,33 @@
         </div>
     </div>
 
-    <!-- Item 3: Link Direto (Carrinho) -->
-    <a class="hnv-a-btn" href="/carrinho" aria-label="Carrinho de Compras">
+    <a class="hnv-a-btn" routerLink="/carrinho" aria-label="Carrinho de Compras">
         <button class="hnv-button">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round" stroke="#ccc" stroke-width=".048"/><g stroke="#000" stroke-width="1.5"><path d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/><path d="m2 3 .261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7" stroke-linecap="round"/></g></svg>
             <p>Carrinho</p>
         </button>
     </a>
 
-    <!-- Item 4: Dropdown (Perfil) -->
     <div class="hnv-button-wrapper">
-        <button class="hnv-button hnv-toggle-btn" data-target="profile-menu" aria-label="Abrir menu do perfil">
+        <button class="hnv-button hnv-toggle-btn" 
+                [class.active]="openMenu === 'profile'" 
+                (click)="toggleMenu('profile', $event)" 
+                aria-label="Abrir menu do perfil">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g stroke="#000" stroke-width="1.5"><circle cx="12" cy="6" r="4"/><path d="M15 20.615c-.91.247-1.926.385-3 .385-3.866 0-7-1.79-7-4s3.134-4 7-4 7 1.79 7 4c0 .345-.077.68-.22 1" stroke-linecap="round"/></g></svg>
-            <p>Perfil</p>
+            <p>{{ displayName }}</p>
         </button>
 
-        <!-- Painel Flutuante -->
-        <div id="profile-menu" class="hnv-dropdown hnv-profile-panel">
-            @if (isLoggedIn == true) {
-            <a class="hnv-pp-links" href="/pages/client/perfil.php">Meus Dados</a>
+        <div id="profile-menu" class="hnv-dropdown hnv-profile-panel" 
+             [class.is-open]="openMenu === 'profile'" 
+             (click)="$event.stopPropagation()">
+            @if (isLoggedIn) {
+            <a class="hnv-pp-links" routerLink="/editar-dados">Meus Dados</a>
             <hr>
-            <a class="hnv-pp-links" href="/pages/meus_pedidos.php">Pedidos</a>
+            <a class="hnv-pp-links" routerLink="/pedidos">Pedidos</a>
             <hr>
-            <a class="hnv-pp-links" href="/pages/conta/logout.php" style="color: #e9228f;">Sair</a>
+            <a class="hnv-pp-links" (click)="logout()" style="color: #e9228f; cursor: pointer;">Sair</a>
             } @else {
-            <a class="hnv-pp-links" href="/login">Entrar / Cadastrar</a>
+            <a class="hnv-pp-links" routerLink="/login">Entrar / Cadastrar</a>
             }
         </div>
     </div>

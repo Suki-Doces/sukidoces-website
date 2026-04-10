@@ -33,9 +33,6 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-            "scripts": [
-              "src/assets/scripts/hover_nav.js"
             ]
           },
           "configurations": {
