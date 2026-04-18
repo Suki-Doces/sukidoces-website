@@ -43,7 +43,7 @@
 
                 <div class="card-image">
                     <img class="card-img-lbl" [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage"
-                        [alt]="prod.nome">
+                        [alt]="prod.nome" (error)="onImageError($event)">
                 </div>
 
                 <div class="card-info">

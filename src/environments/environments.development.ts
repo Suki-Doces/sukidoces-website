@@ -5,5 +5,5 @@ export const environment = {
 
 export const productImage = {
   baseUrl: 'assets/images/produtos/',
-  default: 'assets/images/default-product.png'
+  default: 'assets/images/produtos/default-product.svg'
 }
