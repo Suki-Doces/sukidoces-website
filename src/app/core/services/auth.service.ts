@@ -15,7 +15,7 @@ interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = '${environment.apiUrl}/auth';
+  private readonly API_URL = `${environment.apiUrl}/usuario`;
 
   // Esta função é usada para armazenar o usuário autenticado
   private userSubject = new BehaviorSubject<User | null>(null);
@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   // Método de Cadastro
-  register(userData: any): Observable<any> {
+  registro(userData: any): Observable<any> {
     return this.http.post<{ token: string, user: User }>(`${this.API_URL}/register`, userData)
       .pipe(
         tap(res => {

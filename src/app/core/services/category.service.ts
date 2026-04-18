@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environments.development';
 
 // Definimos a interface baseada na sua tabela 'categorias' do banco de dados
@@ -15,7 +15,7 @@ export interface Category {
 })
 export class CategoryService {
   // O endereço da sua futura API em Node.js
-  private readonly API_URL = '${environment.apiUrl}/categorias';
+  private readonly API_URL = `${environment.apiUrl}/produtos/categorias`;
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +31,9 @@ export class CategoryService {
       params = params.set('limit', limit.toString());
     }
 
-    return this.http.get<Category[]>(this.API_URL, { params });
+    return this.http.get<{categorias: Category[]}>(this.API_URL, { params }).pipe(
+      map(response => response.categorias) // Extrai apenas o array de categorias da resposta
+    );
   }
 
   /**

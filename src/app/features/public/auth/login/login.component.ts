@@ -72,7 +72,7 @@ export class LoginComponent {
         senha: this.formData.senha
       };
 
-      this.authService.register(novoUsuario).subscribe({
+      this.authService.registro(novoUsuario).subscribe({
         next: () => {
           this.router.navigate(['/']); // Sucesso, redireciona para a página inicial
         },
