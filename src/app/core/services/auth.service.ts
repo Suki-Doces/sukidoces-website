@@ -62,7 +62,7 @@ export class AuthService {
 
   // Método de Cadastro
   registro(userData: any): Observable<any> {
-    return this.http.post<{ token: string, user: User }>(`${this.API_URL}/register`, userData)
+    return this.http.post<{ token: string, user: User }>(`${this.API_URL}/registro`, userData)
       .pipe(
         tap(res => {
           // Já faz o login automaticamente após cadastrar
