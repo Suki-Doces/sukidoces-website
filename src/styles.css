@@ -129,6 +129,29 @@ html {
     scroll-behavior: smooth;
 }
 
+/*Transitions*/
+/* Seleciona a página que está saindo */
+::view-transition-old(root) {
+  animation: fade-out 0.4s ease-in-out forwards;
+}
+
+/* Seleciona a página que está entrando */
+::view-transition-new(root) {
+  animation: fade-in 0.4s ease-in-out forwards;
+}
+
+/* Criando as animações de opacidade */
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+/*Transitions END */
+
 /*Templates*/
 .button-fill {
     display: flex;

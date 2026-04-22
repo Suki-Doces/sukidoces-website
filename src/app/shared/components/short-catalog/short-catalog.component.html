@@ -1,0 +1,69 @@
+<section class="short-catalog-section">
+    <h1>Recomendação de compra</h1>
+
+    <div class="sc-nav">
+        <button class="tab-btn"
+                [ngClass]="activeTab === 'mais-vendidos' ? 'button-fill' : 'button-contoured'"
+                (click)="setActiveTab('mais-vendidos')">
+            <p>Mais Vendidos</p>
+        </button>
+        <button class="tab-btn"
+                [ngClass]="activeTab === 'novos' ? 'button-fill' : 'button-contoured'"
+                (click)="setActiveTab('novos')">
+            <p>Novos</p>
+        </button>
+    </div>
+
+    <div class="sc-items">
+    
+    <div class="sc-scroll tab-content" [class.active]="activeTab === 'mais-vendidos'">
+      <ng-container *ngIf="bestSellers.length > 0; else noProducts">
+        
+        <a *ngFor="let prod of bestSellers" 
+           class="product-card" 
+           [routerLink]="['/produto', prod.id_produto]"> <div class="ci-square-label">
+            <img [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage" 
+                 [alt]="prod.nome">
+          </div>
+          
+          <div class="ci-product-info">
+            <h3 class="card-i-h3">{{ prod.nome }}</h3>
+            <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
+            <span class="button-fill btn-see-more">Detalhes</span>
+          </div>
+        </a>
+
+      </ng-container>
+    </div>
+
+    <div class="sc-scroll tab-content" [class.active]="activeTab === 'novos'">
+      <ng-container *ngIf="newArrivals.length > 0; else noProducts">
+        
+        <a *ngFor="let prod of newArrivals" 
+           class="product-card" 
+           [routerLink]="['/produto', prod.id_produto]">
+          
+          <div class="ci-square-label">
+            <img [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage" 
+                 [alt]="prod.nome">
+          </div>
+          
+          <div class="ci-product-info">
+            <h3 class="card-i-h3">{{ prod.nome }}</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
+                <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
+                <span style="font-size: 0.7rem; background-color: #4CAF50; color: white; padding: 2px 6px; border-radius: 4px;">NOVO</span>
+            </div>
+            <span class="button-fill btn-see-more">Detalhes</span>
+          </div>
+        </a>
+
+      </ng-container>
+    </div>
+
+  </div>
+  
+  <ng-template #noProducts>
+    <p style="padding: 20px;">Nenhum produto encontrado.</p>
+  </ng-template>
+</section>

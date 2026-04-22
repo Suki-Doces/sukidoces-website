@@ -1,0 +1,26 @@
+<div class="carousel-container">
+  <div class="carousel-wrapper">
+    <div class="carousel-slide" [style.transform]="'translateX(' + offset + '%)'">
+      <div *ngFor="let img of images; let i = index" 
+           class="carousel-item" 
+           [class.active]="i === currentIndex">
+        <img [src]="img" alt="Banner promocional">
+      </div>
+    </div>
+
+    <button id="prevBtn" class="nav-btn" (click)="prevSlide()">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m15 19-6-7 1.5-1.75M15 5l-2 2.333" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="nextBtn" class="nav-btn" (click)="nextSlide()">
+     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m9 5 2 2.333M9 19l6-7-1.5-1.75" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>  
+    </button>
+
+    <div class="indicators-wrapper">
+      <button *ngFor="let img of images; let i = index" 
+              class="indicator" 
+              [class.active]="i === currentIndex" 
+              (click)="goToSlide(i); resetInterval()">
+      </button>
+    </div>
+  </div>
+</div>
