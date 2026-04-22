@@ -31,9 +31,12 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post<{ token: string, user: User }>(`${this.API_URL}/login`, credentials).pipe(
       tap(res => {
-        localStorage.setItem('suki_token', res.token);
-        localStorage.setItem('suki_user', JSON.stringify(res.user));
-        this.userSubject.next(res.user);
+        if (res.token && res.user) {
+          // O token e as informações do usuário foram retornados com sucesso
+          localStorage.setItem('suki_token', res.token);
+          localStorage.setItem('suki_user', JSON.stringify(res.user));
+          this.userSubject.next(res.user);
+        }
       })
     );
   }
