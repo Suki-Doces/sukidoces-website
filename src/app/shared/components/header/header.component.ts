@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   displayName: string = 'Conta';
   searchQuery: string = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/login']);
     this.isMenuOpen = false; // Opcional: garante que o menu feche ao sair
   }
 }

@@ -27,8 +27,8 @@
   </svg>
 </a>
 <nav>
-  <a href="/">Home</a>
-  <a href="/produtos">Produtos</a>
+  <a routerLink="/home">Home</a>
+  <a routerLink="/produtos">Produtos</a>
   <a href="/">História</a>
   <a href="#ftr-contacts">Contatos</a>
 </nav>
@@ -78,8 +78,9 @@
 
     <div class="hdr-user-dropdown" [class.is-open]="isMenuOpen" (click)="$event.stopPropagation()">
       <ng-container *ngIf="isLoggedIn; else loggedOut">
-        <a class="hdr-pp-links" href="/editar-dados">Meus Dados</a>
+        <a class="hdr-pp-links" routerLink="/perfil">Meus Dados</a>
         <hr>
+        <a *ngIf="authService.isAdmin()" routerLink="/admin">Painel Admin</a>
         <a class="hdr-pp-links" href="/pedidos">Pedidos</a>
         <hr>
         <a class="hdr-pp-links" (click)="logout()" style="color: #e9228f; cursor: pointer;">Sair</a>

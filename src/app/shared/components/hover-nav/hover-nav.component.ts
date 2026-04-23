@@ -23,7 +23,7 @@ export class HoverNavComponent implements OnInit {
   // Para substituir a lógica do HoverNavFirst() do PHP
   isHomeRoute: boolean = true;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(public authService: AuthService, private router: Router) {
     // Detecta se está na página inicial para trocar o botão Home <-> Produtos
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -68,6 +68,7 @@ export class HoverNavComponent implements OnInit {
   // Faz logout da conta
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/home']);
     this.openMenu = null;
   }
 }
