@@ -3,10 +3,12 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "ignoreDeprecations": "6.0",
     "paths": {
       "src/*": ["src/*"]
     },
     "outDir": "./dist/out-tsc",
+    "rootDir": "./",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
