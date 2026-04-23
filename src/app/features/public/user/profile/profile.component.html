@@ -1,0 +1,47 @@
+<div class="profile-page-container">
+    <section class="profile-header">
+        <h1>Minha Conta</h1>
+        <p>Olá, {{ profileForm.get('nome')?.value }}. Gerencie seus dados abaixo.</p>
+    </section>
+
+    <div *ngIf="isLoading" class="loading-overlay">
+        <p>A carregar informações...</p>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input type="text" formControlName="nome" placeholder="Ex: Maria Silva">
+                <span class="error" *ngIf="profileForm.get('nome')?.invalid && profileForm.get('nome')?.touched">
+                    Nome é obrigatório (mín. 3 caracteres).
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" formControlName="email">
+            </div>
+
+            <div class="form-group">
+                <label>Telefone / Telemóvel</label>
+                <input type="text" formControlName="telefone" placeholder="9xxxxxxxx">
+            </div>
+
+            <div class="form-group full-width">
+                <label>Endereço de Entrega Principal</label>
+                <textarea formControlName="endereco" rows="3" placeholder="Rua, número, complemento..."></textarea>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save" [disabled]="profileForm.invalid || isLoading">
+                {{ isLoading ? 'A guardar...' : 'Guardar Alterações' }}
+            </button>
+        </div>
+
+        <div *ngIf="feedbackMessage" class="alert-box">
+            {{ feedbackMessage }}
+        </div>
+    </form>
+</div>

@@ -33,6 +33,7 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     // I - Le o ID do produto a partir da URL
     const idParam = this.route.snapshot.paramMap.get('id');
+    console.log('ID capturado da URL:', idParam);
     const id = idParam ? parseInt(idParam, 10) : null;
 
     if (!id) {

@@ -22,6 +22,7 @@ export class AuthService {
 
   // Observable para o usuário autenticado, que pode ser usado em outros componentes
   currentUser$ = this.userSubject.asObservable();
+  isLoggedIn$: any;
 
   constructor(private http: HttpClient, private router: Router) {
     this.restoreSession();
