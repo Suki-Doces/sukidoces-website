@@ -3,6 +3,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    // "ignoreDeprecations": "6.0",
+    // X [ERROR] TS5103: Invalid value for '--ignoreDeprecations'. [plugin angular-compiler]
     "paths": {
       "src/*": ["src/*"]
     },
