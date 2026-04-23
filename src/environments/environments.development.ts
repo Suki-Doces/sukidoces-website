@@ -1,6 +1,6 @@
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:3000/suki-doces' // <- Mude a porta aqui quando trocar de máquina
+  production: true,
+  apiUrl: 'https://suki-doces-api.onrender.com/suki-doces' // <- Mude a porta aqui quando trocar de máquina
 };
 
 export const productImage = {

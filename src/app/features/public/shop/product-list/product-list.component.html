@@ -39,7 +39,7 @@
     <div class="product-grid" *ngIf="!isLoading">
         <ng-container *ngIf="products.length > 0; else noProducts">
 
-            <a *ngFor="let prod of products" [routerLink]="['/produto', prod.id_produto]" class="product-card">
+            <a *ngFor="let prod of products" [routerLink]="['/produtos', prod.id_produto]" class="product-card">
 
                 <div class="card-image">
                     <img class="card-img-lbl" [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage"
