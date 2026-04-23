@@ -39,6 +39,24 @@ export class AuthService {
     );
   }
 
+  loginAdmin(credentials: any): Observable<any> {
+    // Substitua '/admin/login' pelo caminho correto que você configurou no seu admin.routes.js
+    return this.http.post<{ token: string, admin: any }>(`${environment.apiUrl}/admin/login`, credentials).pipe(
+      tap(res => {
+        localStorage.setItem('suki_token', res.token);
+        // O backend do loginAdmin envia "admin" e não "user", então precisamos padronizar:
+        const userFormatado: User = {
+          id: res.admin.id,
+          nome: res.admin.nome,
+          email: res.admin.email,
+          nivel: 'admin'
+        };
+        localStorage.setItem('suki_user', JSON.stringify(userFormatado));
+        this.userSubject.next(userFormatado);
+      })
+    );
+  }
+
   // Logout do usuário, removendo o token e as informações do usuário do localStorage e redirecionando para a página de login
   logout(): void {
     localStorage.removeItem('suki_token');

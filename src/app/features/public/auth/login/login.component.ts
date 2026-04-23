@@ -57,13 +57,18 @@ export class LoginComponent {
       // ====== Logica de Login ======
       this.authService.login({ email: this.formData.email, senha: this.formData.senha }).subscribe({
         next: () => {
-          this.router.navigate(['/']); // Sucesso, redireciona para a página inicial
+          if (this.authService.isAdmin()) {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/']); // Sucesso, redireciona para a página inicial
+          }
         },
         error: (err) => {
           this.errorMessage = err.error?.message || 'E-mail ou senha incorretos.';
           this.isLoading = false;
         }
       });
+
     } else {
       // ====== Logica de Cadastro ======
       const novoUsuario = {
