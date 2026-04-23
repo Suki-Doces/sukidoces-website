@@ -61,4 +61,13 @@ export class ProfileComponent implements OnInit {
       });
     }
   }
+
+  deleteAccount(): void {
+    const isConfirmed = confirm('Tem a certeza absoluta que deseja apagar a sua conta? Esta ação é irreversível.');
+
+    if (isConfirmed) {
+      console.log('A iniciar processo de eliminação de conta...');
+      // A sua lógica para apagar a conta aqui
+    }
+  }
 }

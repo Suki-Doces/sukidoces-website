@@ -1,47 +1,50 @@
-<div class="profile-page-container">
-    <section class="profile-header">
-        <h1>Minha Conta</h1>
-        <p>Olá, {{ profileForm.get('nome')?.value }}. Gerencie seus dados abaixo.</p>
+<div class="profile-container">
+    
+    <div class="alert success" *ngIf="feedbackMessage">{{ feedbackMessage }}</div>
+
+    <section class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img src="assets/icons/interface/profile-icon.svg" alt="Avatar">
+            </div>
+            <div class="profile-title">
+                <h1>Meus Dados</h1>
+                <p>Atualize as suas informações pessoais</p>
+            </div>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="form-grid">
+                
+                <div class="input-group full-width">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" formControlName="nome" placeholder="Seu nome">
+                </div>
+
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" formControlName="email" placeholder="seu@email.com">
+                </div>
+
+                <div class="input-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" formControlName="telefone" placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="full-width">
+                    <button type="submit" class="btn-submit" [disabled]="profileForm.invalid">
+                        Guardar Alterações
+                    </button>
+                </div>
+            </div>
+        </form>
     </section>
 
-    <div *ngIf="isLoading" class="loading-overlay">
-        <p>A carregar informações...</p>
-    </div>
-
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" formControlName="nome" placeholder="Ex: Maria Silva">
-                <span class="error" *ngIf="profileForm.get('nome')?.invalid && profileForm.get('nome')?.touched">
-                    Nome é obrigatório (mín. 3 caracteres).
-                </span>
-            </div>
-
-            <div class="form-group">
-                <label>E-mail</label>
-                <input type="email" formControlName="email">
-            </div>
-
-            <div class="form-group">
-                <label>Telefone / Telemóvel</label>
-                <input type="text" formControlName="telefone" placeholder="9xxxxxxxx">
-            </div>
-
-            <div class="form-group full-width">
-                <label>Endereço de Entrega Principal</label>
-                <textarea formControlName="endereco" rows="3" placeholder="Rua, número, complemento..."></textarea>
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn-save" [disabled]="profileForm.invalid || isLoading">
-                {{ isLoading ? 'A guardar...' : 'Guardar Alterações' }}
-            </button>
-        </div>
-
-        <div *ngIf="feedbackMessage" class="alert-box">
-            {{ feedbackMessage }}
-        </div>
-    </form>
+    <section class="profile-card danger-zone">
+        <h2>Apagar Conta</h2>
+        <p>Atenção: Esta ação é irreversível e apagará todo o seu histórico de pedidos.</p>
+        <button class="btn-delete" type="button" (click)="deleteAccount()">
+            Apagar a minha conta permanentemente
+        </button>
+    </section>
 </div>
