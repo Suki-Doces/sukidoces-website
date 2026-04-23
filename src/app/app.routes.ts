@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 // --- Importações da Área Pública (Loja) ---
 import { HomeComponent } from './features/public/home/home.component';
@@ -25,7 +26,7 @@ export const routes: Routes = [
   { path: 'produtos', component: ProductListComponent, title: 'Produtos' },
   { path: 'produtos/:id', component: ProductDetailComponent, title: 'Detalhes do Produto' },
   { path: 'carrinho', component: CartComponent, title: 'Carrinho' },
-    { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces - Meu Perfil' }, // Rota protegida, só acessível com token válido
+  { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces - Meu Perfil' }, // Rota protegida, só acessível com token válido
 
   // ==========================================
   // ROTAS DO PAINEL ADMIN (Suki Doces Admin)
