@@ -1,0 +1,61 @@
+<div id="content-dashboard" class="content active">
+    <h1>Categorias</h1>
+    <p class="page-subtitle">Organize os departamentos da sua loja.</p>
+  </div>
+  
+  <div class="container">
+    
+    <div class="admin-product-form-container">
+      <form (ngSubmit)="salvar()">
+        <h3>{{ isEditMode ? 'Editar Categoria #' + categoriaSelecionada.id_categoria : 'Nova Categoria' }}</h3>
+        
+        <input type="text" placeholder="Nome da Categoria" name="nome" 
+               class="box" [(ngModel)]="categoriaSelecionada.nome" required>
+        
+        <input type="text" placeholder="Descrição (Opcional)" name="descricao" 
+               class="box" [(ngModel)]="categoriaSelecionada.descricao">
+  
+        <div class="form-actions">
+          <input type="submit" class="btn" [value]="isEditMode ? 'Atualizar' : 'Salvar Categoria'">
+          <button type="button" *ngIf="isEditMode" class="btn btn-cancel" (click)="resetForm()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <br><br>
+  
+    <div class="table_container">
+      <div class="table-header-row">
+        <h3>Categorias Existentes</h3>
+        <a routerLink="/admin/produtos" class="back-link">← Voltar para Produtos</a>
+      </div>
+  
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cat of categorias">
+            <td>#{{ cat.id_categoria }}</td>
+            <td><strong class="cat-name">{{ cat.nome }}</strong></td>
+            <td>{{ cat.descricao }}</td>
+            <td class="action-buttons">
+              <button class="btn-edit" (click)="editar(cat)" title="Editar">
+                <img src="assets/admin/icon/Editar-Icon.svg" alt="Editar">
+              </button>
+              <button class="btn-trash" (click)="deletar(cat.id_categoria)" title="Deletar">
+                <img src="assets/admin/icon/Trash - Icon.svg" alt="Deletar">
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

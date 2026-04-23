@@ -8,7 +8,7 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withViewTransitions()),
-    // Habilite o HTTP e o seu Interceptor de autenticação
+    // Habilita o HTTP já com o seu Interceptor de autenticação tudo junto
     provideHttpClient(withInterceptors([authInterceptor]))
   ]
 };

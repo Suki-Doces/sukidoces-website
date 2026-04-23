@@ -1,0 +1,169 @@
+<div id="content-dashboard" class="content active">
+    <h1>Painel</h1>
+    <p class="page-subtitle">Bem-vindo ao seu Painel de Controle!</p>
+  </div>
+  
+  <div class="painel-vendas">
+    <div class="dash-vendas padding-20-set">
+      <div>
+        <div class="revenue">
+          <b class="revenue-title">Vendas Totais</b>
+          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="Icone de Pontos">
+        </div>
+        <div class="vendas-text">
+          <p>Vendas nos últimos 7 dias</p>
+        </div>
+      </div>
+      <div>
+        <div class="revenue-value">
+          <b class="revenue-text">{{ resumo.vendasSemana | currency:'BRL':'symbol':'1.2-2' }}</b>
+          <div class="frame-wrapper">
+            <div class="increase-value">
+              <img class="porcentagem-de-incremento" src="assets/admin/icon/Increases Symbol - Icon.svg" alt="Aumento">
+            </div>
+          </div>
+          <b class="increase-text">+{{ resumo.aumentoVendas }}%</b>
+        </div>
+        <div class="previous-days">
+          <span>Valores Semana Passada</span>
+          <b class="blue-value">({{ resumo.vendasPassada | currency:'BRL':'symbol':'1.2-2' }})</b>
+        </div>
+      </div>
+    </div>
+  
+    <div class="dash-pedidos padding-20-set">
+      <div>
+        <div class="revenue">
+          <b class="revenue-title">Pedidos Totais</b>
+          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="Icone de Pontos">
+        </div>
+        <div class="pedidos-text">
+          <p>Últimos 7 dias</p>
+        </div>
+      </div>
+      <div>
+        <div class="revenue-value">
+          <b class="revenue-text">{{ resumo.pedidosSemana }}</b>
+          <div class="frame-wrapper">
+            <div class="increase-value">
+              <img class="porcentagem-de-incremento" src="assets/admin/icon/Increases Symbol - Icon.svg" alt="Aumento">
+            </div>
+          </div>
+          <b class="increase-text">+{{ resumo.aumentoPedidos }}%</b>
+        </div>
+        <div class="previous-days">
+          <span>Valores Semana Passada</span>
+          <b class="blue-value">({{ resumo.pedidosPassada | currency:'BRL':'symbol':'1.2-2' }})</b>
+        </div>
+      </div>
+    </div>
+  
+    <div class="dash-pendentes padding-20-set">
+      <div class="dash-p-title">
+        <div class="revenue">
+          <b class="revenue-title">Pendentes e Cancelados</b>
+          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="Icone de Pontos">
+        </div>
+        <div class="vendas-text">
+          <p>Últimos 7 dias</p>
+        </div>
+      </div>
+      <div class="dash-p-dados">
+        <div class="pend-canc-pai">
+          <b class="pendentes-text">Pendentes</b>
+          <b class="pen-value-text">{{ resumo.pendentes }}</b>
+        </div>
+        <img class="traco-icon" src="assets/admin/icon/Traco - Icon.svg" alt="Traço">
+        <div class="cancelados-parent">
+          <b class="cancelados">Cancelados</b>
+          <b class="cash">{{ resumo.cancelados }}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <section class="below-vendas">
+    <div class="produtos-destaque-main">
+      <h3>Produtos em Destaque</h3>
+      <table class="content-table">
+        <thead class="table-head">
+          <tr>
+            <th class="table-parent">Produto</th>
+            <th class="table-parent">Total de Pedidos</th>
+            <th class="table-parent">Status</th>
+            <th class="table-parent">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="active-row" *ngFor="let prod of produtosDestaque">
+            <td style="display: flex; align-items: center;">
+              <img class="kit-img" [src]="'assets/admin/img/' + prod.img" [alt]="prod.nome">
+              <span class="kit-text" style="position:static; padding-left:10px;">{{ prod.nome }}</span>
+            </td>
+            <td style="padding-left: 50px;">{{ prod.vendas }}</td>
+            <td>
+              <img [src]="prod.status === 'Em Estoque' ? 'assets/admin/icon/Green-Ball.svg' : 'assets/admin/icon/Red Ball - Icon.svg'" alt="Status" style="vertical-align:middle; width:20px; height: 8px;">
+              <span [style.color]="prod.corStatus" style="margin-left:6px;">{{ prod.status }}</span>
+            </td>
+            <td>{{ prod.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <aside class="gerenciamento-estoque">
+      <h3>Gerenciamento do Estoque</h3>
+      <div class="estoque-cards">
+        <div class="estoque-item">
+          <span>Estoque Atual</span>
+          <b>2504</b>
+        </div>
+        <div class="estoque-item">
+          <span>Produtos para Repor</span>
+          <b>50</b>
+        </div>
+        <div class="estoque-item">
+          <span>Devoluções Recentes</span>
+          <b>10</b>
+        </div>
+      </div>
+    </aside>
+  </section>
+  
+  <footer class="table">
+    <section class="table_header">
+      <div class="input-group">
+        <input type="search" placeholder="Pesquisar...">
+        <img src="assets/admin/icon/Lupa - icon.svg" alt="Pesquisar">
+      </div>
+      <div class="table_order">
+        <div class="table_pedidos">
+          <div class="todos-os-pedidos">Transações Recentes</div>
+          <b>({{ transacoes.length }})</b>
+        </div>
+      </div>
+    </section>
+  
+    <section class="table_body">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody id="transactions-tbody">
+          <tr *ngFor="let tx of transacoes">
+            <td>{{ tx.id_pedido }}</td>
+            <td>{{ tx.cliente_nome }}</td>
+            <td>{{ tx.data_pedido }}</td>
+            <td><span class="status" [ngClass]="tx.status.toLowerCase()">{{ tx.status | titlecase }}</span></td>
+            <td><strong>{{ tx.valor_total | currency:'BRL':'symbol':'1.2-2' }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </footer>

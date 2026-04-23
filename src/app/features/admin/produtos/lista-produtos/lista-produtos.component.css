@@ -1,0 +1,193 @@
+/* Cabeçalho */
+#content-dashboard {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+  }
+  
+  #content-dashboard h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  
+  .page-subtitle {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+  }
+  
+  /* Container Principal */
+  .container {
+    max-width: 1200px;
+    padding: 2rem;
+    margin: 0 auto;
+  }
+  
+  .btn-categoria {
+    background: #333; 
+    color: #fff;
+    width: auto; 
+    display: inline-block; 
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-categoria:hover {
+    background: #000;
+  }
+  
+  /* Formulário de Adição de Produtos */
+  .admin-product-form-container form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .admin-product-form-container form:hover {
+    transform: translateY(-2px);
+  }
+  
+  .admin-product-form-container form h3 {
+    text-transform: uppercase;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .box {
+    width: 100%;
+    border-radius: 0.8rem;
+    padding: 1.3rem 1.5rem;
+    font-size: 1.4rem; /* Ajustado para melhor leitura */
+    background: #f9fafc;
+    border: 1px solid #dfe6e9;
+    transition: all 0.2s ease;
+    color: #333;
+  }
+  
+  .box:focus {
+    outline: none;
+    border-color: #27ae60;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+  }
+  
+  input[type="file"].box {
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    background: #fff;
+    border: 1px dashed #ccc;
+    cursor: pointer;
+  }
+  
+  /* Botão Submit */
+  .btn-submit {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 0.8rem;
+    margin-top: 0.5rem;
+    font-size: 1.6rem;
+    padding: 1.2rem;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .btn-submit:hover {
+    background: linear-gradient(135deg, #219150, #27ae60);
+    transform: translateY(-1px);
+  }
+  
+  /* Caixa de Erro */
+  .error-box {
+    background: #ffe6e6;
+    color: #9b1c1c;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 16px auto;
+    max-width: 600px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  
+  /* POPUP (MODAL) */
+  .popup {
+    display: flex; /* Mudado de none para flex para ser controlado pelo *ngIf do Angular */
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background: #ffffff;
+    padding: 25px 35px;
+    border-radius: 10px;
+    text-align: center;
+    width: 350px;
+    animation: fadeInScale 0.3s ease;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.25);
+  }
+  
+  .popup-content h2 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 2rem;
+  }
+  
+  .popup-content p {
+    color: #666;
+    font-size: 1.4rem;
+  }
+  
+  .popup-content button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    border: none;
+    background: #008cff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .popup-content button:hover {
+    background: #006fd1;
+  }
+  
+  /* ANIMAÇÃO */
+  @keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+  }

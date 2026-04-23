@@ -1,0 +1,52 @@
+<div id="content-dashboard" class="content active">
+    <h1 style="font-size: 32px;">Produtos</h1>
+    <p style="font-size: 15px;" class="page-subtitle">Gerencie sua Mercadoria aqui.</p>
+  </div>
+  
+  <br><br>
+  
+  <div class="container">
+    <div style="margin-bottom: 20px; text-align: right;">
+      <a routerLink="/admin/categorias" class="btn-categoria">
+        Gerenciar Categorias
+      </a>
+    </div>
+  
+    <div class="admin-product-form-container">
+      <div *ngIf="mensagemErro" class="error-box">
+        {{ mensagemErro }}
+      </div>
+  
+      <form (ngSubmit)="adicionarProduto()">
+        <h3>Adicionar Produto</h3>
+  
+        <input type="text" placeholder="Digite o nome do produto" name="product_name" class="box" [(ngModel)]="produto.nome" required>
+  
+        <select name="product_category" class="box" [(ngModel)]="produto.id_categoria" required>
+          <option value="" disabled selected>Selecione uma Categoria</option>
+          
+          <option *ngIf="categorias.length === 0" value="" disabled>Nenhuma categoria cadastrada</option>
+          
+          <option *ngFor="let cat of categorias" [value]="cat.id_categoria">
+            {{ cat.nome }}
+          </option>
+        </select>
+  
+        <input type="number" step="0.01" placeholder="Insira o valor do produto" name="product_price" class="box" [(ngModel)]="produto.preco" required>
+  
+        <input type="number" placeholder="Coloque a quantidade" name="product_qtd" class="box" [(ngModel)]="produto.quantidade" required>
+  
+        <input type="file" accept="image/*,.webp,.jfif,.heic,.heif,.ico" name="product_image" class="box" (change)="onFileSelected($event)" required>
+  
+        <button type="submit" class="btn-submit">Adicionar Produto</button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="popup" *ngIf="mostrarPopupSucesso">
+    <div class="popup-content">
+      <h2>Produto adicionado!</h2>
+      <p>O produto foi registrado com sucesso.</p>
+      <button (click)="fecharPopup()">OK</button>
+    </div>
+  </div>

@@ -1,0 +1,123 @@
+<div id="content-orders" class="content active">
+    <h1>Pedidos</h1>
+    <p>Gerencie o fluxo de envios e entregas.</p>
+  </div>
+  
+  <section class="section-vendas">
+    <div class="painel-vendas">
+      <div class="dash-vendas padding-20-set">
+        <div>
+          <div class="revenue">
+            <b class="revenue-title">Total</b>
+            <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="...">
+          </div>
+          <div class="vendas-text"><p>Todos os tempos</p></div>
+        </div>
+        <div>
+          <div class="revenue-value">
+            <b class="revenue-text">{{ totalPedidos }}</b>
+          </div>
+        </div>
+      </div>
+  
+      <div class="dash-pedidos padding-20-set">
+        <div>
+          <div class="revenue">
+            <b class="revenue-title">Concluídos</b>
+            <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="...">
+          </div>
+          <div class="pedidos-text"><p>Entregues</p></div>
+        </div>
+        <div>
+          <div class="revenue-value">
+            <b class="revenue-text">{{ totalConcluidos }}</b>
+          </div>
+        </div>
+      </div>
+  
+      <div class="dash-pendentes padding-20-set">
+        <div class="dash-p-title">
+          <div class="revenue">
+            <b class="revenue-title">Pendentes / Cancelados</b>
+            <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="...">
+          </div>
+        </div>
+        <div class="dash-p-dados">
+          <div class="pend-canc-pai">
+            <b class="pendentes-text">Pendentes</b>
+            <b class="pen-value-text">{{ totalPendentes }}</b>
+          </div>
+          <img class="traco-icon" src="assets/admin/icon/Traco - Icon.svg" alt="|">
+          <div class="cancelados-parent">
+            <b class="cancelados">Cancelados</b>
+            <b class="cash">{{ totalCancelados }}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer class="table">
+    <section class="table_header">
+      <div class="input-group">
+        <input type="search" placeholder="ID ou Nome do Cliente..." [(ngModel)]="busca" (input)="aplicarFiltros()">
+        <img src="assets/admin/icon/Lupa - icon.svg" alt="Pesquisar">
+      </div>
+  
+      <div class="table_order">
+        <a href="#" class="table_pedidos" [class.active]="filtroStatus === 'todos'" (click)="setFiltroStatus('todos', $event)">Todos</a>
+        <a href="#" class="table_pendentes" [class.active]="filtroStatus === 'pendente'" (click)="setFiltroStatus('pendente', $event)">Pendentes</a>
+        <a href="#" class="table_pedidos" [class.active]="filtroStatus === 'enviado'" (click)="setFiltroStatus('enviado', $event)">Enviados</a>
+        <a href="#" class="table_concluidos" [class.active]="filtroStatus === 'entregue'" (click)="setFiltroStatus('entregue', $event)">Entregues</a>
+        <a href="#" class="table_cancelados" [class.active]="filtroStatus === 'cancelado'" (click)="setFiltroStatus('cancelado', $event)">Cancelados</a>
+      </div>
+    </section>
+  
+    <section class="table_body">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Endereço</th>
+            <th>Data</th>
+            <th class="status-th">Status</th>
+            <th>Valor</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of pedidosFiltrados">
+            <td>#{{ p.id_pedido.toString().padStart(4, '0') }}</td>
+            <td>{{ p.cliente_nome }}</td>
+            <td [title]="p.endereco_entrega">
+              {{ p.endereco_entrega.length > 25 ? (p.endereco_entrega | slice:0:25) + '...' : p.endereco_entrega }}
+            </td>
+            <td>{{ p.data_pedido | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <p class="status" [ngClass]="p.status">{{ p.status | titlecase }}</p>
+            </td>
+            <td><strong>{{ p.valor_total | currency:'BRL':'symbol':'1.2-2' }}</strong></td>
+            
+            <td class="action-cell">
+              <button *ngIf="p.status === 'pago'" class="btn-action btn-dispatch" (click)="updateStatus(p, 'enviado')">
+                <span class="material-symbols-rounded" style="font-size:16px">local_shipping</span> Despachar
+              </button>
+  
+              <button *ngIf="p.status === 'enviado'" class="btn-action btn-deliver" (click)="updateStatus(p, 'entregue')">
+                <span class="material-symbols-rounded" style="font-size:16px">check_circle</span> Entregue
+              </button>
+  
+              <span *ngIf="p.status === 'pendente'" style="font-size: 0.8rem; color: #888;">Aguard. Pagto</span>
+              <span *ngIf="p.status === 'entregue'" style="font-size: 0.8rem; color: green;">Concluído</span>
+              <span *ngIf="p.status === 'cancelado'" style="font-size: 0.8rem; color: #ccc;">-</span>
+            </td>
+          </tr>
+  
+          <tr *ngIf="pedidosFiltrados.length === 0">
+            <td colspan="7" style="text-align:center; padding: 20px;">Nenhum pedido encontrado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </footer>

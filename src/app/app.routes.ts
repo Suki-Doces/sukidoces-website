@@ -1,29 +1,58 @@
 import { Routes } from '@angular/router';
+
+// --- Importações da Área Pública (Loja) ---
 import { HomeComponent } from './features/public/home/home.component';
 import { ProductListComponent } from './features/public/shop/product-list/product-list.component';
 import { ProductDetailComponent } from './features/public/shop/product-detail/product-detail.component';
 import { CartComponent } from './features/public/cart/cart.component';
 import { LoginComponent } from './features/public/auth/login/login.component';
 
-// Exemplo de uma página futura de pedidos
-// import { MyOrdersComponent } from './features/public/user/my-orders/my-orders.component';
-
+// Importações da Área Admin
+import { AdminLayoutComponent } from './features/admin/layout/admin-layout/admin-layout.component';
+import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
+// 1. Importe a nova tela de Pedidos (que fizemos antes)
+import { ListaPedidosComponent } from './features/admin/pedidos/lista-pedidos/lista-pedidos.component';
+// 2. Importe a nova tela de Produtos (que acabamos de fazer)
+import { ListaProdutosComponent } from './features/admin/produtos/lista-produtos/lista-produtos.component';
 export const routes: Routes = [
-    // --- Rotas Públicas ---
-    { path: '', redirectTo: '/home', pathMatch: 'full' }, // First route to load
-    { path: 'home', component: HomeComponent, title: 'Home' },
-    { path: 'login', component: LoginComponent, title: 'Login' },
-    { path: 'produtos', component: ProductListComponent, title: 'Produtos' },
-    { path: 'produtos/:id', component: ProductDetailComponent, title: 'Detalhes do Produto' },
-    { path: 'carrinho', component: CartComponent, title: 'Carrinho' },
-    { path: '**', redirectTo: 'home' } // Last route to load, for 404 not found
-];
+  // ==========================================
+  // ROTAS PÚBLICAS (Suki Doces Website)
+  // ==========================================
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, title: 'Home' },
+  { path: 'login', component: LoginComponent, title: 'Login' },
+  { path: 'produtos', component: ProductListComponent, title: 'Produtos' },
+  { path: 'produtos/:id', component: ProductDetailComponent, title: 'Detalhes do Produto' },
+  { path: 'carrinho', component: CartComponent, title: 'Carrinho' },
 
-// --- Rotas Protegidas ---
-/*
-{ 
-  path: 'meus-pedidos', 
-  component: MyOrdersComponent,
-  canActivate: [authGuard] // O Angular barra o acesso aqui se não tiver token!
-}
-*/
+  // ==========================================
+  // ROTAS DO PAINEL ADMIN (Suki Doces Admin)
+  // ==========================================
+  {
+    path: 'admin',
+    component: AdminLayoutComponent, 
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent, title: 'Admin - Dashboard' },
+      
+      // Rota de Pedidos
+      { path: 'pedidos', component: ListaPedidosComponent, title: 'Admin - Pedidos' },
+      
+      // Rota de Produtos 
+      { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' }, // <--- TEM QUE TER ESTA VÍRGULA AQUI!
+
+      // Rota de Categorias (A que acabamos de adicionar)
+      { 
+        path: 'categorias', 
+        loadComponent: () => import('./features/admin/categorias/lista-categorias/lista-categorias.component').then(m => m.ListaCategoriasComponent), 
+        title: 'Admin - Categorias' 
+      } // A última não precisa de vírgula, mas não tem problema se tiver.
+    ]
+  },
+
+  // ==========================================
+  // ROTA CORINGA (Sempre por último!)
+  // ==========================================
+  // Qualquer URL que não bater com as de cima, cai aqui e volta pra home
+  { path: '**', redirectTo: 'home' } 
+];

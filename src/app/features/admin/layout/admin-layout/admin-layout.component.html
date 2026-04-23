@@ -1,0 +1,75 @@
+<div class="admin-body">
+  
+    <aside class="sidebar" [class.collapsed]="isCollapsed">
+      <div class="sidebar-header">
+        <a class="header-logo">
+          <img src="assets/admin/icon/Logo Suki.svg" alt="Suki Doces Logo">
+        </a>
+        <button class="toggler sidebar-toggler" (click)="toggleSidebar()">
+          <span>☰</span>
+        </button>
+        <button class="toggler menu-toggler" (click)="toggleSidebar()">
+          <span>☰</span>
+        </button>
+      </div>
+  
+      <nav class="sidebar-nav">
+        <ul class="nav-list primary-nav">
+          <li class="nav-item">
+            <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/Dots - Icon.svg" alt="Dashboard" class="nav-icon" width="24"> 
+              <span class="nav-label">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/pedidos" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/Payment - icon.svg" alt="Pedidos" class="nav-icon" width="24">
+              <span class="nav-label">Pedidos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/produtos" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/Storage - Icon.svg" alt="Produtos" class="nav-icon" width="24">
+              <span class="nav-label">Produtos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/estoque" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/Storage - Icon.svg" alt="Estoque" class="nav-icon" width="24">
+              <span class="nav-label">Estoque</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/clientes" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/User - Icon.svg" alt="Clientes" class="nav-icon" width="24">
+              <span class="nav-label">Clientes</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/notificacoes" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/Message - icon.svg" alt="Notificações" class="nav-icon" width="24">
+              <span class="nav-label">Notificações</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/admin/configuracoes" routerLinkActive="active" class="nav-link">
+              <img src="assets/admin/icon/Star (Deluxe).svg" alt="Configurações" class="nav-icon" width="24">
+              <span class="nav-label">Configurações</span>
+            </a>
+          </li>
+        </ul>
+  
+        <ul class="nav-list secondary-nav">
+          <li class="nav-item">
+            <a (click)="logout()" class="nav-link" style="cursor: pointer;">
+              <span class="nav-label">Sair</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <main class="main-content">
+        <router-outlet></router-outlet>
+      </main>
+  </div>
