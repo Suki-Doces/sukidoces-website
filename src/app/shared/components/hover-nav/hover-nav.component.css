@@ -182,7 +182,7 @@
 .hnv-pp-links {
     text-align: center;
     padding: 10px;
-    border-radius: 12px;
+    border-radius: 18px;
     color: var(--t-color-3);
     font-weight: 600;
     transition: background 0.2s, color 0.2s;

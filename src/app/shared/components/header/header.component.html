@@ -80,7 +80,8 @@
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <a class="hdr-pp-links" routerLink="/perfil">Meus Dados</a>
         <hr>
-        <a *ngIf="authService.isAdmin()" routerLink="/admin">Painel Admin</a>
+        <a class="hdr-pp-links" *ngIf="authService.isAdmin()" routerLink="/admin">Painel Admin</a>
+        <hr *ngIf="authService.isAdmin()">
         <a class="hdr-pp-links" href="/pedidos">Pedidos</a>
         <hr>
         <a class="hdr-pp-links" (click)="logout()" style="color: #e9228f; cursor: pointer;">Sair</a>
