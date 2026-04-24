@@ -65,6 +65,17 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  // Atualiza os dados do usuário no localStorage e no BehaviorSubject
+  updateUserInStorage(updatedData: Partial<User>): void {
+    const currentUser = this.userSubject.value;
+    if (currentUser) {
+      // Mescla os dados antigos com os novos
+      const newUser = { ...currentUser, ...updatedData };
+      localStorage.setItem('suki_user', JSON.stringify(newUser));
+      this.userSubject.next(newUser);
+    }
+  }
+
   // Verifica se o usuário está autenticado, verificando a presença do token no localStorage
   private restoreSession(): void {
     const savedUser = localStorage.getItem('suki_user');

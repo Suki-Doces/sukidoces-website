@@ -1,8 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { UserService, UserProfile } from 'src/app/core/services/user.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { OrderService } from 'src/app/core/services/order.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -12,62 +14,113 @@ import { UserService, UserProfile } from 'src/app/core/services/user.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  profileForm: FormGroup;
-  isLoading: boolean = true;
-  feedbackMessage: string = '';
+  activeTab: string = 'dados';
+  profileForm!: FormGroup;
+  passwordForm!: FormGroup;
+
+  user: any;
+  pedidos: any[] = []; // Inicializado vazio para receber dados da API
+
+  // Estados de UI
+  isLoading: boolean = false;
+  message: { type: 'success' | 'error', text: string } | null = null;
 
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService,
     private userService: UserService,
-    public authService: AuthService
+    private orderService: OrderService
   ) {
-    this.profileForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
-      email: [{ value: '', disabled: true }],
-      telefone: ['', [Validators.pattern('^[0-9]{9,11}$')]], // Apenas números, entre 9 e 11 dígitos  
-      endereco: ['', [Validators.required]]
-    });
+    this.initForms();
   }
 
   ngOnInit(): void {
-    this.loadUserData();
-  }
-
-  loadUserData(): void {
-    this.userService.getProfile().subscribe({
-      next: (data) => {
-        this.profileForm.patchValue(data);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar dados do perfil:', err);
-        this.isLoading = false;
+    // 1. Monitorizar o utilizador logado para preencher o formulário
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.user = user;
+        this.profileForm.patchValue(user);
+        this.loadOrders(); // Carrega os pedidos reais assim que o utilizador é identificado
       }
     });
   }
 
-  onSubmit(): void {
-    if (this.profileForm.valid) {
-      this.isLoading = true;
-      this.userService.updateProfile(this.profileForm.getRawValue()).subscribe({
-        next: () => {
-          this.feedbackMessage = 'Dados atualizados com sucesso!';
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.feedbackMessage = 'Erro ao atualizar dados. Tente novamente.';
-          this.isLoading = false;
-        }
-      });
-    }
+  private initForms(): void {
+    // Formulário de Perfil
+    this.profileForm = this.fb.group({
+      nome: ['', [Validators.required, Validators.minLength(3)]],
+      email: [{ value: '', disabled: true }], // O e-mail normalmente não se altera por segurança
+      telefone: ['', [Validators.pattern(/^\(\d{2}\) \d{5}-\d{4}$/)]],
+      cpf: ['', [Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]]
+    });
+
+    // Formulário de Senha
+    this.passwordForm = this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, { validators: this.mustMatch('newPassword', 'confirmPassword') });
   }
 
-  deleteAccount(): void {
-    const isConfirmed = confirm('Tem a certeza absoluta que deseja apagar a sua conta? Esta ação é irreversível.');
+  // Validador auxiliar para confirmar se as senhas coincidem
+  private mustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+      if (matchingControl.errors && !matchingControl.errors['mustMatch']) return;
+      matchingControl.setErrors(control.value !== matchingControl.value ? { mustMatch: true } : null);
+    };
+  }
 
-    if (isConfirmed) {
-      console.log('A iniciar processo de eliminação de conta...');
-      // A sua lógica para apagar a conta aqui
-    }
+  // Chamada à API para carregar pedidos reais
+  loadOrders(): void {
+    if (!this.user?.id) return;
+
+    this.orderService.getUserOrders(this.user.id).subscribe({
+      next: (data: any) => this.pedidos = data,
+      error: (err: any) => console.error('Erro ao carregar pedidos', err)
+    });
+  }
+
+  // Chamada à API para atualizar dados
+  updateProfile(): void {
+    if (this.profileForm.invalid || this.isLoading) return;
+
+    this.isLoading = true;
+    this.message = null;
+
+    // Usando updateProfile que já existe no seu UserService (não precisa passar o ID)
+    this.userService.updateProfile(this.profileForm.getRawValue())
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (res: any) => {
+          this.message = { type: 'success', text: 'Dados atualizados com sucesso!' };
+          // Atualiza o utilizador no estado global para refletir as mudanças no header
+          this.authService.updateUserInStorage(this.profileForm.getRawValue());
+        },
+        error: (err: any) => this.message = { type: 'error', text: 'Ocorreu um erro ao atualizar os dados.' }
+      });
+  }
+
+  // Chamada à API para mudar senha
+  changePassword(): void {
+    if (this.passwordForm.invalid || this.isLoading) return;
+
+    this.isLoading = true;
+    this.message = null;
+
+    const { currentPassword, newPassword } = this.passwordForm.value;
+
+    this.userService.changePassword(this.user.id, currentPassword, newPassword)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (res: any) => {
+          this.message = { type: 'success', text: 'Senha alterada com sucesso!' };
+          this.passwordForm.reset();
+        },
+        error: (err: any) => {
+          this.message = { type: 'error', text: err.error?.message || 'Erro ao alterar senha.' };
+        }
+      });
   }
 }

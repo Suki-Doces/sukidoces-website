@@ -18,7 +18,7 @@ export interface UserProfile {
 export class UserService {
     private readonly API_URL = `${environment.apiUrl}/usuario`;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     // Token
     getProfile(): Observable<UserProfile> {
@@ -27,5 +27,13 @@ export class UserService {
 
     updateProfile(profileData: Partial<UserProfile>): Observable<any> {
         return this.http.put(`${this.API_URL}/perfil`, profileData);
+    }
+    // Função para alterar a senha
+    changePassword(userId: number, senhaAtual: string, novaSenha: string): Observable<any> {
+        return this.http.put(`${this.API_URL}/senha`, {
+            userId,
+            senhaAtual,
+            novaSenha
+        });
     }
 }
