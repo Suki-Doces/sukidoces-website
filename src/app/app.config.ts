@@ -10,7 +10,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withViewTransitions(),
-      withInMemoryScrolling({ scrollPositionRestoration: 'top'})
+      withInMemoryScrolling({
+          scrollPositionRestoration: 'enabled',
+          anchorScrolling: 'enabled'
+        })
     ),
     // Habilita o HTTP já com o seu Interceptor de autenticação tudo junto
     provideHttpClient(withInterceptors([authInterceptor]))

@@ -1,4 +1,4 @@
-<a class="header-logo" href="">
+<a class="header-logo" routerLink="/home">
   <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329 202" width="329" height="202">
     <defs>
       <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -29,8 +29,8 @@
 <nav>
   <a routerLink="/home">Home</a>
   <a routerLink="/produtos">Produtos</a>
-  <a href="/">História</a>
-  <a href="#ftr-contacts">Contatos</a>
+  <a routerLink="/historia">História</a>
+  <a (click)="scrollToContacts()" style="cursor: pointer;">Contatos</a>
 </nav>
 
 <div class="hdr-desktop-view hdr-user-section">
@@ -46,7 +46,7 @@
     </button>
   </form>
 
-  <a class="header-btn" href="/carrinho">
+  <a class="header-btn" routerLink="/carrinho">
     <button class="hdr-user-btn" aria-label="Carrinho de Compras">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />

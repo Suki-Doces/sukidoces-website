@@ -12,9 +12,7 @@
     justify-items: center;
 
     /* Glassmorphism Style */
-    background: rgba(247, 181, 204, 0.65);
-    /* Rosa translúcido */
-    backdrop-filter: blur(10px);
+    background: rgba(247, 181, 204, 0.65);;
     /* Desfoque de vidro forte */
     border: 1px solid rgba(255, 255, 255, 0.4);
     /* Borda de vidro */
@@ -30,6 +28,15 @@
     transform: translateX(-50%);
     z-index: 1000;
     box-sizing: border-box;
+}
+
+.hover-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0; /* Substitui top/left/right/bottom: 0 */
+    backdrop-filter: blur(10px);
+    z-index: -1; 
+    border-radius: inherit; /* Mantém as bordas do pai, se houver */
 }
 
 /* --- BOTÕES DO NAV --- */
@@ -96,7 +103,8 @@
     min-width: 180px;
 
     /* Glassmorphism no Dropdown */
-    background: #ffcbddf2;
+    backdrop-filter: blur(10px);
+    background: rgba(247, 181, 204, 0.65);
     border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -104,6 +112,8 @@
     padding: 2px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
 
     /* Animação Inicial (Escondido) */
     opacity: 0;
@@ -165,6 +175,7 @@
     justify-content: center;
     cursor: pointer;
     transition: background 0.2s;
+    aspect-ratio: 1/1;
 }
 
 .hnv-search-form button:hover {
@@ -180,6 +191,7 @@
 }
 
 .hnv-pp-links {
+    width: 100%;
     text-align: center;
     padding: 10px;
     border-radius: 18px;

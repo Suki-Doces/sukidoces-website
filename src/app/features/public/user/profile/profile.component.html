@@ -7,9 +7,18 @@
             <h3>Olá, {{ displayName }}</h3>
         </div>
         <hr>
-        <button (click)="activeTab = 'dados'" [class.active]="activeTab === 'dados'">Meus Dados</button>
-        <button (click)="activeTab = 'pedidos'" [class.active]="activeTab === 'pedidos'">Meus Pedidos</button>
-        <button (click)="activeTab = 'senha'" [class.active]="activeTab === 'senha'">Segurança</button>
+        <button (click)="activeTab = 'dados'" [class.active]="activeTab === 'dados'">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M3 14v-4c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172.654.653.943 1.528 1.07 2.828M21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172-.654-.653-.943-1.528-1.07-2.828M8 14h5m-5-4h1m7 0h-4" stroke="current-color" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Meus Dados
+        </button>
+        <button (click)="activeTab = 'pedidos'" [class.active]="activeTab === 'pedidos'">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M21.984 10c-.037-1.311-.161-2.147-.581-2.86-.598-1.015-1.674-1.58-3.825-2.708l-2-1.05C13.822 2.461 12.944 2 12 2s-1.822.46-3.578 1.382l-2 1.05C4.271 5.56 3.195 6.125 2.597 7.14 2 8.154 2 9.417 2 11.942v.117c0 2.524 0 3.787.597 4.801.598 1.015 1.674 1.58 3.825 2.709l2 1.049C10.178 21.539 11.056 22 12 22s1.822-.46 3.578-1.382l2-1.05c2.151-1.129 3.227-1.693 3.825-2.708.42-.713.544-1.549.581-2.86M21 7.5l-4 2M12 12 3 7.5m9 4.5v9.5m0-9.5 4.5-2.25.5-.25m0 0V13m0-3.5-9.5-5" stroke="current-color" stroke-width="1.5" stroke-linecap="round"/></svg>    
+            Meus Pedidos
+        </button>
+        <button (click)="activeTab = 'senha'" [class.active]="activeTab === 'senha'">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g stroke="current-color" stroke-width="1.5"><circle cx="12" cy="9" r="2"/><path d="M16 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z"/><path d="M3 10.417c0-3.198 0-4.797.378-5.335.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2s1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 2.505-.837 4.437-2 5.913M3.193 14c.857 4.298 4.383 6.513 6.706 7.527.721.315 1.082.473 2.101.473 1.02 0 1.38-.158 2.101-.473.579-.252 1.231-.58 1.899-.994" stroke-linecap="round"/></g></svg>
+            Segurança
+        </button>
     </nav>
 
     <div class="profile-content">

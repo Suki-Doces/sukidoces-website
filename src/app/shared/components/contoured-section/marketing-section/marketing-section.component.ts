@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-marketing-section',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './marketing-section.component.html',
   styleUrl: '../contoured-section.component.css'
 })

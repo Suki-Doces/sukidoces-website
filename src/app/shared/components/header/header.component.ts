@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { query } from 'express';
@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   displayName: string = 'Conta';
   searchQuery: string = '';
 
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(public authService: AuthService, private router: Router, private scrolller: ViewportScroller) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -30,6 +30,10 @@ export class HeaderComponent implements OnInit {
         this.displayName = 'Conta';
       }
     });
+  }
+
+  scrollToContacts() {
+    this.scrolller.scrollToAnchor('ftr-contacts');
   }
 
   toggleMenu(event: Event): void {

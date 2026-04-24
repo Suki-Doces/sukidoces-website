@@ -7,12 +7,22 @@
     justify-content: space-between;
     padding: 20px;
 
-    background-color: var(--color-1);
+    background-color: var(--color-1, rgba(255, 255, 255, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 0 0 20px 20px;
 
     box-shadow: var(--box-shadow) 0 4px 4px;
     box-sizing: border-box;
     z-index: 10;
+}
+
+:host::before {
+    content: "";
+    position: absolute;
+    inset: 0; /* Substitui top/left/right/bottom: 0 */
+    backdrop-filter: blur(10px);
+    z-index: -1; 
+    border-radius: inherit; /* Mantém as bordas do pai, se houver */
 }
 
 .header-logo, .header-logo svg{
@@ -167,8 +177,10 @@
 
     padding: 2px;
     display: flex;
+    justify-content: center;
     flex-direction: column;
     z-index: 2;
+    box-sizing: border-box;
 
     /* Animação Inicial (Escondido) */
     opacity: 0;
@@ -199,6 +211,7 @@
 
 .hdr-pp-links {
     text-align: center;
+    width: 100%;
     padding: 10px;
     border-radius: 18px;
     color: var(--t-color-3);

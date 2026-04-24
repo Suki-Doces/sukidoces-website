@@ -39,6 +39,8 @@
 }
 
 .profile-nav button {
+    display: flex;
+    align-items: center;
     width: 100%;
     padding: 12px;
     margin: 5px 0;
@@ -52,9 +54,21 @@
     transition: all 0.3s;
 }
 
+.profile-nav button > svg {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    vertical-align: middle;
+    stroke: var(--t-color-3)
+}
+
 .profile-nav button.active {
     background: var(--color-1);
     color: white;
+}
+
+.profile-nav button.active > svg {
+    stroke: #ffffff;
 }
 
 /* Cards de Conteúdo */
