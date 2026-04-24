@@ -57,11 +57,11 @@
              [class.is-open]="openMenu === 'profile'" 
              (click)="$event.stopPropagation()">
             @if (isLoggedIn) {
-            <a class="hnv-pp-links" routerLink="/perfil">Meus Dados</a>
+            <a class="hnv-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'dados' }" (click)="closeMenu()">Meus Dados</a>
             <hr>
-            <a class="hnv-pp-links" *ngIf="authService.isAdmin()" routerLink="/admin">Painel Admin</a>
+            <a class="hnv-pp-links" *ngIf="authService.isAdmin()" routerLink="/admin" (click)="closeMenu()">Painel Admin</a>
             <hr *ngIf="authService.isAdmin()">
-            <a class="hnv-pp-links" routerLink="/pedidos">Pedidos</a>
+            <a class="hnv-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'pedidos' }" (click)="closeMenu()">Pedidos</a>
             <hr>
             <a class="hnv-pp-links" (click)="logout()" style="color: #e9228f; cursor: pointer;">Sair</a>
             } @else {

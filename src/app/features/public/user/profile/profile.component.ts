@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -15,6 +16,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
   activeTab: string = 'dados';
+  displayName: string = '';
   profileForm!: FormGroup;
   passwordForm!: FormGroup;
 
@@ -29,18 +31,30 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private route: ActivatedRoute
   ) {
     this.initForms();
   }
 
   ngOnInit(): void {
-    // 1. Monitorizar o utilizador logado para preencher o formulário
+    this.route.queryParams.subscribe(params => {
+      if (params['tab']) {
+        this.activeTab = params['tab'];
+      }
+    });
+
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
         this.profileForm.patchValue(user);
         this.loadOrders(); // Carrega os pedidos reais assim que o utilizador é identificado
+        
+        // Lógica para extrair Nome e Sobrenome
+        const parts = user.nome.trim().split(' ');
+        this.displayName = parts.length > 1
+          ? `${parts[0]} ${parts[parts.length - 1]}`
+          : parts[0];
       }
     });
   }
@@ -72,15 +86,6 @@ export class ProfileComponent implements OnInit {
     };
   }
 
-  // Chamada à API para carregar pedidos reais
-  loadOrders(): void {
-    if (!this.user?.id) return;
-
-    this.orderService.getUserOrders(this.user.id).subscribe({
-      next: (data: any) => this.pedidos = data,
-      error: (err: any) => console.error('Erro ao carregar pedidos', err)
-    });
-  }
 
   // Chamada à API para atualizar dados
   updateProfile(): void {
@@ -102,6 +107,15 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  // Chamada à API para carregar pedidos reais
+  loadOrders(): void {
+    if (!this.user?.id) return;
+
+    this.orderService.getUserOrders(this.user.id).subscribe({
+      next: (data: any) => this.pedidos = data,
+      error: (err: any) => console.error('Erro ao carregar pedidos', err)
+    });
+  }
   // Chamada à API para mudar senha
   changePassword(): void {
     if (this.passwordForm.invalid || this.isLoading) return;

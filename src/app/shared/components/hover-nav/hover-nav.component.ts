@@ -68,7 +68,7 @@ export class HoverNavComponent implements OnInit {
   // Faz logout da conta
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
     this.openMenu = null;
   }
 }
