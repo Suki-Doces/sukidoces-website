@@ -7,8 +7,8 @@
     justify-content: space-between;
     padding: 20px;
 
-    background-color: var(--color-1, rgba(255, 255, 255, 0.8));
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    background-color: transparent;
+    border: 1px solid #f871bbcf;
     border-radius: 0 0 20px 20px;
 
     box-shadow: var(--box-shadow) 0 4px 4px;
@@ -20,10 +20,13 @@
     content: "";
     position: absolute;
     inset: 0; /* Substitui top/left/right/bottom: 0 */
+    background: var(--color-1);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: -1; 
-    border-radius: inherit; /* Mantém as bordas do pai, se houver */
+    border-radius: 0 0 19px 19px; /* Mantém as bordas do pai, se houver */
 }
+
 
 .header-logo, .header-logo svg{
     width: auto;
@@ -115,6 +118,10 @@
         top: 10px;
         border-radius: 30px;
     }
+    
+    :host::before {
+    border-radius: calc(30px - 1px); /* Mantém as bordas do pai, se houver */
+}
 
     .hdr-desktop-view, :host > nav {
         display: flex;
