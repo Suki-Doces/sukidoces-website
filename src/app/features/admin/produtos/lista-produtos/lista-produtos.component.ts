@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http'; // Importação necessária
 
 @Component({
   selector: 'app-lista-produtos',
@@ -11,13 +12,12 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./lista-produtos.component.css']
 })
 export class ListaProdutosComponent implements OnInit {
-  // Categorias simuladas (Mock)
-  categorias = [
-    { id_categoria: 1, nome: 'Chocolates' },
-    { id_categoria: 2, nome: 'Bebidas' },
-    { id_categoria: 3, nome: 'Salgadinhos' },
-    { id_categoria: 4, nome: 'Sorvetes' }
-  ];
+  
+  // Injetando o HttpClient para fazer as requisições
+  private http = inject(HttpClient);
+
+  // Agora começamos com o array vazio, pois os dados virão do banco
+  categorias: any[] = [];
 
   // Objeto para guardar os dados do formulário
   produto = {
@@ -28,15 +28,29 @@ export class ListaProdutosComponent implements OnInit {
     imagem: null as File | null
   };
 
-  // Controles de interface
   mostrarPopupSucesso = false;
   mensagemErro = '';
 
   ngOnInit() {
-    // Inicializações futuras se necessário
+    this.carregarCategorias();
   }
 
-  // Captura o arquivo de imagem selecionado
+  // Busca as categorias reais na sua API Node.js
+  // Busca as categorias reais na sua API Node.js
+  carregarCategorias() {
+    this.http.get<any[]>('http://localhost:3000/suki-doces/admin/categorias')
+      .subscribe({
+        next: (dados) => {
+          this.categorias = dados;
+          console.log('Categorias carregadas do banco:', this.categorias);
+        },
+        error: (erro) => {
+          console.error('Erro ao buscar categorias:', erro);
+          this.mensagemErro = 'Não foi possível carregar as categorias do banco.';
+        }
+      });
+  }
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -44,32 +58,20 @@ export class ListaProdutosComponent implements OnInit {
     }
   }
 
-  // Função disparada ao clicar em "Adicionar Produto"
   adicionarProduto() {
-    // Validação básica
     if (!this.produto.nome || !this.produto.id_categoria || !this.produto.preco || !this.produto.quantidade) {
       this.mensagemErro = 'Por favor, preencha todos os campos obrigatórios.';
       return;
     }
 
-    this.mensagemErro = ''; // Limpa os erros
+    this.mensagemErro = '';
 
-    // FUTURO: Aqui você usará FormData para enviar a imagem e os dados para o Node.js/Prisma
-    /*
-      const formData = new FormData();
-      formData.append('nome', this.produto.nome);
-      formData.append('id_categoria', this.produto.id_categoria);
-      // ...
-      this.http.post('http://localhost:3000/api/admin/produtos', formData).subscribe(...)
-    */
+    // FUTURO: Envio dos dados via FormData para o backend
+    console.log('Enviando produto com categoria real:', this.produto);
 
-    console.log('Produto a ser salvo:', this.produto);
-
-    // Simula o salvamento com sucesso e abre o Pop-up
     this.mostrarPopupSucesso = true;
   }
 
-  // Função para fechar o pop-up e limpar o formulário
   fecharPopup() {
     this.mostrarPopupSucesso = false;
     this.produto = { nome: '', id_categoria: '', preco: null, quantidade: null, imagem: null };

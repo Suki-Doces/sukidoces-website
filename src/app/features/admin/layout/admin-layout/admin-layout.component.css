@@ -10,13 +10,15 @@
 
 .main-content {
     flex: 1 1 0%;
-    margin: 16px 16px 16px 286px;
+    /* Aqui foi onde você mudou o último valor para 300px */
+    margin: 16px 16px 16px 300px; 
     transition: margin 0.4s ease;
     width: 100%;
 }
 
 .sidebar.collapsed + .main-content {
-    margin-left: 101px;
+    /* E aqui foi onde você mudou para 140px */
+    margin-left: 140px; 
 }
 
 .content {

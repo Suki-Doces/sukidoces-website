@@ -1,139 +1,316 @@
 /* Cabeçalho */
 #content-dashboard {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #ecf0f1;
-  }
-  
-  #content-dashboard h1 {
-    font-size: 2rem;
-    color: #2c3e50;
-    font-weight: 800;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  /* Formulário */
-  .admin-product-form-container form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2.5rem;
-    border-radius: 1rem;
-    background: #ffffff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  
-  .admin-product-form-container h3 {
-    text-transform: uppercase;
-    color: #2c3e50;
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .box {
-    width: 100%;
-    border-radius: 0.8rem;
-    padding: 1.3rem 1.5rem;
-    font-size: 1.6rem;
-    background: #f9fafc;
-    border: 1px solid #dfe6e9;
-  }
-  
-  .form-actions {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .btn {
-    flex: 1;
-    cursor: pointer;
-    border-radius: 0.8rem;
-    padding: 1.2rem;
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.6rem;
-    transition: transform 0.2s;
-  }
-  
-  .btn:hover { transform: translateY(-2px); }
-  
-  .btn-cancel {
-    background: #e74c3c;
-  }
-  
-  /* Tabela */
-  .table_container {
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .table-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .back-link {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    background: #fec8c8;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: background 0.3s;
-  }
-  
-  .back-link:hover { background: #feb4b4; }
-  
-  .content-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .content-table thead tr {
-    background-color: #fec8c8;
-    color: #333;
-    text-align: left;
-  }
-  
-  .content-table th, .content-table td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .cat-name { color: #333; font-size: 1.5rem; }
-  
-  .action-buttons {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .btn-edit, .btn-trash {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
-    transition: background 0.2s;
-  }
-  
-  .btn-edit:hover { background: #e3f2fd; }
-  .btn-trash:hover { background: #ffebee; }
-  
-  .btn-edit img, .btn-trash img {
-    width: 20px;
-    height: 20px;
-    opacity: 0.7;
-  }
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+#content-dashboard h1 {
+  font-size: 1.5rem; /* Reduzido de 2rem */
+  color: #151a2d;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* =========================================
+   FORMULÁRIO (NOVA CATEGORIA)
+   ========================================= */
+.admin-product-form-container form {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px; /* Aumentei de 500px para deixar mais largo e respirar melhor */
+  margin: 0 auto 40px auto; /* O 'auto' nas laterais é o que faz a mágica de centralizar! */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-product-form-container form h3 {
+  font-size: 18px; /* Forçando tamanho menor em pixels */
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 5px;
+  color: #151a2d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Campos de entrada (inputs) */
+.box {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px; /* Forçando tamanho menor em pixels */
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  color: #333;
+  background-color: #fff;
+  height: auto;
+}
+
+.box:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+/* Botão de Salvar */
+.btn-salvar, .btn { /* Adicionei .btn caso essa seja a classe no seu HTML */
+  width: 100%;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 15px; /* Forçando tamanho menor em pixels */
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.btn-salvar:hover, .btn:hover {
+  background: #218838;
+}
+
+.btn-salvar:active, .btn:active {
+  transform: scale(0.98);
+}
+
+/* --- CONTAINER PRINCIPAL DA TELA --- */
+.container {
+  padding: 16px; 
+  max-width: 1200px;
+  margin: 0 auto; /* Isso vai centralizar o container no meio do site */
+  color: #151a2d;
+  width: 100%;
+  font-size: 14px; 
+}
+
+/* =========================================
+   FORMULÁRIO (NOVA CATEGORIA)
+   ========================================= */
+.form-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 480px; /* Formulário mais compacto e proporcional */
+  width: 100%;
+  margin: 0 0 32px 0; /* Alinhado à esquerda, com boa margem para a tabela */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+}
+
+.form-card h2 {
+  font-size: 18px; /* Título pequeno e discreto em PIXELS */
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 20px;
+  color: #151a2d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+/* FORÇANDO O TAMANHO GIGANTE DO LABEL A FICAR PEQUENO */
+.form-group label {
+  font-size: 14px; /* <--- FORÇANDO O LABEL A FICAR PEQUENO (Pixels!) */
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* FORÇANDO O TAMANHO DOS INPUTS A FICAR PEQUENO */
+.form-control {
+  width: 100%;
+  padding: 10px 14px; /* Padding para respiro, mas fonte pequena */
+  font-size: 14px; /* <--- FORÇANDO O INPUT A FICAR PEQUENO (Pixels!) */
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  color: #333;
+  background-color: #fff;
+  height: auto; /* Deixa o padding controlar a altura */
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+/* FORÇANDO O TAMANHO DO BOTÃO E SEU TEXTO GIGANTE A FICAR PEQUENO */
+.btn-salvar {
+  width: 100%;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 15px; /* <--- FORÇANDO O BOTÃO A FICAR PEQUENO (Pixels!) */
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+  margin-top: 10px;
+}
+
+.btn-salvar:hover {
+  background: #218838;
+}
+
+.btn-salvar:active {
+  transform: scale(0.98);
+}
+
+/* =========================================
+   TABELA (CATEGORIAS EXISTENTES)
+   ========================================= */
+.table_container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+  margin: 0;
+  width: 100%;
+}
+
+/* Cabeçalho Proporcional da Tabela */
+.table-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+/* Título com a barrinha chique menor */
+.table-header-row h3 {
+  font-size: 17px; /* Título proporcional (Pixels!) */
+  font-weight: 700;
+  color: #151a2d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-header-row h3::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background-color: #d81b60; /* Rosa Suki Doces */
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+/* Botão Voltar para Produtos compacto */
+.back-link {
+  background: #ffccd5;
+  color: #d81b60 !important;
+  padding: 7px 16px;
+  border-radius: 6px;
+  text-decoration: none !important;
+  font-size: 13px; /* Pequeno (Pixels!) */
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(255, 204, 213, 0.3);
+}
+
+.back-link:hover {
+  background: #ffb3c1;
+  transform: translateX(-3px);
+}
+
+/* Estrutura da Tabela COMPACTA */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+/* FORÇANDO O TAMANHO DO CABEÇALHO DA TABELA A FICAR PEQUENO */
+th {
+  background-color: #ffccd5;
+  color: #151a2d;
+  padding: 12px 14px;
+  font-size: 12px; /* <--- FORÇANDO O TH A FICAR PEQUENO (Pixels!) */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+th:first-child { border-radius: 6px 0 0 6px; }
+th:last-child { border-radius: 0 6px 6px 0; text-align: center; }
+
+/* FORÇANDO O TAMANHO DOS DADOS DA TABELA A FICAR PEQUENO */
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  vertical-align: middle;
+  color: #333;
+}
+
+/* Coluna ID */
+td:first-child {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+}
+
+/* Coluna Nome (category-name do Inspecionar) */
+td:nth-child(2),
+.category-name {
+  font-size: 14px; /* <--- FORÇANDO O NOME A FICAR PEQUENO (Pixels!) */
+  font-weight: 600;
+  color: #151a2d;
+}
+
+/* Coluna Descrição */
+td:nth-child(3) {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+  max-width: 300px;
+}
+
+/* Coluna Ações compactada */
+td:last-child {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-acao {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin: 0 3px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  display: inline-flex;
+}
+
+.btn-acao:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.btn-acao img {
+  width: 16px; /* Ícones pequenos */
+  height: 16px;
+}

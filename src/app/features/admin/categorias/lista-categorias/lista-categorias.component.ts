@@ -33,6 +33,7 @@ export class ListaCategoriasComponent implements OnInit {
     this.carregarCategorias();
   }
 
+  // Busca as categorias reais na sua API Node.js
   // Busca as categorias reais no banco
   carregarCategorias() {
     this.http.get<Categoria[]>(this.apiUrl).subscribe({

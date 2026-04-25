@@ -1,193 +1,201 @@
 /* Cabeçalho */
 #content-dashboard {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #ecf0f1;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+#content-dashboard h1 {
+  font-size: 1.5rem; /* Reduzido de 2rem */
+  color: #151a2d;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Container Principal */
+.container {
+  max-width: 1200px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+/* Botão de Gerenciar Categorias (Centralizado e menor) */
+.btn-categoria {
+  background: #151a2d; 
+  color: #fff;
+  display: block; 
+  width: fit-content;
+  margin: 0 auto 30px auto;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.95rem; /* Reduzido de 1.4rem */
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-categoria:hover {
+  background: #333;
+}
+
+/* Formulário de Adição de Produtos */
+.admin-product-form-container form {
+  max-width: 500px; /* Reduzido de 600px para ficar mais compacto */
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaço entre os campos */
+}
+
+.admin-product-form-container form h3 {
+  text-transform: uppercase;
+  color: #151a2d;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.25rem; /* Reduzido de 2.2rem */
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Campos de Input e Select */
+.box {
+  width: 100%;
+  border-radius: 8px; /* Cantos menos exagerados */
+  padding: 10px 14px;
+  font-size: 0.9rem; /* Reduzido de 1.4rem - Padrão de formulário */
+  font-family: inherit;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  color: #333;
+}
+
+.box:focus {
+  outline: none;
+  border-color: #151a2d;
+  box-shadow: 0 0 0 3px rgba(21, 26, 45, 0.1);
+}
+
+/* Input de Arquivo (Foto) */
+input[type="file"].box {
+  padding: 8px;
+  font-size: 0.85rem;
+  background: #f9f9f9;
+  border: 1px dashed #bbb;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Botão Submit (Adicionar Produto) */
+.btn-submit {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.95rem; /* Reduzido de 1.6rem */
+  padding: 12px;
+  background: #28a745; /* Verde padronizado */
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  border: none;
+  transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.btn-submit:hover {
+  background: #218838;
+}
+
+.btn-submit:active {
+  transform: scale(0.98);
+}
+
+/* Caixa de Erro */
+.error-box {
+  background: #ffe6e6;
+  color: #9b1c1c;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 0 auto 20px;
+  max-width: 500px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid #f5c6cb;
+}
+
+/* POPUP (MODAL) */
+.popup {
+  display: flex; 
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Fundo um pouco mais suave */
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 320px;
+  animation: fadeInScale 0.25s ease;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+}
+
+.popup-content h2 {
+  margin-bottom: 8px;
+  color: #151a2d;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.popup-content p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.popup-content button {
+  padding: 8px 24px;
+  border: none;
+  background: #151a2d;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.popup-content button:hover {
+  background: #333;
+}
+
+/* ANIMAÇÃO MODAL */
+@keyframes fadeInScale {
+  from {
+      opacity: 0;
+      transform: scale(0.95);
   }
-  
-  #content-dashboard h1 {
-    font-size: 2rem;
-    color: #2c3e50;
-    font-weight: 800;
-    margin-bottom: 6px;
+  to {
+      opacity: 1;
+      transform: scale(1);
   }
-  
-  .page-subtitle {
-    color: #7f8c8d;
-    font-size: 0.95rem;
-  }
-  
-  /* Container Principal */
-  .container {
-    max-width: 1200px;
-    padding: 2rem;
-    margin: 0 auto;
-  }
-  
-  .btn-categoria {
-    background: #333; 
-    color: #fff;
-    width: auto; 
-    display: inline-block; 
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 0.8rem;
-    font-size: 1.4rem;
-    font-weight: bold;
-    transition: background 0.3s ease;
-  }
-  
-  .btn-categoria:hover {
-    background: #000;
-  }
-  
-  /* Formulário de Adição de Produtos */
-  .admin-product-form-container form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2.5rem;
-    border-radius: 1rem;
-    background: #ffffff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    transition: transform 0.3s ease;
-  }
-  
-  .admin-product-form-container form:hover {
-    transform: translateY(-2px);
-  }
-  
-  .admin-product-form-container form h3 {
-    text-transform: uppercase;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    text-align: center;
-    font-size: 2.2rem;
-    letter-spacing: 1px;
-  }
-  
-  .box {
-    width: 100%;
-    border-radius: 0.8rem;
-    padding: 1.3rem 1.5rem;
-    font-size: 1.4rem; /* Ajustado para melhor leitura */
-    background: #f9fafc;
-    border: 1px solid #dfe6e9;
-    transition: all 0.2s ease;
-    color: #333;
-  }
-  
-  .box:focus {
-    outline: none;
-    border-color: #27ae60;
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
-  }
-  
-  input[type="file"].box {
-    padding: 0.8rem;
-    font-size: 1.2rem;
-    background: #fff;
-    border: 1px dashed #ccc;
-    cursor: pointer;
-  }
-  
-  /* Botão Submit */
-  .btn-submit {
-    display: block;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 0.8rem;
-    margin-top: 0.5rem;
-    font-size: 1.6rem;
-    padding: 1.2rem;
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
-    color: #fff;
-    text-align: center;
-    font-weight: bold;
-    border: none;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-  
-  .btn-submit:hover {
-    background: linear-gradient(135deg, #219150, #27ae60);
-    transform: translateY(-1px);
-  }
-  
-  /* Caixa de Erro */
-  .error-box {
-    background: #ffe6e6;
-    color: #9b1c1c;
-    padding: 12px;
-    border-radius: 8px;
-    margin: 16px auto;
-    max-width: 600px;
-    text-align: center;
-    font-size: 1.4rem;
-    font-weight: bold;
-  }
-  
-  /* POPUP (MODAL) */
-  .popup {
-    display: flex; /* Mudado de none para flex para ser controlado pelo *ngIf do Angular */
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.55);
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popup-content {
-    background: #ffffff;
-    padding: 25px 35px;
-    border-radius: 10px;
-    text-align: center;
-    width: 350px;
-    animation: fadeInScale 0.3s ease;
-    box-shadow: 0px 0px 20px rgba(0,0,0,0.25);
-  }
-  
-  .popup-content h2 {
-    margin-bottom: 10px;
-    color: #333;
-    font-size: 2rem;
-  }
-  
-  .popup-content p {
-    color: #666;
-    font-size: 1.4rem;
-  }
-  
-  .popup-content button {
-    margin-top: 15px;
-    padding: 10px 25px;
-    border: none;
-    background: #008cff;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  .popup-content button:hover {
-    background: #006fd1;
-  }
-  
-  /* ANIMAÇÃO */
-  @keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.85);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-  }
+}
