@@ -6,7 +6,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService, Product } from 'src/app/core/services/product.service';
 import { CategoryService, Category } from 'src/app/core/services/category.service';
 
-import { productImage } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments.development';
 
 @Component({
   selector: 'app-product-list',
@@ -29,18 +29,17 @@ export class ProductListComponent implements OnInit {
 
   isLoading: boolean = true;
 
-  readonly imageBaseUrl = `${productImage.baseUrl}`;
-  readonly defaultImage = `${productImage.default}`;
+  readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // I - Busca as categorias para a barra de filtros (apenas uma vez)
-    this.categoryService.getCategories().subscribe(cats =>{
+    this.categoryService.getCategories().subscribe(cats => {
       this.categories = cats;
     });
 
@@ -53,8 +52,20 @@ export class ProductListComponent implements OnInit {
       this.loadProducts();
     });
   }
+  // III - Retorna a URL completa da imagem do produto ou a imagem padrão se não houver
+  getProductImage(imageURL: string | null): string {
+    if (!imageURL) {
+      return this.defaultImage;
+    }
 
-  // III - Pede produtos ao serviço com base nos filtros atuais
+    if (imageURL.startsWith('http')) {
+      return imageURL; // URL completa já fornecida pela API
+    }
+
+    return `${environment.productImgUrl}${imageURL}`;
+  }
+
+  // IV - Pede produtos ao serviço com base nos filtros atuais
   loadProducts(): void {
     this.isLoading = true;
 

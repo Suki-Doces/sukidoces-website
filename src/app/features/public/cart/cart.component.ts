@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 // Servicos
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
 
-import { productImage } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments.development';
 import { MarketingSectionComponent } from 'src/app/shared/components/contoured-section/marketing-section/marketing-section.component';
 
 @Component({
@@ -23,8 +23,7 @@ export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   cartTotal: number = 0;
 
-  readonly imageBaseUrl = `${productImage.baseUrl}`;
-  readonly defaultImage = `${productImage.default}`;
+  readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
   constructor(private cartService: CartService) {}
 
@@ -34,6 +33,19 @@ export class CartComponent implements OnInit {
       this.cartItems = items;
       this.cartTotal = this.cartService.getTotal();
     });
+  }
+
+  //Retorna a URL completa da imagem do produto ou a imagem padrão se não houver
+  getProductImage(imageURL: string | null): string {
+    if (!imageURL) {
+      return this.defaultImage;
+    }
+
+    if (imageURL.startsWith('http')) {
+      return imageURL; // URL completa já fornecida pela API
+    }
+
+    return `${environment.productImgUrl}${imageURL}`;
   }
 
   increment(item: CartItem): void {

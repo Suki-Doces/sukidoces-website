@@ -3,7 +3,9 @@
 
     <div class="product-detail-wrapper">
         <div class="detail-image">
-            <img [src]="product.imagem ? (imageBaseUrl + product.imagem) : defaultImage" [alt]="product.nome">
+            <img
+                [src]="getProductImage(product.imagem)"
+                [alt]="'Imagem de ' + product.nome">
         </div>
 
         <div class="detail-info">

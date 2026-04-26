@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
+// Services
 import { CartService } from 'src/app/core/services/cart.service';
 import { Product, ProductService } from 'src/app/core/services/product.service';
-import { productImage } from 'src/environments/environments.development';
+
+import { environment } from 'src/environments/environments.development';
 
 @Component({
   selector: 'app-product-detail',
@@ -20,8 +23,7 @@ export class ProductDetailComponent implements OnInit {
   quantity: number = 1;
   isLoading: boolean = true;
 
-  readonly imageBaseUrl = `${productImage.baseUrl}`;
-  readonly defaultImage = `${productImage.default}`;
+  readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,7 +57,20 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  // III - increment e decrementa a quantidade
+  // III - Retorna a URL completa da imagem do produto ou a imagem padrão se não houver
+  getProductImage(imageURL: string | null): string {
+    if (!imageURL) {
+      return this.defaultImage;
+    }
+
+    if (imageURL.startsWith('http')) {
+      return imageURL; // URL completa já fornecida pela API
+    }
+
+    return `${environment.productImgUrl}${imageURL}`;
+  }
+
+  // IV - increment e decrementa a quantidade
   increment(): void {
     if (this.product && this.quantity < this.product.quantidade) {
       this.quantity++;
@@ -68,7 +83,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  // IV - Adiciona o produto ao carrinho (ainda não implementado)
+  // V - Adiciona o produto ao carrinho (ainda não implementado)
   addToCart(): void {
     if (this.product && this.product.quantidade > 0) {
       this.cartService.addToCart(this.product, this.quantity);

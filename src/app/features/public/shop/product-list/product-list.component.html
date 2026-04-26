@@ -42,8 +42,13 @@
             <a *ngFor="let prod of products" [routerLink]="['/produtos', prod.id_produto]" class="product-card">
 
                 <div class="card-image">
-                    <img class="card-img-lbl" [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage"
-                        [alt]="prod.nome" (error)="onImageError($event)">
+                    <img
+                        class="card-img-lbl"
+                        [src]="getProductImage(prod.imagem)"
+                        [alt]="'Imagem de ' + prod.nome"
+                        (error)="onImageError($event)"
+                        loading="lazy"
+                    />
                 </div>
 
                 <div class="card-info">
