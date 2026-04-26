@@ -8,7 +8,6 @@
     padding: 20px;
 
     background-color: transparent;
-    border: 1px solid #f871bbcf;
     border-radius: 0 0 20px 20px;
 
     box-shadow: var(--box-shadow) 0 4px 4px;
@@ -20,11 +19,12 @@
     content: "";
     position: absolute;
     inset: 0; /* Substitui top/left/right/bottom: 0 */
-    background: var(--color-1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: -1; 
     border-radius: 0 0 19px 19px; /* Mantém as bordas do pai, se houver */
+    background: var(--color-1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 194, 227, 0.4);
+    z-index: -1; 
 }
 
 
@@ -51,7 +51,7 @@
 }
 
 .hdr-user-section {
-    gap: 2rem;
+    gap: 1rem;
 }
 
 /* --- SEARCH FORM STYLE --- */
@@ -98,17 +98,21 @@
 .header-btn {
     display: flex;
     background-color: transparent;
-    width: 6rem;
+    min-width: 6rem;
+    max-width: 12rem;
+    width: auto;
     height: 50px;
 
     border: 0;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .header-btn>svg {
     width: 25px;
     height: 25px;
+    flex-shrink: 0;
 }
 
 /* Para telas com LARGURA MÍNIMA de 768px (tablets e desktops) */
@@ -121,6 +125,7 @@
     
     :host::before {
     border-radius: calc(30px - 1px); /* Mantém as bordas do pai, se houver */
+    border: 1px solid rgba(255, 194, 227, 0.4);
 }
 
     .hdr-desktop-view, :host > nav {
@@ -151,6 +156,13 @@
     transition: transform 0.3s ease;
 }
 
+.hdr-user-btn p{
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Efeito Hover e Active nos Botões */
 .hdr-user-btn:hover,
 .hdr-user-btn.active {
@@ -167,20 +179,22 @@
 /* --- MENUS SUSPENSOS (ACCORDIONS/DROPDOWNS) --- */
 .hdr-user-dropdown {
     position: absolute;
-    top: calc(0% + 90px);
+    top: calc(0% + 70px);
     /* Distância do menu principal */
-    right: calc(0% + 35px);
+    right: 0;
     transform: translateX(0%) translateY(20px);
     /* Começa um pouco abaixo para animar subindo */
     width: max-content;
     min-width: 180px;
-    backdrop-filter: blur(10px);
-
+    
     /* Glassmorphism no Dropdown */
-    background: rgba(247, 181, 204, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(247, 181, 204, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.089);
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 
     padding: 2px;
     display: flex;
@@ -219,6 +233,7 @@
 .hdr-pp-links {
     text-align: center;
     width: 100%;
+    margin: 1px 0;
     padding: 10px;
     border-radius: 18px;
     color: var(--t-color-3);
@@ -228,6 +243,7 @@
 }
 
 .hdr-pp-links:hover {
-    background: var(--color-4);
-    color: white;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    color: var(--color-1);
 }
