@@ -9,27 +9,27 @@
     </ng-template>
 
     <div class="filters-bar">
-        <a class="btn" routerLink="/produtos"
-            [class]="(!currentFilter && !currentCategory && !currentQuery) ? 'btn-primary' : 'btn-glass'">
+        <button class="btn" routerLink="/produtos"
+            [class]="(!currentFilter && !currentCategory && !currentQuery) ? 'btn-glass btn-primary' : 'btn-glass'">
             Todos
-        </a>
+        </button>
 
-        <a class="btn" routerLink="/produtos" [queryParams]="{ filtro: 'mais-vendidos' }"
-            [class]="(currentFilter === 'mais-vendidos') ? 'btn-primary' : 'btn-glass'">
+        <button class="btn" routerLink="/produtos" [queryParams]="{ filtro: 'mais-vendidos' }"
+            [class]="(currentFilter === 'mais-vendidos') ? 'btn-glass btn-primary' : 'btn-glass'">
             Mais Vendidos
-        </a>
+        </button>
 
-        <a class="btn" routerLink="/produtos" [queryParams]="{ filtro: 'novos' }"
-            [class]="(currentFilter === 'novos') ? 'btn-primary' : 'btn-glass'">
+        <button class="btn" routerLink="/produtos" [queryParams]="{ filtro: 'novos' }"
+            [class]="(currentFilter === 'novos') ? 'btn-glass btn-primary' : 'btn-glass'">
             Novos
-        </a>
+        </button>
 
         <div class="filter-separator">|</div>
 
-        <a *ngFor="let cat of categories" class="btn" routerLink="/produtos" [queryParams]="{ categoria: cat.id_categoria }"
-            [class]="(currentCategory === cat.id_categoria) ? 'btn-primary' : 'btn-glass'">
+        <button *ngFor="let cat of categories" class="btn" routerLink="/produtos" [queryParams]="{ categoria: cat.id_categoria }"
+            [class]="(currentCategory === cat.id_categoria) ? 'btn-glass btn-primary' : 'btn-glass'">
             {{ cat.nome }}
-        </a>
+        </button>
     </div>
 
     <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
@@ -71,10 +71,10 @@
             <img src="assets/icons/interface/search-icon.svg" alt="Ícone de busca"
                 style="width: 50px; opacity: 0.5; margin-bottom: 10px;">
             <p>Nenhum produto encontrado.</p>
-            <a *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos"
-                style="color: var(--color-1); text-decoration: underline; margin-top: 10px; display: inline-block;">
+            <button *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos"
+                class="btn btn-glass">
                 Ver todos os produtos
-            </a>
+            </button>
         </div>
     </ng-template>
 

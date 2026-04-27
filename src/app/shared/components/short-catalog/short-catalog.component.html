@@ -3,12 +3,12 @@
 
     <div class="sc-nav">
         <button class="btn"
-                [ngClass]="activeTab === 'mais-vendidos' ? 'btn-primary' : 'btn-glass'"
+                [ngClass]="activeTab === 'mais-vendidos' ? 'btn-glass btn-primary' : 'btn-glass'"
                 (click)="setActiveTab('mais-vendidos')">
             Mais Vendidos
         </button>
         <button class="btn"
-                [ngClass]="activeTab === 'novos' ? 'btn-primary' : 'btn-glass'"
+                [ngClass]="activeTab === 'novos' ? 'btn-glass btn-primary' : 'btn-glass'"
                 (click)="setActiveTab('novos')">
             Novos
         </button>

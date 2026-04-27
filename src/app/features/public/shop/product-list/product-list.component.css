@@ -60,7 +60,7 @@
     background: var(--gls-color-5);
     padding: 20px 10px;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 40px 20px;
     min-height: 60vh;
 }
 
@@ -196,7 +196,9 @@
     }
 
     .catalog-container {
-        padding: 40px 20px;
+        justify-self: center;
+        margin: 20px;
+        padding: 40px auto;
     }
     
     .product-grid {

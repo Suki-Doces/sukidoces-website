@@ -53,7 +53,7 @@
             <p>{{ displayName }}</p>
         </button>
 
-        <div id="profile-menu" class="hnv-dropdown hnv-profile-panel" 
+        <div id="profile-menu" class="glass-container hnv-dropdown hnv-profile-panel" 
              [class.is-open]="openMenu === 'profile'" 
              (click)="$event.stopPropagation()">
             @if (isLoggedIn) {

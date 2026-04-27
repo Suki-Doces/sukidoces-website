@@ -76,7 +76,7 @@
       <p>{{ displayName}}</p>
     </button>
 
-    <div class="hdr-user-dropdown" [class.is-open]="isMenuOpen" (click)="$event.stopPropagation()">
+    <div class="glass-container hdr-user-dropdown" [class.is-open]="isMenuOpen" (click)="$event.stopPropagation()">
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'dados'}" (click)="closeMenu()">Meus Dados</a>
         <hr>

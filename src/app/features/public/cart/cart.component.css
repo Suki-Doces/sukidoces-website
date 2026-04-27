@@ -134,6 +134,9 @@ td {
 
 /* Responsividade */
 @media (max-width: 768px) {
+    .cart-container {
+        margin: 40px 20px;
+    }
     .cart-layout {
         grid-template-columns: 1fr;
     }

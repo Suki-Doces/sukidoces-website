@@ -188,13 +188,9 @@
     min-width: 180px;
     
     /* Glassmorphism no Dropdown */
-    background: rgba(247, 181, 204, 0.7);
+    background-color: rgba(247, 181, 204, 0.7);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.089);
-    border-radius: 20px;
 
     padding: 2px;
     display: flex;

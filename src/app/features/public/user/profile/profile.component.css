@@ -73,8 +73,7 @@
 }
 
 .profile-card {
-    background: var(--gls-color-5);
-    box-shadow: 0 10px 25px var(--box-shadow);
+    background-color: var(--gls-color-5);
 }
 
 .form-grid {
