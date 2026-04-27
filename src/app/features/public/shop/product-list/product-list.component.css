@@ -2,8 +2,8 @@
 .filters-bar {
     display: flex;
     gap: 10px;
-    margin-bottom: 30px;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
+    padding: 2rem 0;
     overflow-x: auto; /* Permite rolagem lateral no mobile */
     align-items: center;
     -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
@@ -19,9 +19,7 @@
     white-space: nowrap; /* Impede quebra de texto dos botões */
     text-decoration: none;
     font-size: 0.9rem;
-    border-radius: 20px;
     /* Usa as classes button-fill/contoured do style.css, mas ajusta padding */
-    padding: 8px 16px;
     transition: all 0.2s ease;
 }
 
@@ -59,16 +57,16 @@
 
 /* --- CONTAINER GERAL --- */
 .catalog-container {
+    background: var(--gls-color-5);
     padding: 20px 10px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 20px auto;
     min-height: 60vh;
 }
 
 .catalog-title {
     text-align: center;
     color: var(--t-color-3, #533931);
-    margin-bottom: 30px;
     font-size: 2rem;
     font-weight: 700;
 }

@@ -1,5 +1,5 @@
 <section class="profile-container">
-    <nav class="profile-nav">
+    <nav class="glass-container profile-nav">
         <div class="user-info-brief">
             <div class="avatar-circle">
                 {{ user?.nome?.charAt(0) }}
@@ -23,37 +23,86 @@
 
     <div class="profile-content">
 
-        <div *ngIf="activeTab === 'dados'" class="profile-card animate-fade">
-            <h2>Meus Dados</h2>
-            <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Nome Completo</label>
-                        <input type="text" formControlName="nome" placeholder="Seu nome completo">
-                    </div>
-                    <div class="form-group">
-                        <label>E-mail</label>
-                        <input type="email" formControlName="email" readonly class="readonly-input">
-                    </div>
-                    <div class="form-group">
-                        <label>Telefone</label>
-                        <input type="text" formControlName="telefone" placeholder="(00) 00000-0000">
-                    </div>
-                    <div class="form-group">
-                        <label>CPF</label>
-                        <input type="text" formControlName="cpf" placeholder="000.000.000-00">
-                    </div>
+        <div *ngIf="activeTab === 'dados'" class="animate-fade" style="display: flex; flex-direction: column; gap: 30px;">
+            <div class="glass-container profile-card">
+                <div class="profile-title">
+                    <h2>Meus Dados</h2>
                 </div>
-                <button type="submit" class="btn-save" [disabled]="profileForm.invalid">Salvar Alterações</button>
-            </form>
+
+                <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+                    <div class="form-grid">
+                        <h3 class="section-title">Informações Básicas</h3>
+                        <div class="form-group full-width">
+                            <label>Nome Completo</label>
+                            <input type="text" formControlName="nome" placeholder="Seu nome completo">
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail (Não alterável)</label>
+                            <input type="email" formControlName="email" readonly class="readonly-input">
+                        </div>
+                        <div class="form-group">
+                            <label>CPF</label>
+                            <input type="text" formControlName="cpf" placeholder="000.000.000-00">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone / WhatsApp</label>
+                            <input type="text" formControlName="telefone" placeholder="(00) 00000-0000">
+                        </div>
+
+                        <h3 class="section-title">Endereço de Entrega</h3>
+                        <div class="form-group">
+                            <label>CEP</label>
+                            <input type="text" formControlName="cep" placeholder="00000-000">
+                        </div>
+                        <div class="form-group">
+                            <label>Rua / Avenida</label>
+                            <input type="text" formControlName="rua" placeholder="Nome da rua">
+                        </div>
+                        <div class="form-group">
+                            <label>Número</label>
+                            <input type="text" formControlName="numero" placeholder="Ex: 123">
+                        </div>
+                        <div class="form-group">
+                            <label>Complemento</label>
+                            <input type="text" formControlName="complemento" placeholder="Apto, Bloco, Casa">
+                        </div>
+                        <div class="form-group">
+                            <label>Bairro</label>
+                            <input type="text" formControlName="bairro" placeholder="Seu bairro">
+                        </div>
+                        <div class="form-group">
+                            <label>Cidade / Estado</label>
+                            <input type="text" formControlName="cidade" placeholder="Cidade - UF">
+                        </div>
+                    </div>
+
+                    <div *ngIf="message" class="alert" [ngClass]="message.type">
+                        {{ message.text }}
+                    </div>
+
+                    <div style="margin-top: 24px; text-align: right;">
+                        <button type="submit" class="btn btn-glass btn-primary " [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar Alterações' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="glass-container profile-card danger-zone">
+                <h2>Excluir Conta</h2>
+                <p style="margin-bottom: 20px; color: #555; font-size: 0.95rem; line-height: 1.5;">
+                    Ao excluir sua conta, você perderá acesso ao seu histórico de pedidos e seus dados serão removidos do nosso sistema. Essa ação é irreversível.
+                </p>
+                <button type="button" class="btn btn-glass btn-danger" (click)="deleteAccount()">Excluir minha conta permanentemente
+                </button>
+            </div>
         </div>
 
-        <div *ngIf="activeTab === 'pedidos'" class="profile-card animate-fade">
+        <div *ngIf="activeTab === 'pedidos'" class="glass-container profile-card animate-fade">
             <h2>Meus Pedidos</h2>
 
             <div *ngIf="pedidos.length === 0" class="empty-state">
                 <p>Ainda não efetuou nenhum pedido.</p>
-                <button routerLink="/produtos" class="btn-save" style="margin-top: 15px;">Ir para a Loja</button>
+                <button routerLink="/produtos" class="btn btn-glass btn-primary" style="margin-top: 15px;">Ir para a Loja</button>
             </div>
 
             <div class="orders-list" *ngIf="pedidos.length > 0">
@@ -89,18 +138,31 @@
             </div>
         </div>
 
-        <div *ngIf="activeTab === 'senha'" class="profile-card animate-fade">
+        <div *ngIf="activeTab === 'senha'" class="glass-container profile-card animate-fade">
             <h2>Alterar Senha</h2>
-            <form (ngSubmit)="changePassword()">
+            <form (ngSubmit)="changePassword()" [formGroup]="passwordForm">
                 <div class="form-group">
                     <label>Senha Atual</label>
-                    <input type="password" name="oldPassword" placeholder="********">
+                    <input type="password" formControlName="currentPassword" placeholder="********">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 15px;">
                     <label>Nova Senha</label>
-                    <input type="password" name="newPassword" placeholder="No mínimo 6 caracteres">
+                    <input type="password" formControlName="newPassword" placeholder="No mínimo 6 caracteres">
                 </div>
-                <button type="submit" class="btn-save">Atualizar Senha</button>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Confirmar Nova Senha</label>
+                    <input type="password" formControlName="confirmPassword" placeholder="Repita a nova senha">
+                </div>
+                
+                <div *ngIf="message && activeTab === 'senha'" class="alert" [ngClass]="message.type" style="margin-top: 20px;">
+                    {{ message.text }}
+                </div>
+
+                <div style="margin-top: 24px; text-align: right;">
+                    <button type="submit" class="btn btn-glass btn-primary" [disabled]="passwordForm.invalid || isLoading">
+                        {{ isLoading ? 'Atualizando...' : 'Atualizar Senha' }}
+                    </button>
+                </div>
             </form>
         </div>
 

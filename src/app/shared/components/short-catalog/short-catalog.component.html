@@ -1,16 +1,16 @@
-<section class="short-catalog-section">
+<section class="short-catalog-section glass-container">
     <h1>Recomendação de compra</h1>
 
     <div class="sc-nav">
-        <button class="tab-btn"
-                [ngClass]="activeTab === 'mais-vendidos' ? 'button-fill' : 'button-contoured'"
+        <button class="btn"
+                [ngClass]="activeTab === 'mais-vendidos' ? 'btn-primary' : 'btn-glass'"
                 (click)="setActiveTab('mais-vendidos')">
-            <p>Mais Vendidos</p>
+            Mais Vendidos
         </button>
-        <button class="tab-btn"
-                [ngClass]="activeTab === 'novos' ? 'button-fill' : 'button-contoured'"
+        <button class="btn"
+                [ngClass]="activeTab === 'novos' ? 'btn-primary' : 'btn-glass'"
                 (click)="setActiveTab('novos')">
-            <p>Novos</p>
+            Novos
         </button>
     </div>
 

@@ -24,6 +24,17 @@ html {
     --color-5: #fff0fa;
     --color-6: #201613;
 
+    /*Glass Main*/
+    --gls-color-1: #e922908d;
+    --gls-color-2: #f06b9acc;
+    --gls-color-3: #fd84b2cc;
+    --gls-color-4: #f7b5cccc;
+    --gls-color-5: #fff0facc;
+    --gls-danger: #ffd6d6cc;
+    --gls-danger-btn: #ff3a3acc;
+
+    --gls-t-color-3: #5339318d;
+
     /*Text*/
     --t-color-1: #f06b9a;
     --t-color-2: #fd8ab2;
@@ -132,27 +143,125 @@ html {
 /*Transitions*/
 /* Seleciona a página que está saindo */
 ::view-transition-old(root) {
-  animation: fade-out 0.4s ease-in-out forwards;
+    animation: fade-out 0.4s ease-in-out forwards;
 }
 
 /* Seleciona a página que está entrando */
 ::view-transition-new(root) {
-  animation: fade-in 0.4s ease-in-out forwards;
+    animation: fade-in 0.4s ease-in-out forwards;
 }
 
 /* Criando as animações de opacidade */
 @keyframes fade-out {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 @keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
+
 /*Transitions END */
 
 /*Templates*/
+
+.glass-container {
+    padding: 30px 50px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.027);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.089);
+
+}
+
+/* Estilo Base (.btn) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Espaço entre o texto e o ícone */
+    padding: 12px 28px;
+    border-radius: 18px;
+    border: 1px solid transparent;
+    /* Borda base para evitar saltos de layout nas versões outline */
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn svg {
+    width: 1.5rem;
+    margin: -0.5rem;
+    margin-left: 0;
+    aspect-ratio: 1/1;
+}
+
+/* Efeitos de Interação Base */
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito Glassmorphism (.btn-glass) */
+.btn-glass {
+    position: relative;
+    z-index: 1;
+    /* Para ficar acima das bolhas de fundo */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* Suporte para Safari */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--gls-color-1);
+    /* Rosa mais escuro para garantir legibilidade */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: var(--gls-color-1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+    stroke: var(--gls-color-1);
+}
+
+.btn-primary {
+    background: var(--gls-color-1);
+    color: var(--color-5);
+    stroke: var(--gls-color-5);
+}
+
+.btn-danger {
+    background: var(--gls-danger-btn);
+    color: var(--color-5);
+}
+
+.btn-danger:hover {
+    color: var(--gls-danger-btn);
+}
+
 .button-fill {
     display: flex;
     padding: 8px 16px;
@@ -249,8 +358,7 @@ html {
     align-items: center;
     gap: 8px;
 
-    border-radius: 20px;
-    border: 1px solid var(--t-color-3);
+    border: 1px solid var(--gls-t-color-3);
     box-sizing: border-box;
 }
 

@@ -21,12 +21,12 @@ export const routes: Routes = [
   // ROTAS PÚBLICAS (Suki Doces Website)
   // ==========================================
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, title: 'Home' },
-  { path: 'login', component: LoginComponent, title: 'Login' },
-  { path: 'produtos', component: ProductListComponent, title: 'Produtos' },
-  { path: 'produtos/:id', component: ProductDetailComponent, title: 'Detalhes do Produto' },
-  { path: 'carrinho', component: CartComponent, title: 'Carrinho' },
-  { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces - Meu Perfil' }, // Rota protegida, só acessível com token válido
+  { path: 'home', component: HomeComponent, title: 'SukiDoces | Home' },
+  { path: 'login', component: LoginComponent, title: 'SukiDoces | Login' },
+  { path: 'produtos', component: ProductListComponent, title: 'SukiDoces | Produtos' },
+  { path: 'produtos/:id', component: ProductDetailComponent, title: 'SukiDoces | Detalhes do Produto' },
+  { path: 'carrinho', component: CartComponent, title: 'SukiDoces | Carrinho' },
+  { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces | Meu Perfil' }, // Rota protegida, só acessível com token válido
 
   // ==========================================
   // ROTAS DO PAINEL ADMIN (Suki Doces Admin)

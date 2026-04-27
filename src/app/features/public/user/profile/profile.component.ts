@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
         this.user = user;
         this.profileForm.patchValue(user);
         this.loadOrders(); // Carrega os pedidos reais assim que o utilizador é identificado
-        
+
         // Lógica para extrair Nome e Sobrenome
         const parts = user.nome.trim().split(' ');
         this.displayName = parts.length > 1
@@ -63,9 +63,15 @@ export class ProfileComponent implements OnInit {
     // Formulário de Perfil
     this.profileForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
-      email: [{ value: '', disabled: true }], // O e-mail normalmente não se altera por segurança
+      email: [{ value: '', disabled: true }],
       telefone: ['', [Validators.pattern(/^\(\d{2}\) \d{5}-\d{4}$/)]],
-      cpf: ['', [Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]]
+      cpf: ['', [Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
+      cep: ['', [Validators.pattern(/^\d{5}-\d{3}$/)]],
+      rua: [''],
+      numero: [''],
+      complemento: [''],
+      bairro: [''],
+      cidade: ['']
     });
 
     // Formulário de Senha
@@ -136,5 +142,11 @@ export class ProfileComponent implements OnInit {
           this.message = { type: 'error', text: err.error?.message || 'Erro ao alterar senha.' };
         }
       });
+  }
+
+  deleteAccount(): void {
+    if (confirm('Tem certeza? Esta ação não pode ser desfeita.')) {
+      console.log('Excluir conta solicitada');
+    }
   }
 }
