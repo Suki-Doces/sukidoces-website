@@ -45,7 +45,7 @@ export const routes: Routes = [
       // Rota de Produtos 
       { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' },
       
-      { path: 'admin/notificacoes', component: ListaNotificacoesComponent },
+      { path: 'notificacoes', component: ListaNotificacoesComponent },
 
       // Rota de Categorias (A que acabamos de adicionar)
       { 
