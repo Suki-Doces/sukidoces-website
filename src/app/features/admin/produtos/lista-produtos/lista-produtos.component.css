@@ -1,21 +1,22 @@
 /* Cabeçalho */
-#content-dashboard {
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #ecf0f1;
-}
-
-#content-dashboard h1 {
-  font-size: 1.5rem; /* Reduzido de 2rem */
-  color: #151a2d;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.page-subtitle {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-}
+   #content-dashboard {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+  }
+  
+  #content-dashboard h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  
+  #content-dashboard p,
+  .page-subtitle {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+  }
 
 /* Container Principal */
 .container {

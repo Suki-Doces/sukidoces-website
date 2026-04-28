@@ -1,1 +1,29 @@
-<p>lista-notificacoes works!</p>
+<div id="content-notifications" class="content">
+  <h1>Notificações</h1>
+  <p class="page-subtitle">Gerencie suas Mensagens aqui.</p>
+</div>
+
+<div class="container">
+  <div class="notificationContainer">
+    
+    <button class="mark-as-read" (click)="marcarTodasComoLidas()" *ngIf="notificacoes.length > 0">
+      Marcar mensagens como lidas!
+    </button>
+
+    <div class="empty-state" *ngIf="notificacoes.length === 0">
+      <p>Você não tem novas notificações no momento.</p>
+    </div>
+
+    <div class="notificationCard" [ngClass]="{'unread': !notificacao.lida}" *ngFor="let notificacao of notificacoes">
+      <img alt="icon" [src]="notificacao.icone" />
+      
+      <div class="description">
+        <p>{{ notificacao.mensagem }}</p>
+        <p id="notif-time">{{ notificacao.tempo }}</p>
+      </div>
+
+      <button class="close-btn" (click)="fecharNotificacao(notificacao.id)">&times;</button>
+    </div>
+
+  </div>
+</div>

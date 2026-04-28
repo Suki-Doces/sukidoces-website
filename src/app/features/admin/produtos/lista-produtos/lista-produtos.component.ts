@@ -20,11 +20,12 @@ export class ListaProdutosComponent implements OnInit {
   categorias: any[] = [];
 
   // Objeto para guardar os dados do formulário
+  // Objeto para guardar os dados do formulário
   produto = {
     nome: '',
     id_categoria: '',
-    preco: null,
-    quantidade: null,
+    preco: null as number | null, // <--- Avisamos que é número ou nulo
+    quantidade: null as number | null, // <--- Avisamos que é número ou nulo
     imagem: null as File | null
   };
 
@@ -58,18 +59,43 @@ export class ListaProdutosComponent implements OnInit {
     }
   }
 
+  // Função disparada ao clicar em "Adicionar Produto"
   adicionarProduto() {
+    // 1. Validação básica
     if (!this.produto.nome || !this.produto.id_categoria || !this.produto.preco || !this.produto.quantidade) {
       this.mensagemErro = 'Por favor, preencha todos os campos obrigatórios.';
       return;
     }
 
-    this.mensagemErro = '';
+    this.mensagemErro = ''; // Limpa os erros
 
-    // FUTURO: Envio dos dados via FormData para o backend
-    console.log('Enviando produto com categoria real:', this.produto);
+    // 2. Cria o FormData (O "pacote" de envio que suporta arquivos)
+    const formData = new FormData();
+    formData.append('nome', this.produto.nome);
+    formData.append('id_categoria', this.produto.id_categoria);
+    formData.append('preco', String(this.produto.preco)); // <--- Mais seguro
+    formData.append('quantidade', String(this.produto.quantidade)); // <--- Mais seguro
+    
+    if (this.produto.imagem) {
+      formData.append('imagem', this.produto.imagem);
+    }
 
-    this.mostrarPopupSucesso = true;
+    console.log('Enviando pacote FormData para a API...');
+
+    // 3. Faz o POST para o Node.js
+    // Ajuste a URL caso a sua rota de produtos seja diferente
+    const apiUrl = 'http://localhost:3000/suki-doces/produtos';
+
+    this.http.post(apiUrl, formData).subscribe({
+      next: (resposta) => {
+        console.log('Sucesso! Resposta do servidor:', resposta);
+        this.mostrarPopupSucesso = true; // Abre o Pop-up de sucesso!
+      },
+      error: (erro) => {
+        console.error('Erro ao salvar o produto:', erro);
+        this.mensagemErro = 'Erro ao salvar o produto. O console tem mais detalhes.';
+      }
+    });
   }
 
   fecharPopup() {

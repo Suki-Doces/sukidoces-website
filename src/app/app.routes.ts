@@ -16,6 +16,7 @@ import { DashboardComponent } from './features/admin/dashboard/dashboard.compone
 import { ListaPedidosComponent } from './features/admin/pedidos/lista-pedidos/lista-pedidos.component';
 // 2. Importe a nova tela de Produtos (que acabamos de fazer)
 import { ListaProdutosComponent } from './features/admin/produtos/lista-produtos/lista-produtos.component';
+import { ListaNotificacoesComponent } from './features/admin/notificacoes/lista-notificacoes/lista-notificacoes.component';
 export const routes: Routes = [
   // ==========================================
   // ROTAS PÚBLICAS (Suki Doces Website)
@@ -42,7 +43,9 @@ export const routes: Routes = [
       { path: 'pedidos', component: ListaPedidosComponent, title: 'Admin - Pedidos' },
       
       // Rota de Produtos 
-      { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' }, // <--- TEM QUE TER ESTA VÍRGULA AQUI!
+      { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' },
+      
+      { path: 'admin/notificacoes', component: ListaNotificacoesComponent },
 
       // Rota de Categorias (A que acabamos de adicionar)
       { 
