@@ -25,7 +25,12 @@
       <tbody>
         <tr *ngFor="let p of produtos" class="active-row">
           <td>
-            <img class="kit-img" [src]="'http://localhost:3000/imagens/' + p.imagem" alt="img" onerror="this.src='assets/images/produtos/default-product.svg'">
+            <img 
+                class="kit-img" 
+                [src]="getProductImage(p.imagem)" 
+                alt="img" 
+                onerror="this.src='assets/images/produtos/default-product.svg'"
+            >
           </td>
           <td><span class="kit-text">{{ p.nome }}</span></td>
           <td><b>{{ p.quantidade }}</b></td>

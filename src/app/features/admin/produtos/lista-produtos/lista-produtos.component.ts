@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http'; // Importação necessária
+import { environment } from 'src/environments/environments.development';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -39,7 +40,7 @@ export class ListaProdutosComponent implements OnInit {
   // Busca as categorias reais na sua API Node.js
   // Busca as categorias reais na sua API Node.js
   carregarCategorias() {
-    this.http.get<any[]>('http://localhost:3000/suki-doces/admin/categorias')
+    this.http.get<any[]>(`${environment.apiUrl}/admin/categorias`)
       .subscribe({
         next: (dados) => {
           this.categorias = dados;
@@ -84,7 +85,7 @@ export class ListaProdutosComponent implements OnInit {
 
     // 3. Faz o POST para o Node.js
     // Ajuste a URL caso a sua rota de produtos seja diferente
-    const apiUrl = 'http://localhost:3000/suki-doces/produtos';
+    const apiUrl = `${environment.apiUrl}/produtos`;
 
     this.http.post(apiUrl, formData).subscribe({
       next: (resposta) => {

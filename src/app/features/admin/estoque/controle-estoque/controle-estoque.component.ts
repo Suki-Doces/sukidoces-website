@@ -39,12 +39,29 @@ export class ControleEstoqueComponent implements OnInit {
 
   carregarProdutos() {
     // Busca os produtos na mesma rota que usamos antes
-    this.http.get<any[]>('http://localhost:3000/suki-doces/produtos').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/produtos`).subscribe({
       next: (dados) => {
         this.produtos = dados;
       },
       error: (erro) => console.error('Erro ao buscar produtos do estoque:', erro)
     });
+  }
+
+  readonly defaultImage = 'assets/images/produtos/default-product.svg';
+
+  // Método que monta a URL da imagem usando a API
+  getProductImage(imageURL: string | null): string {
+    if (!imageURL) {
+      return this.defaultImage;
+    }
+
+    // Se já vier uma URL completa da API, retorna ela mesma
+    if (imageURL.startsWith('http')) {
+      return imageURL;
+    }
+
+    // Concatena a URL da API (que está no environment) com o nome da imagem
+    return `${environment.productImgUrl}${imageURL}`;
   }
 
   abrirModalEditar(produto: any) {
@@ -58,7 +75,7 @@ export class ControleEstoqueComponent implements OnInit {
   }
 
   salvarEdicao() {
-    const url = `http://localhost:3000/suki-doces/produtos/${this.produtoEditado.id_produto}`;
+    const url = `${environment.apiUrl}/produtos/${this.produtoEditado.id_produto}`;
     
     // Prepara os dados (garantindo que quantidade e preço são números)
     const payload = {
@@ -82,7 +99,7 @@ export class ControleEstoqueComponent implements OnInit {
 
   deletarProduto(id: number) {
     if (confirm('Tem a certeza que deseja remover este produto do estoque?')) {
-      this.http.delete(`http://localhost:3000/suki-doces/produtos/${id}`).subscribe({
+      this.http.delete(`${environment.apiUrl}/produtos/${id}`).subscribe({
         next: () => this.carregarProdutos(),
         error: (erro) => {
           console.error('Erro ao deletar:', erro);
