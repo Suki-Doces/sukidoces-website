@@ -192,98 +192,134 @@
   /* ==========================================================================
      3. SEÇÃO ABAIXO (PRODUTOS EM DESTAQUE E ESTOQUE)
      ========================================================================== */
-  .below-vendas {
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    margin-top: 20px;
-  }
-  
-  .produtos-destaque-main {
-    flex: 1 1 60%;
-    background: #fff;
-    border-radius: 8px;
-    padding: 18px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }
-  
-  .produtos-destaque-main h3,
-  .gerenciamento-estoque h3 {
-    margin: 0 0 12px 0;
-    color: #023337;
-  }
-  
-  /* Tabela de Produtos em Destaque */
-  .content-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9em;
-    min-width: 400px;
-    border-radius: 5px 5px 0px 0px;
-    overflow: hidden;
-  }
-  
-  .content-table thead tr {
-    background-color: #fec8c8;
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-  }
-  
-  .table-head {
-    background-color: rgba(254, 200, 200, 0.6);
-    border-bottom: 1px solid #dbdade;
-    color: #6a717f;
-  }
-  
-  .content-table th, .content-table td {
-    padding: 12px 15px;
-  }
-  
-  .content-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-  }
-  
-  .content-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-  }
-  
-  .kit-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-    object-fit: cover;
-  }
-  
-  .kit-text {
-    line-height: 22px;
-    font-size: 14px;
-    font-weight: normal;
-  }
-  
-  /* Gerenciamento de Estoque */
-  .gerenciamento-estoque {
-    width: 320px;
-    background: #fff;
-    border-radius: 8px;
-    padding: 18px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }
-  
-  .estoque-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .estoque-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 10px;
-    background: #fafafa;
-    border-radius: 6px;
-  }
+  /* ==========================================================================
+   3. SEÇÃO ABAIXO (PRODUTOS EM DESTAQUE E ESTOQUE) - Design Modernizado
+   ========================================================================== */
+.below-vendas {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.produtos-destaque-main {
+  flex: 1 1 60%;
+  background: #fff;
+  border-radius: 12px; /* Arredondamento um pouco maior */
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); /* Sombra mais difusa e elegante */
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.produtos-destaque-main h3,
+.gerenciamento-estoque h3 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* --- Tabela de Produtos em Destaque Clean --- */
+.content-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  min-width: 400px;
+}
+
+.table-head {
+  border-bottom: 2px solid #ecf0f1; /* Linha sutil separando o cabeçalho */
+}
+
+.content-table th {
+  padding: 12px 15px;
+  text-align: left;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.content-table td {
+  padding: 16px 15px;
+  color: #34495e;
+  border-bottom: 1px solid #f8f9fa; /* Linhas bem fracas entre produtos */
+}
+
+.content-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+/* Efeito Hover moderno na linha inteira */
+.content-table tbody tr:hover {
+  background-color: #f8fafd; 
+  transform: scale(1.005);
+}
+
+.kit-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra na foto do doce */
+}
+
+.kit-text {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* --- Gerenciamento de Estoque Dinâmico --- */
+.gerenciamento-estoque {
+  width: 340px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.estoque-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.estoque-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  background: #ffffff;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+  border-left: 4px solid #3498db; /* Barrinha colorida padrão (Azul) */
+}
+
+/* Dando significado às cores (UX) */
+.estoque-item:nth-child(1) { border-left-color: #2ecc71; } /* Estoque Atual: Verde (Tudo ok) */
+.estoque-item:nth-child(2) { border-left-color: #f1c40f; } /* Repor: Amarelo (Atenção) */
+.estoque-item:nth-child(3) { border-left-color: #e74c3c; } /* Devoluções: Vermelho (Alerta) */
+
+.estoque-item:hover {
+  transform: translateX(5px); /* Dá um saltinho para a direita ao passar o mouse */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-color: #d5dbdb;
+}
+
+.estoque-item span {
+  color: #7f8c8d;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.estoque-item b {
+  font-size: 1.3rem;
+  color: #2c3e50;
+}
   
   /* ==========================================================================
      4. TABELA DE TRANSAÇÕES (FOOTER) - Baseado em orders-improvements.css

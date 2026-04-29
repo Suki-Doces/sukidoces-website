@@ -16,6 +16,7 @@ import { DashboardComponent } from './features/admin/dashboard/dashboard.compone
 import { ListaPedidosComponent } from './features/admin/pedidos/lista-pedidos/lista-pedidos.component';
 // 2. Importe a nova tela de Produtos (que acabamos de fazer)
 import { ListaProdutosComponent } from './features/admin/produtos/lista-produtos/lista-produtos.component';
+import { ControleEstoqueComponent } from './features/admin/estoque/controle-estoque/controle-estoque.component';
 import { ListaNotificacoesComponent } from './features/admin/notificacoes/lista-notificacoes/lista-notificacoes.component';
 export const routes: Routes = [
   // ==========================================
@@ -45,7 +46,9 @@ export const routes: Routes = [
       // Rota de Produtos 
       { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' },
       
-      { path: 'notificacoes', component: ListaNotificacoesComponent },
+      { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'Admin-Notificacao' },
+
+      { path: 'estoque', component: ControleEstoqueComponent, title: 'Admin - Estoque' },
 
       // Rota de Categorias (A que acabamos de adicionar)
       { 

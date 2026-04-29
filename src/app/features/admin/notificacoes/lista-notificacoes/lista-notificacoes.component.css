@@ -1,3 +1,4 @@
+/* --- CABEÇALHO DA PÁGINA --- */
 #content-notifications {
   margin-bottom: 30px;
   padding-bottom: 20px;
@@ -16,6 +17,7 @@
   font-size: 0.95rem;
 }
 
+/* --- CONTÊINER PRINCIPAL --- */
 .container {
   display: flex;
   flex-direction: column;
@@ -31,6 +33,7 @@
   flex-direction: column;
 }
 
+/* --- BOTÃO DE MARCAR COMO LIDA --- */
 .mark-as-read {
   align-self: flex-start;
   padding: 10px 20px;
@@ -48,21 +51,23 @@
   color: white;
 }
 
+/* --- CARTÃO DE NOTIFICAÇÃO (TODOS IGUAIS) --- */
 .notificationCard {
   display: flex;
   align-items: center;
   padding: 16px 20px;
   border-radius: 12px;
-  background-color: #ffffff;
+  
+  /* Fundo rosa para todas as notificações */
+  background-color: rgba(252, 215, 221, 0.361); 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f0f0f0;
+  
+  /* A ORDEM CERTA: O genérico primeiro, o específico depois! */
+  border: 1px solid #f0f0f0; 
+  border-left: 4px solid #d81b60; 
+  
   transition: all 0.3s ease;
   gap: 20px;
-}
-
-.unread {
-  background-color: rgba(252, 215, 221, 0.361);
-  border-left: 4px solid #d81b60; /* Barrinha lateral rosa para destaque */
 }
 
 .notificationCard img {
@@ -73,7 +78,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  flex: 1; /* Faz a descrição empurrar o X para o canto */
+  flex: 1; /* Faz a descrição empurrar o X para o canto direito */
 }
 
 .description p {
@@ -87,6 +92,7 @@
   color: #888;
 }
 
+/* --- BOTÃO DE FECHAR (X) --- */
 .close-btn {
   background: none;
   border: none;
@@ -101,6 +107,7 @@
   color: #e74c3c;
 }
 
+/* --- ESTADO VAZIO (Quando não há notificações) --- */
 .empty-state {
   text-align: center;
   color: #888;
@@ -108,6 +115,7 @@
   padding: 30px;
 }
 
+/* --- RESPONSIVIDADE (Para ecrãs menores/telemóveis) --- */
 @media (max-width: 600px) {
   .notificationCard {
     flex-direction: column;
