@@ -98,7 +98,9 @@
         </div>
 
         <div *ngIf="activeTab === 'pedidos'" class="glass-container profile-card animate-fade">
-            <h2>Meus Pedidos</h2>
+            <div class="profile-title">
+                <h2>Meus Pedidos</h2>
+            </div>
 
             <div *ngIf="pedidos.length === 0" class="empty-state">
                 <p>Ainda não efetuou nenhum pedido.</p>
@@ -139,7 +141,9 @@
         </div>
 
         <div *ngIf="activeTab === 'senha'" class="glass-container profile-card animate-fade">
-            <h2>Alterar Senha</h2>
+            <div class="profile-title">
+                <h2>Alterar Senha</h2>
+            </div>
             <form (ngSubmit)="changePassword()" [formGroup]="passwordForm">
                 <div class="form-group">
                     <label>Senha Atual</label>

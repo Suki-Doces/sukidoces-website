@@ -6,6 +6,7 @@
 .profile-container {
     display: flex;
     gap: 30px;
+    width: 100%; /* Adicione esta linha para fixar a largura */
     max-width: 1200px;
     margin: 2rem 1rem;
     padding: 0 20px;
