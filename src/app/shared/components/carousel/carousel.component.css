@@ -1,24 +1,15 @@
-/*Carousel Container*/
+/* Adicione ou substitua no seu arquivo existente */
+
 .carousel-container {
     display: flex;
     width: 100%;
     max-height: 32rem;
-    margin: 20px;
+    margin: 20px 0;
+    /* Removi as margens laterais para encaixar melhor no grid geral */
     justify-self: center;
 }
 
-.main-title {
-    font-size: 1.875rem;
-    /* 30px */
-    font-weight: bold;
-    text-align: center;
-    color: #1f2937;
-    /* cinza escuro */
-    margin-bottom: 2rem;
-    /* 32px */
-}
-
-/* --- Carrossel --- */
+/* Restante do seu CSS de estrutura original mantido... */
 .carousel-wrapper {
     width: 100%;
     position: relative;
@@ -29,44 +20,117 @@
 .carousel-slide {
     display: flex;
     align-items: center;
-    /* Alinha os itens verticalmente */
     height: 100%;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Animação mais fluida */
 }
 
+/* Transformado em display block pois virou tag <a> */
 .carousel-item {
-    width: 80%;
-    /* Item principal ocupa 80% do espaço */
+    display: block;
+    background-color: var(--gls-color-5);
+    text-decoration: none;
+    width: 60%;
     height: 90%;
-    /* Altura um pouco menor para efeito de escala */
     flex-shrink: 0;
     margin: 0 2%;
-    /* Espaçamento entre os itens */
-    border-radius: 10px;
-    transition: transform 0.5s ease-in-out;
+    padding: 0;
+    border-radius: 15px;
+    /* Bordas mais modernas */
+    transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
     transform: scale(0.9);
-    /* Itens não ativos são menores */
-    box-shadow: 0 4px 4px 0 var(--box-shadow);
+    box-shadow: 0 4px 10px var(--box-shadow);
+    position: relative;
+    overflow: hidden;
+    /* Mantém o overlay e imagem dentro do card redondo */
 }
 
 .carousel-item.active {
     transform: scale(1);
-    /* Item ativo em tamanho normal */
+    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.15);
+    /* Sombra rosa do tema */
 }
 
-
 .carousel-item img {
-    width: 100%;
+    display: block;
+    justify-self: self-end;
     height: 100%;
+    width: max-content;
     display: block;
     object-fit: cover;
-    border-radius: 10px;
-    /* Bordas arredondadas nas imagens */
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     pointer-events: none;
+    aspect-ratio: 1/1;
+}
+
+/* --- OVERLAY DE E-COMMERCE --- */
+.carousel-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 100%);
+    display: flex;
+    align-items: flex-end;
+    /* Joga o conteúdo para baixo */
+    padding: 1rem;
+    opacity: 0.95;
+    transition: opacity 0.3s;
+}
+
+.carousel-item:hover .carousel-overlay {
+    opacity: 1;
+}
+
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 100%;
+    text-align: left;
+}
+
+.badge {
+    background: var(--color-1, #e9228f);
+    width: fit-content;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-title {
+    margin: 0 0 5px 0;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    /* Corta o texto com "..." se for muito grande */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-3, #fd84b2);
+    margin-bottom: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.btn-buy {
+    width: fit-content;
+    background-color: #ffffff7e;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.carousel-item:hover .btn-buy {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.25);
 }
 
 /* --- Botões de Navegação --- */

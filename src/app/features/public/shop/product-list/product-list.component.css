@@ -1,223 +1,257 @@
+/* --- CONTAINER GERAL --- */
+.catalog-container {
+    /* Herda o estilo do .glass-container global, adicionando apenas o controle de espaçamento e largura */
+    background-color: var(--color-5);
+    padding: 1.5rem 1rem;
+    margin: 2rem 1rem;
+    min-height: 60vh;
+}
+
+.catalog-title {
+    text-align: center;
+    color: var(--t-color-3);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--t-color-7);
+    font-weight: 500;
+}
+
 /* --- BARRA DE FILTROS --- */
 .filters-bar {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    padding: 2rem 0;
-    overflow-x: auto; /* Permite rolagem lateral no mobile */
+    gap: 12px;
+    margin: 0 -1rem 0 -1rem;
+    padding: 1rem 1rem 1.5rem 1rem;
+    overflow-x: auto;
     align-items: center;
-    -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
-    scrollbar-width: none; /* Esconde scrollbar no Firefox */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
 
-/* Esconde scrollbar no Chrome/Safari */
 .filters-bar::-webkit-scrollbar {
     display: none;
 }
 
-.filters-bar a {
-    white-space: nowrap; /* Impede quebra de texto dos botões */
-    text-decoration: none;
-    font-size: 0.9rem;
-    /* Usa as classes button-fill/contoured do style.css, mas ajusta padding */
-    transition: all 0.2s ease;
-}
-
 .filter-separator {
-    color: #ccc;
+    color: var(--t-color-7);
+    opacity: 0.5;
     font-size: 1.2rem;
-    margin: 0 5px;
     user-select: none;
 }
 
 .clear-search-link {
     display: block;
     text-align: center;
-    margin-bottom: 20px;
-    color: var(--t-color-7, #828282);
+    margin-bottom: 1.5rem;
+    color: var(--t-color-7);
     font-size: 0.9rem;
     text-decoration: underline;
 }
 
 .clear-search-link:hover {
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
 }
 
-.no-products {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    text-align: center;
-    color: var(--t-color-7);
-}
-
-
-/* --- CONTAINER GERAL --- */
-.catalog-container {
-    background: var(--gls-color-5);
-    padding: 20px 10px;
-    max-width: 1200px;
-    margin: 40px 20px;
-    min-height: 60vh;
-}
-
-.catalog-title {
-    text-align: center;
-    color: var(--t-color-3, #533931);
-    font-size: 2rem;
-    font-weight: 700;
-}
-
-/* --- GRID LAYOUT --- */
+/* --- GRID LAYOUT (MOBILE FIRST) --- */
 .product-grid {
     display: grid;
-    /* Mobile: 2 colunas */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px; /* Espaçamento levemente aumentado para melhor respiro */
-    justify-items: center;
+    /* Grid fluido adaptável que previne esmagamento dos cards */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    align-items: stretch;
+    /* Melhora extrema de performance no Lighthouse pulando pintura de elementos fora da tela */
+    content-visibility: auto;
+    margin: -1rem;
+    padding: 1rem;
 }
 
-/* --- CARD STYLE (Baseado em short-catalog.css) --- */
+/* --- CARD STYLE (E-COMMERCE) --- */
 .product-card {
     display: flex;
-    width: 100%;
-    /* Altura automática para se adaptar ao tamanho da imagem + texto */
-    height: auto; 
     flex-direction: column;
-    justify-content: flex-start; /* Alinha conteúdo ao topo */
-    box-sizing: border-box;
-    
-    background: white;
-    border-radius: 15px;
-    border: 1px solid #eee;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    
-    text-decoration: none;
+    background: var(--white-color);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(233, 34, 143, 0.15);
-    z-index: 1;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.12);
+    /* Sombra baseada no var(--color-1) */
 }
 
-/* --- IMAGEM (Mantém 1/1 e define a largura) --- */
-.card-image {
-    display: flex;
+/* --- IMAGEM --- */
+.card-image-link {
+    display: block;
     width: 100%;
-    /* Garante que a imagem seja sempre quadrada */
-    aspect-ratio: 1 / 1; 
-    border-radius: 15px 15px 0 0; 
-    background: #f9f9f9;
-    justify-content: center;
-    align-items: center;
+    aspect-ratio: 1 / 1;
+    background: #fdfdfd;
+    position: relative;
     overflow: hidden;
+    padding: 1rem;
 }
 
-.card-img-lbl {
-    width: 100%;
-    height: 100%;
+.card-img {
+    margin: -1rem;
+    width: calc(100% + 2rem);
+    height: calc(100% + 2rem);
     object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover .card-img {
+    transform: scale(1.08);
+    /* Efeito de zoom suave clássico de e-commerce */
 }
 
 /* --- INFO DO PRODUTO --- */
 .card-info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 12px;
+    padding: 1rem;
     flex-grow: 1;
-    justify-content: space-between;
 }
 
-.card-info .card-i-h3 {
-    font-size: 1rem;
-    color: var(--t-color-5, #222);
-    margin: 0;
+.card-title-link {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+.card-title-link:hover .card-i-h3,
+.card-title-link:focus .card-i-h3 {
+    color: var(--color-1);
+}
+
+.card-i-h3 {
+    font-size: 0.95rem;
+    color: var(--t-color-5);
+    margin: 0 0 4px 0;
     font-weight: 600;
     line-height: 1.3;
-    
-    /* Limita o texto a 2 linhas */
     display: -webkit-box;
-    line-clamp: 2;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    
-    min-height: 2.6em; 
+    min-height: 2.6em;
 }
 
-.card-info .price {
-    color: var(--color-1, #e9228f);
-    margin: 5px 0 0 0;
-    font-weight: bold;
-    font-size: 1.1rem;
+.card-category {
+    color: var(--t-color-7);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.8rem;
 }
 
-/* --- BOTÃO --- */
-.btn-see-more {
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 8px;
-    background: var(--color-3, #fd84b2);
-    color: white;
-    padding: 10px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-align: center;
-    border: none;
-    margin-top: 10px;
-    transition: filter 0.2s;
+/* --- ÁREA DE PREÇO E CARRINHO --- */
+.price-action-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    /* Empurra para a base inferior sempre */
+    gap: 0.5rem;
 }
 
-.btn-see-more:hover {
-    filter: brightness(0.9);
+.price {
+    color: var(--color-1);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin: 0;
 }
 
-.no-products {
-    text-align: center;
+/* Botão de Add ao Carrinho Otimizado p/ Toque (44px min para Lighthouse) */
+.btn-add-cart {
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gls-color-5);
+    color: var(--color-1);
+    stroke: var(--color-1);
+    border: 1px solid var(--color-4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-add-cart:hover,
+.btn-add-cart:focus {
+    background-color: var(--color-1);
+    stroke: var(--color-5);
+    color: var(--white-color);
+    transform: scale(1.05);
+    outline: none;
+}
+
+.btn-add-cart:active {
+    transform: scale(0.95);
+}
+
+/* --- EMPTY STATE --- */
+.no-products-container {
     grid-column: 1 / -1;
-    color: #888;
-    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
 }
 
-/* --- DESKTOP --- */
+.no-products-svg {
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+}
+
+.no-products-text {
+    color: var(--t-color-3);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+
+/* --- DESKTOP (A partir de tablets em diante) --- */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
 @media (min-width: 1050px) {
     .filters-bar {
         justify-content: center;
-        flex-wrap: wrap; /* Em telas grandes, pode quebrar linha se tiver muitas categorias */
+        flex-wrap: wrap;
         overflow-x: visible;
     }
 
     .catalog-container {
-        justify-self: center;
-        margin: 20px;
-        padding: 40px auto;
-    }
-    
-    .product-grid {
-        display: grid;
-        /* ALTERADO: Força 5 colunas de tamanho igual */
-        grid-template-columns: repeat(5, 1fr); 
-        /* ALTERADO: Reduzi o espaçamento para caber melhor */
-        gap: 15px; 
-    }   
-    
-    .card-info {
-        /* ALTERADO: Reduzi o padding interno para acompanhar o tamanho menor do card */
-        padding: 10px;
-        gap: 8px;
+        margin: 2.5rem auto;
+        padding: 2.5rem;
+        max-width: 1200px;
     }
 
-    .card-info .card-i-h3 {
-        /* ALTERADO: Ajuste leve na fonte para não ficar muito grande no card menor */
-        font-size: 1rem; 
-        min-height: 2.8em;
+    .product-grid {
+        margin: -2.5rem;
+        padding: 2.5rem;
+    }
+
+    .catalog-title {
+        font-size: 2.2rem;
     }
 }
