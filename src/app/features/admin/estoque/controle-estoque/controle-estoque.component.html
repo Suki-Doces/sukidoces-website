@@ -1,1 +1,88 @@
-<p>controle-estoque works!</p>
+<div id="content-dashboard" class="content">
+  <h1>Estoque</h1>
+  <p class="page-subtitle">Gerencie seu Armazenamento aqui.</p>
+</div>
+
+<br><br>
+
+<section class="primary-container">
+  <div class="table_container">
+    <h3>Produtos Cadastrados</h3>
+    
+    <a routerLink="/admin/produtos" class="btn-novo-produto">+ Adicionar Novo Produto</a>
+
+    <table class="primary-table">
+      <thead class="table-head">
+        <tr>
+          <th>Produto</th>
+          <th>Nome</th>
+          <th>Quantidade</th>
+          <th>Valor</th>
+          <th>Data</th>
+          <th colspan="2" style="text-align: center;">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of produtos" class="active-row">
+          <td>
+            <img class="kit-img" [src]="'http://localhost:3000/imagens/' + p.imagem" alt="img" onerror="this.src='assets/images/produtos/default-product.svg'">
+          </td>
+          <td><span class="kit-text">{{ p.nome }}</span></td>
+          <td><b>{{ p.quantidade }}</b></td>
+          <td>R$ {{ p.preco | number:'1.2-2' }}</td>
+          <td>{{ p.data_criacao | date:'dd/MM/yyyy' }}</td>
+          
+          <td style="text-align: right;">
+            <button class="btn-acao btn-edit" (click)="abrirModalEditar(p)" title="Editar">
+              ✏️
+            </button>
+          </td>
+          <td style="text-align: left;">
+            <button class="btn-acao btn-trash" (click)="deletarProduto(p.id_produto)" title="Deletar">
+              🗑️
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="produtos.length === 0">
+          <td colspan="7" style="text-align: center; padding: 20px;">Nenhum produto em estoque.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="modal" *ngIf="isEditModalOpen">
+  <div class="modal-content">
+    <button class="modal-close" (click)="fecharModal()">✕</button>
+    <h2>Editar Produto no Estoque</h2>
+    
+    <div class="form-group">
+      <label>Nome do Produto</label>
+      <input type="text" class="box" [(ngModel)]="produtoEditado.nome">
+    </div>
+
+    <div class="form-group">
+      <label>Descrição</label>
+      <textarea class="box" rows="3" [(ngModel)]="produtoEditado.descricao"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Quantidade</label>
+        <input type="number" class="box" [(ngModel)]="produtoEditado.quantidade">
+      </div>
+      <div class="form-group half">
+        <label>Preço (R$)</label>
+        <input type="number" step="0.01" class="box" [(ngModel)]="produtoEditado.preco">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Nova Foto do Produto (Opcional)</label>
+      <input type="file" class="box" (change)="onFileSelected($event)" accept="image/*">
+    </div>
+
+    <button class="btn-salvar" (click)="salvarEdicao()">Salvar Alterações</button>
+  </div>
+</div>

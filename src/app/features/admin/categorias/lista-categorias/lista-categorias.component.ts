@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environments.development';
 
 interface Categoria {
   id_categoria: number;
@@ -20,7 +21,7 @@ interface Categoria {
 export class ListaCategoriasComponent implements OnInit {
   // Injetamos o HttpClient para poder fazer requisições
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/suki-doces/admin/categorias'; // Endereço da sua API Node.js
+  private apiUrl = `${environment.apiUrl}/admin/categorias`; // Endereço da sua API Node.js
 
   // A lista começa vazia, pois os dados virão do banco MySQL
   categorias: Categoria[] = [];
