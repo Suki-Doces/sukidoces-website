@@ -1,8 +1,13 @@
+:host{
+    display: flex;
+    justify-content: center;
+}
+
 .profile-container {
     display: flex;
     gap: 30px;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 2rem 1rem;
     padding: 0 20px;
     min-height: 70vh;
 }
@@ -132,6 +137,7 @@
 @media (max-width: 768px) {
     .profile-container {
         flex-direction: column;
+        margin: 2rem auto;
     }
 
     .form-grid {

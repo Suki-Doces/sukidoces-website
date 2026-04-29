@@ -67,8 +67,8 @@
     align-items: stretch;
     /* Melhora extrema de performance no Lighthouse pulando pintura de elementos fora da tela */
     content-visibility: auto;
-    margin: -2.5rem;
-    padding: 2.5rem;
+    margin: -1rem;
+    padding: 1rem;
 }
 
 /* --- CARD STYLE (E-COMMERCE) --- */
@@ -244,6 +244,11 @@
         margin: 2.5rem auto;
         padding: 2.5rem;
         max-width: 1200px;
+    }
+
+    .product-grid {
+        margin: -2.5rem;
+        padding: 2.5rem;
     }
 
     .catalog-title {

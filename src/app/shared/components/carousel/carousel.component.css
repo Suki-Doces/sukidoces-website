@@ -4,7 +4,8 @@
     display: flex;
     width: 100%;
     max-height: 32rem;
-    margin: 20px 0; /* Removi as margens laterais para encaixar melhor no grid geral */
+    margin: 20px 0;
+    /* Removi as margens laterais para encaixar melhor no grid geral */
     justify-self: center;
 }
 
@@ -20,12 +21,13 @@
     display: flex;
     align-items: center;
     height: 100%;
-    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animação mais fluida */
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Animação mais fluida */
 }
 
 /* Transformado em display block pois virou tag <a> */
 .carousel-item {
-    display: block; 
+    display: block;
     background-color: var(--gls-color-5);
     text-decoration: none;
     width: 60%;
@@ -33,17 +35,20 @@
     flex-shrink: 0;
     margin: 0 2%;
     padding: 0;
-    border-radius: 15px; /* Bordas mais modernas */
+    border-radius: 15px;
+    /* Bordas mais modernas */
     transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
     transform: scale(0.9);
     box-shadow: 0 4px 10px var(--box-shadow);
     position: relative;
-    overflow: hidden; /* Mantém o overlay e imagem dentro do card redondo */
+    overflow: hidden;
+    /* Mantém o overlay e imagem dentro do card redondo */
 }
 
 .carousel-item.active {
     transform: scale(1);
-    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.15); /* Sombra rosa do tema */
+    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.15);
+    /* Sombra rosa do tema */
 }
 
 .carousel-item img {
@@ -61,10 +66,11 @@
 .carousel-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 40%, transparent 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 100%);
     display: flex;
-    align-items: flex-end; /* Joga o conteúdo para baixo */
-    padding: 2.5rem 2rem;
+    align-items: flex-end;
+    /* Joga o conteúdo para baixo */
+    padding: 1rem;
     opacity: 0.95;
     transition: opacity 0.3s;
 }
@@ -74,6 +80,8 @@
 }
 
 .overlay-content {
+    display: flex;
+    flex-direction: column;
     color: white;
     width: 100%;
     text-align: left;
@@ -81,6 +89,7 @@
 
 .badge {
     background: var(--color-1, #e9228f);
+    width: fit-content;
     color: white;
     padding: 6px 14px;
     border-radius: 20px;
@@ -90,14 +99,12 @@
     letter-spacing: 0.5px;
     margin-bottom: 12px;
     display: inline-block;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .product-title {
-    font-size: 1.8rem;
-    font-weight: 800;
     margin: 0 0 5px 0;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
     /* Corta o texto com "..." se for muito grande */
     white-space: nowrap;
     overflow: hidden;
@@ -109,18 +116,16 @@
     font-weight: 700;
     color: var(--color-3, #fd84b2);
     margin-bottom: 1.2rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .btn-buy {
-    background: var(--white-color, #fff);
-    color: var(--color-1, #e9228f);
-    padding: 10px 28px;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 0.95rem;
+    width: fit-content;
+    background-color: #ffffff7e;
+    color: white;
     transition: transform 0.2s, box-shadow 0.2s;
     display: inline-block;
+    border-radius: 10px;
 }
 
 .carousel-item:hover .btn-buy {
