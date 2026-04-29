@@ -1,25 +1,43 @@
-<div class="carousel-container">
+<div class="carousel-container" *ngIf="products.length > 0">
   <div class="carousel-wrapper">
     <div class="carousel-slide" [style.transform]="'translateX(' + offset + '%)'">
-      <div *ngFor="let img of images; let i = index" 
-           class="carousel-item" 
-           [class.active]="i === currentIndex">
-        <img [src]="img" alt="Banner promocional">
-      </div>
+      
+      <a *ngFor="let prod of products; let i = index" 
+         [routerLink]="['/produtos', prod.id_produto]"
+         class="glass-container carousel-item" 
+         [class.active]="i === currentIndex">
+        
+        <img [src]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" (error)="onImageError($event)">
+        
+        <div class="carousel-overlay">
+          <div class="overlay-content">
+            <span class="badge" *ngIf="i === 0">🏆 #1 Mais Vendido</span>
+            <span class="badge" *ngIf="i !== 0">🌟 Destaque</span>
+            
+            <h2 class="product-title">{{ prod.nome }}</h2>
+            <p class="product-price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+            
+            <span class="btn-buy">Comprar</span>
+          </div>
+        </div>
+
+      </a>
+
     </div>
 
-    <button id="prevBtn" class="nav-btn" (click)="prevSlide()">
+    <button id="prevBtn" class="nav-btn" (click)="prevSlide()" aria-label="Slide anterior">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m15 19-6-7 1.5-1.75M15 5l-2 2.333" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <button id="nextBtn" class="nav-btn" (click)="nextSlide()">
+    <button id="nextBtn" class="nav-btn" (click)="nextSlide()" aria-label="Próximo slide">
      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m9 5 2 2.333M9 19l6-7-1.5-1.75" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>  
     </button>
 
     <div class="indicators-wrapper">
-      <button *ngFor="let img of images; let i = index" 
+      <button *ngFor="let prod of products; let i = index" 
               class="indicator" 
               [class.active]="i === currentIndex" 
-              (click)="goToSlide(i); resetInterval()">
+              (click)="goToSlide(i); resetInterval()"
+              [attr.aria-label]="'Ir para o banner ' + (i + 1)">
       </button>
     </div>
   </div>

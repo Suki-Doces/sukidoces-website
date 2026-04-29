@@ -294,6 +294,12 @@ html {
     stroke: var(--gls-color-5);
 }
 
+.btn-primary:focus {
+    background-color: var(--gls-color-1);
+    color: var(--color-5);
+    stroke: var(--gls-color-5);
+}
+
 .btn-danger {
     background: var(--gls-danger-btn);
     color: var(--color-5);

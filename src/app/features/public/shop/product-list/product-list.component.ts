@@ -91,4 +91,22 @@ export class ProductListComponent implements OnInit {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = this.defaultImage;
   }
+  trackByProductId(index: number, product: Product): number | string {
+    return product.id_produto;
+  }
+
+  trackByCategoryId(index: number, category: Category): number {
+    return category.id_categoria;
+  }
+
+  /**
+   * Função para capturar a ação de "Adicionar ao Carrinho"
+   */
+  addToCart(product: Product): void {
+    // Exemplo:
+    // this.cartService.addToCart(product);
+    console.log('Adicionado ao carrinho:', product.nome);
+
+    // Opcional: Aqui você pode disparar um Toast / Snackbar de sucesso
+  }
 }

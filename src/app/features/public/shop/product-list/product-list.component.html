@@ -8,7 +8,7 @@
         <h1 class="catalog-title">Produtos</h1>
     </ng-template>
 
-    <div class="filters-bar">
+    <nav class="filters-bar" aria-label="Filtros de produtos">
         <button class="btn" routerLink="/produtos"
             [class]="(!currentFilter && !currentCategory && !currentQuery) ? 'btn-glass btn-primary' : 'btn-glass'">
             Todos
@@ -24,55 +24,75 @@
             Novos
         </button>
 
-        <div class="filter-separator">|</div>
+        <div class="filter-separator" aria-hidden="true">|</div>
 
-        <button *ngFor="let cat of categories" class="btn" routerLink="/produtos" [queryParams]="{ categoria: cat.id_categoria }"
+        <button *ngFor="let cat of categories; trackBy: trackByCategoryId" class="btn" routerLink="/produtos" [queryParams]="{ categoria: cat.id_categoria }"
             [class]="(currentCategory === cat.id_categoria) ? 'btn-glass btn-primary' : 'btn-glass'">
             {{ cat.nome }}
         </button>
+    </nav>
+
+    <div *ngIf="isLoading" class="loading-state">
+        <p>Um momento ...</p>
     </div>
 
-    <div *ngIf="isLoading" style="text-align: center; padding: 40px;">
-        A carregar produtos...
-    </div>
-
-    <div class="product-grid" *ngIf="!isLoading">
+    <section class="product-grid" *ngIf="!isLoading">
         <ng-container *ngIf="products.length > 0; else noProducts">
 
-            <a *ngFor="let prod of products" [routerLink]="['/produtos', prod.id_produto]" class="product-card">
+            <article *ngFor="let prod of products; trackBy: trackByProductId" class="product-card">
 
-                <div class="card-image">
+                <a [routerLink]="['/produtos', prod.id_produto]" class="card-image-link" [attr.aria-label]="'Ver detalhes de ' + prod.nome">
                     <img
-                        class="card-img-lbl"
+                        class="card-img"
                         [src]="getProductImage(prod.imagem)"
                         [alt]="'Imagem de ' + prod.nome"
                         (error)="onImageError($event)"
                         loading="lazy"
+                        decoding="async"
                     />
-                </div>
+                </a>
 
                 <div class="card-info">
-                    <h3 class="card-i-h3">{{ prod.nome }}</h3>
+                    <a [routerLink]="['/produtos', prod.id_produto]" class="card-title-link">
+                        <h3 class="card-i-h3">{{ prod.nome }}</h3>
+                    </a>
 
-                    <small *ngIf="prod.nome_categoria" style="color: #888; font-size: 0.8rem;">
+                    <small *ngIf="prod.nome_categoria" class="card-category">
                         {{ prod.nome_categoria }}
                     </small>
 
-                    <p class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
-                    <span class="btn-see-more">Ver Detalhes</span>
+                    <div class="price-action-wrapper">
+                        <p class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+                        
+                        <button class="btn-add-cart" (click)="addToCart(prod)" aria-label="Adicionar produto ao carrinho" title="Adicionar ao carrinho">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g stroke-width="0" />
+                                <g stroke-linecap="round" stroke-linejoin="round" stroke="#ccc" stroke-width=".048" />
+                                <g stroke-width="1.5">
+                                <path d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                                <path
+                                    d="m2 3 .261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7"
+                                    stroke-linecap="round" />
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </a>
+            </article>
 
         </ng-container>
-    </div>
+    </section>
 
     <ng-template #noProducts>
-        <div class="no-products">
-            <img src="assets/icons/interface/search-icon.svg" alt="Ícone de busca"
-                style="width: 50px; opacity: 0.5; margin-bottom: 10px;">
-            <p>Nenhum produto encontrado.</p>
-            <button *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos"
-                class="btn btn-glass">
+        <div class="no-products-container">
+            <svg class="no-products-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--t-color-7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <path d="M11 8v2"></path>
+                <path d="M11 14h.01"></path>
+            </svg>
+            <p class="no-products-text">Ops! Nenhum produto encontrado.</p>
+            <button *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos" class="btn btn-glass btn-primary">
                 Ver todos os produtos
             </button>
         </div>
