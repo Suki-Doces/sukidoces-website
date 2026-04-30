@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { environment } from 'src/environments/environments.development';
+import { environment } from '../../../../../environments/environments';
 
 @Component({
   selector: 'app-lista-clientes',
