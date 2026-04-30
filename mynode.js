@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config({path: 'src/.env'}); ;
 
 const envConfigFile = `export const environment = {
     production: true,
-    apiURL: '${process.env.API_URL}',
+    apiUrl: '${process.env.API_URL}',
     productImgUrl: '${process.env.PRODUCT_IMG_URL}',
 };
 `;
@@ -20,7 +20,7 @@ if (!fs.existsSync(envDirectory)) {
 
 fs.writeFile(targetPath, envConfigFile, (err) => {
     if (err) {
-        console.error(errorColor ,`Erro ao gerar o env file`, err);
+        console.error(errorColor ,`! Erro ao gerar o env file`, err);
         throw err;
     } else {
         console.log(successColor, `${checkSign} environment.development.ts [gerado com sucesso]`);
