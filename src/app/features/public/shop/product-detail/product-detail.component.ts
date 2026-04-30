@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CartService } from 'src/app/core/services/cart.service';
 import { Product, ProductService } from 'src/app/core/services/product.service';
 
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-product-detail',

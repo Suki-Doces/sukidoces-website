@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 // Servicos
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
 
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 import { MarketingSectionComponent } from 'src/app/shared/components/contoured-section/marketing-section/marketing-section.component';
 
 @Component({
