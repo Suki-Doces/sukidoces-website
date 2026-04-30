@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, pipe, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 
 interface User {
   id: number;

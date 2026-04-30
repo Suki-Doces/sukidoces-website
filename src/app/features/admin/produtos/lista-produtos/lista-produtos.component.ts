@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http'; // Importação necessária
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-lista-produtos',

@@ -20,16 +20,38 @@ export class HoverNavComponent implements OnInit {
   // Controle de qual menu está aberto ('search' ou 'profile' ou nenhum)
   openMenu: 'search' | 'profile' | null = null;
   
-  // Para substituir a lógica do HoverNavFirst() do PHP
-  isHomeRoute: boolean = true;
+  // Controle de exibição dos botões de navegação
+  viewProductsBtn: boolean = false;
+  viewHomeBtn: boolean = false;
 
   constructor(public authService: AuthService, private router: Router) {
-    // Detecta se está na página inicial para trocar o botão Home <-> Produtos
+    // check rota inital
+    this.checkRoute(this.router.url);
+
+    // Detect mudanças de rotas para mudar o botão 1 (Home <-> Produtos)
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.isHomeRoute = event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home';
+      this.checkRoute(event.urlAfterRedirects);
     });
+  }
+
+  // Método centralizado para aplicar a regra do hover-nav
+  private checkRoute(url: string): void {
+    // Reseta as flags
+    this.viewProductsBtn = false;
+    this.viewHomeBtn = false;
+
+    const isHome = url === '/' || url === '/home';
+    const isProductDetail = url.includes('/produtos/');
+    const isProductList = url.includes('/produtos');
+    const isProfile = url.includes('/perfil');
+
+    if (isHome || isProductDetail) {
+      this.viewProductsBtn = true;
+    } else if (isProductList || isProfile) {
+      this.viewHomeBtn = true;
+    }
   }
 
   ngOnInit(): void {

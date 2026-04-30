@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 
 export interface Product {
   id_produto: number;

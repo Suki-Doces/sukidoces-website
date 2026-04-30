@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router'; // Necessário para os links dos
 
 // Importação dos serviços e environment
 import { ProductService, Product } from 'src/app/core/services/product.service';
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-carousel',

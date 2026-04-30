@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { environment } from 'src/environments/environments.development';
+import { environment } from 'src/environments/environments';
 
 // Definimos a interface baseada na sua tabela 'categorias' do banco de dados
 export interface Category {
