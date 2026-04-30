@@ -1,1 +1,124 @@
-<p>lista-clientes works!</p>
+<div class="content">
+  <h1>Clientes</h1>
+  <p class="page-subtitle">Gerencie os seus Utilizadores aqui.</p>
+</div>
+
+<br>
+
+<!-- CARDS DE ESTATÍSTICAS -->
+<section class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-header">
+      <b class="stat-title">Clientes Totais</b>
+      <span class="material-symbols-rounded icon-subtle">group</span>
+    </div>
+    <p class="stat-desc">Registados no sistema</p>
+    <div class="stat-value">{{ totalClientes }}</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-header">
+      <b class="stat-title">Novos Clientes</b>
+      <span class="material-symbols-rounded icon-subtle">person_add</span>
+    </div>
+    <p class="stat-desc">Últimos 7 dias</p>
+    <div class="stat-value text-green">{{ novosClientes }}</div>
+  </div>
+</section>
+
+<!-- TABELA DE CLIENTES -->
+<section class="primary-container">
+  <div class="table_container">
+    <div class="header-container">
+      <h3>Lista de Clientes</h3>
+      <button class="btn-novo" (click)="abrirModal('adicionar')">
+        <span class="material-symbols-rounded">add</span>
+        Novo Cliente
+      </button>
+    </div>
+
+    <table class="primary-table">
+      <thead class="table-head">
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>E-mail</th>
+          <th>Total Gasto</th>
+          <th>Pedidos</th>
+          <th>Status</th>
+          <th colspan="2" style="text-align: center;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of clientes">
+          <td>#{{ c.id_cliente.toString().padStart(4, '0') }}</td>
+          <td><b>{{ c.nome }}</b></td>
+          <td>{{ c.telefone || '-' }}</td>
+          <td>{{ c.email }}</td>
+          <td>R$ {{ (c.valor_total || 0) | number:'1.2-2' }}</td>
+          <td>{{ c.total_pedidos || 0 }}</td>
+          
+          <!-- Badges de Status -->
+          <td>
+            <span class="status-badge" [ngClass]="c.status === 'ativo' ? 'status-ativo' : 'status-inativo'">
+              {{ c.status === 'ativo' ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+
+          <td style="text-align: right;">
+            <button class="btn-acao btn-edit" (click)="abrirModal('editar', c)" title="Editar">✏️</button>
+          </td>
+          <td style="text-align: left;">
+            <button class="btn-acao btn-trash" (click)="deletarCliente(c.id_cliente)" title="Deletar">🗑️</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="clientes.length === 0">
+          <td colspan="9" style="text-align: center; padding: 20px; color: #888;">Nenhum cliente registado.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MODAL DE ADICIONAR / EDITAR -->
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Cliente' : 'Adicionar Novo Cliente' }}</h2>
+      <button class="modal-close" (click)="fecharModal()">✕</button>
+    </div>
+    
+    <form (ngSubmit)="salvarCliente()">
+      <div class="form-group">
+        <label>Nome Completo *</label>
+        <input type="text" class="box" [(ngModel)]="clienteForm.nome" name="nome" required>
+      </div>
+
+      <div class="form-group">
+        <label>E-mail *</label>
+        <input type="email" class="box" [(ngModel)]="clienteForm.email" name="email" [disabled]="isEditMode" placeholder="Apenas na criação..." required>
+        <small *ngIf="isEditMode" style="color: #888;">O e-mail não pode ser alterado por segurança.</small>
+      </div>
+
+      <div class="form-group">
+        <label>Senha {{ isEditMode ? '(Deixe em branco para manter a atual)' : '*' }}</label>
+        <input type="password" class="box" [(ngModel)]="clienteForm.senha" name="senha" [required]="!isEditMode">
+      </div>
+
+      <div class="form-group">
+        <label>Status da Conta</label>
+        <select class="box" [(ngModel)]="clienteForm.status" name="status">
+          <option value="ativo">Ativo</option>
+          <option value="inativo">Inativo</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancelar" (click)="fecharModal()">Cancelar</button>
+        <button type="submit" class="btn-salvar">Salvar Cliente</button>
+      </div>
+    </form>
+  </div>
+</div>

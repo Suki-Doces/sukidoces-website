@@ -17,6 +17,7 @@ import { ListaPedidosComponent } from './features/admin/pedidos/lista-pedidos/li
 // 2. Importe a nova tela de Produtos (que acabamos de fazer)
 import { ListaProdutosComponent } from './features/admin/produtos/lista-produtos/lista-produtos.component';
 import { ControleEstoqueComponent } from './features/admin/estoque/controle-estoque/controle-estoque.component';
+import { ListaClientesComponent } from './features/admin/clientes/lista-clientes/lista-clientes.component';
 import { ListaNotificacoesComponent } from './features/admin/notificacoes/lista-notificacoes/lista-notificacoes.component';
 export const routes: Routes = [
   // ==========================================
@@ -47,6 +48,8 @@ export const routes: Routes = [
       { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' },
       
       { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'Admin-Notificacao' },
+
+      { path: 'clientes', component: ListaClientesComponent, title: 'Admin - Clientes' },
 
       { path: 'estoque', component: ControleEstoqueComponent, title: 'Admin - Estoque' },
 

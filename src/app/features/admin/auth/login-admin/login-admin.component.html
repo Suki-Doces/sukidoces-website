@@ -1,1 +1,45 @@
-<p>login-admin works!</p>
+<div class="login-admin-container">
+  <div class="login-card">
+    <div class="brand-header">
+      <!-- Você pode colocar a logo da Suki Doces aqui -->
+      <h2>Painel Administrativo</h2>
+      <p>Suki Doces - Acesso Restrito</p>
+    </div>
+
+    <!-- Mensagem de Erro Dinâmica -->
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="fazerLoginAdmin()" class="login-form">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="email" 
+          placeholder="admin@sukidoces.com.br" 
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="password" 
+          placeholder="••••••••" 
+          required>
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Entrar no Painel</span>
+        <span *ngIf="isLoading">Verificando...</span>
+      </button>
+    </form>
+    
+    <a routerLink="/home" class="back-to-site">← Voltar para a loja</a>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+.login-admin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8fafd; /* Fundo clarinho */
+  font-family: 'Inter', sans-serif;
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.brand-header {
+  margin-bottom: 30px;
+}
+
+.brand-header h2 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 5px 0;
+}
+
+.brand-header p {
+  color: #d81b60; /* Rosa Suki Doces */
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.error-message {
+  background-color: #fdecea;
+  color: #e74c3c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  border: 1px solid #fad2cf;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ecf0f1;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #d81b60;
+}
+
+.btn-login {
+  background-color: #d81b60;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-login:hover:not(:disabled) {
+  background-color: #ad144b;
+}
+
+.btn-login:disabled {
+  background-color: #f1a9c4;
+  cursor: not-allowed;
+}
+
+.back-to-site {
+  display: inline-block;
+  margin-top: 25px;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.back-to-site:hover {
+  color: #2c3e50;
+}
