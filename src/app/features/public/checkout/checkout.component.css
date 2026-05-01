@@ -1,0 +1,136 @@
+.checkout-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.checkout-card {
+  width: 100%;
+  max-width: 800px;
+  background-color: var(--color-5, #fff0fa); /* Fundo sutil */
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(233, 34, 144, 0.1);
+}
+
+.main-title {
+  color: var(--t-color-4, #050505);
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+/* --- Títulos e Divisórias --- */
+.section-header {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  color: var(--color-1, #e92290);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.dashed-divider {
+  border: 0;
+  border-bottom: 1px dashed var(--t-color-1, #f06b9a);
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* --- Estrutura do Formulário --- */
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-row-full {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.form-row-half {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-1, #e92290); /* Rosa do Suki-Doces */
+}
+
+/* --- Inputs --- */
+.form-input {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  color: var(--t-color-5, #222);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--color-1, #e92290);
+}
+
+.form-input::placeholder {
+  color: #b0b0b0;
+}
+
+input:disabled, input[readonly] {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--t-color-7);
+  cursor: not-allowed;
+}
+
+/* --- Ações e Indicadores --- */
+.checkout-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn-checkout {
+  padding: 0.8rem 2.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.auto-save-indicator {
+  text-align: right;
+  color: var(--color-1);
+  font-weight: 600;
+  animation: pulse 1.5s infinite;
+  margin-top: -0.5rem;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+/* --- Responsividade --- */
+@media (max-width: 650px) {
+  .checkout-card {
+    padding: 1.5rem;
+  }
+  .form-row-half {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+}

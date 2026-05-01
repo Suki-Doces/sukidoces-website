@@ -8,6 +8,7 @@ import { ProductDetailComponent } from './features/public/shop/product-detail/pr
 import { CartComponent } from './features/public/cart/cart.component';
 import { LoginComponent } from './features/public/auth/login/login.component';
 import { ProfileComponent } from './features/public/user/profile/profile.component';
+import { CheckoutComponent } from './features/public/checkout/checkout.component';
 
 // Importações da Área Admin
 import { AdminLayoutComponent } from './features/admin/layout/admin-layout/admin-layout.component';
@@ -30,7 +31,7 @@ export const routes: Routes = [
   { path: 'produtos/:id', component: ProductDetailComponent, title: 'SukiDoces | Detalhes do Produto' },
   { path: 'carrinho', component: CartComponent, title: 'SukiDoces | Carrinho' },
   { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces | Meu Perfil' }, // Rota protegida, só acessível com token válido
-
+  { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard], title: 'SukiDoces | Checkout' }, // Rota protegida, só acessível com token válido
   // ==========================================
   // ROTAS DO PAINEL ADMIN (Suki Doces Admin)
   // ==========================================

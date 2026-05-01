@@ -30,10 +30,12 @@ html {
     --gls-color-3: #fd84b2cc;
     --gls-color-4: #f7b5cccc;
     --gls-color-5: #fff0facc;
+    --gls-success: #65d873cc;
     --gls-danger: #ffd6d6cc;
     --gls-danger-btn: #ff3a3acc;
 
     --gls-t-color-3: #5339318d;
+
 
     /*Text*/
     --t-color-1: #f06b9a;
@@ -230,6 +232,7 @@ html {
 
 .btn svg {
     width: 1.5rem;
+    height: auto;
     margin: -0.5rem;
     margin-left: 0;
     aspect-ratio: 1/1;
@@ -292,6 +295,10 @@ html {
     background-color: var(--gls-color-1);
     color: var(--color-5);
     stroke: var(--gls-color-5);
+}
+
+.btn-primary:hover {
+    border: 1px solid var(--gls-color-1);
 }
 
 .btn-primary:focus {

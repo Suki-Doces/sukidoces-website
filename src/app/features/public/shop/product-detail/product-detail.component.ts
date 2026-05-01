@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 // Services
 import { CartService } from 'src/app/core/services/cart.service';
 import { Product, ProductService } from 'src/app/core/services/product.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 import { environment } from 'src/environments/environments';
 
@@ -29,7 +30,8 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -87,9 +89,10 @@ export class ProductDetailComponent implements OnInit {
   addToCart(): void {
     if (this.product && this.product.quantidade > 0) {
       this.cartService.addToCart(this.product, this.quantity);
-      console.log(`Adicionando ${this.quantity} de ${this.product.nome} ao carrinho.`);
-      // Opcional: Redirecionar direto para o carrinho
-      //this.router.navigate(['/carrinho']);
+      this.notificationService.showSuccess(
+        'Adicionado ao Carrinho', 
+        `O item ${this.product.nome} já está aguardando você no carrinho.`
+      );
     }
   }
 }
