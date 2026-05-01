@@ -1,1 +1,100 @@
-<p>painel-configuracoes works!</p>
+<div id="content-settings" class="content">
+  <h1>Configurações</h1>
+  <p class="page-subtitle">Gerencie suas informações e foto de perfil.</p>
+</div>
+
+<!-- Alertas Dinâmicos do Angular (Substituem os antigos IFs do PHP) -->
+<div *ngIf="mensagemSucesso" class="alert success-box">
+  <span class="material-symbols-rounded">check_circle</span>
+  {{ mensagemSucesso }}
+</div>
+
+<div *ngIf="mensagemErro" class="alert error-box">
+  <span class="material-symbols-rounded">error</span>
+  {{ mensagemErro }}
+</div>
+
+<!-- A tag FORM é controlada pelo [formGroup] do Angular -->
+<div class="settings-container">
+  <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+    
+    <section class="profile-section">
+      <h2>Perfil do Administrador</h2>
+      
+      <!-- SEÇÃO DA FOTO DE PERFIL -->
+      <div class="photo-upload-container">
+        <img [src]="fotoPerfil" alt="Foto de Perfil" class="avatar">
+        <div class="photo-actions">
+          <p class="photo-hint">Formatos aceitos: JPG, PNG. Máx 2MB.</p>
+          
+          <!-- O botão falso que clica no input file invisível -->
+          <button type="button" class="btn-secondary" (click)="fileInput.click()">
+            <span class="material-symbols-rounded">photo_camera</span> 
+            Alterar Foto
+          </button>
+          
+          <!-- O input verdadeiro escondido -->
+          <input type="file" #fileInput hidden accept="image/png, image/jpeg" (change)="onFotoSelecionada($event)">
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- DADOS BÁSICOS -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" formControlName="nome" placeholder="Digite seu nome">
+          <span class="error-msg" *ngIf="configForm.get('nome')?.touched && configForm.get('nome')?.invalid">
+            Nome é obrigatório.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" formControlName="email" placeholder="admin@email.com">
+          <span class="error-msg" *ngIf="configForm.get('email')?.touched && configForm.get('email')?.invalid">
+            Insira um email válido.
+          </span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ALTERAR SENHA -->
+      <h3>Segurança (Opcional)</h3>
+      <p class="security-hint">Preencha apenas se desejar alterar a sua senha atual.</p>
+      
+      <div class="form-group">
+        <label>Senha atual</label>
+        <input type="password" formControlName="senhaAtual" placeholder="••••••••">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nova senha</label>
+          <input type="password" formControlName="novaSenha" placeholder="Nova senha">
+        </div>
+
+        <div class="form-group">
+          <label>Confirmar nova senha</label>
+          <input type="password" formControlName="confirmaSenha" placeholder="Repita a nova senha">
+          
+          <!-- Mensagem de erro em tempo real se as senhas não baterem -->
+          <span class="error-msg" *ngIf="configForm.get('confirmaSenha')?.hasError('senhasDiferentes')">
+            As senhas não coincidem!
+          </span>
+        </div>
+      </div>
+
+      <!-- BOTÃO DE SALVAR -->
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="configForm.invalid">
+          <span class="material-symbols-rounded">save</span>
+          Salvar Alterações
+        </button>
+      </div>
+
+    </section>
+  </form>
+</div>

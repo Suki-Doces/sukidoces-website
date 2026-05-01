@@ -19,6 +19,7 @@ import { ListaPedidosComponent } from './features/admin/pedidos/lista-pedidos/li
 import { ListaProdutosComponent } from './features/admin/produtos/lista-produtos/lista-produtos.component';
 import { ControleEstoqueComponent } from './features/admin/estoque/controle-estoque/controle-estoque.component';
 import { ListaClientesComponent } from './features/admin/clientes/lista-clientes/lista-clientes.component';
+import { PainelConfiguracoesComponent } from './features/admin/configuracoes/painel-configuracoes/painel-configuracoes.component';
 import { ListaNotificacoesComponent } from './features/admin/notificacoes/lista-notificacoes/lista-notificacoes.component';
 export const routes: Routes = [
   // ==========================================
@@ -53,6 +54,8 @@ export const routes: Routes = [
       { path: 'clientes', component: ListaClientesComponent, title: 'SukiAdm | Clientes' },
 
       { path: 'estoque', component: ControleEstoqueComponent, title: 'SukiAdm | Estoque' },
+
+      { path: 'configuracoes', component: PainelConfiguracoesComponent },
 
       // Rota de Categorias (A que acabamos de adicionar)
       { 
