@@ -3,7 +3,13 @@
 
     <div class="product-detail-wrapper">
         <div class="detail-image">
-            <img
+            <!-- Imagem de fundo com blur -->
+            <img class="img-blur-bg"
+                [src]="getProductImage(product.imagem)"
+                aria-hidden="true">
+
+            <!-- Imagem principal -->
+            <img class="img-main"
                 [src]="getProductImage(product.imagem)"
                 [alt]="'Imagem de ' + product.nome">
         </div>

@@ -42,6 +42,13 @@
             <article *ngFor="let prod of products; trackBy: trackByProductId" class="product-card">
 
                 <a [routerLink]="['/produtos', prod.id_produto]" class="card-image-link" [attr.aria-label]="'Ver detalhes de ' + prod.nome">
+                    <!-- Fundo: Imagem com blur -->
+                    <img
+                        class="card-img-blur"
+                        [src]="getProductImage(prod.imagem)"
+                        aria-hidden="true"
+                    />
+                    <!-- Frente: Imagem Principal -->
                     <img
                         class="card-img"
                         [src]="getProductImage(prod.imagem)"

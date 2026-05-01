@@ -5,7 +5,11 @@
       <a *ngFor="let prod of products; let i = index" [routerLink]="['/produtos', prod.id_produto]"
         class="glass-container carousel-item" [class.active]="i === currentIndex">
 
-        <img [src]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" (error)="onImageError($event)">
+        <!-- Imagem de fundo desfocada -->
+        <img [src]="getProductImage(prod.imagem)" class="bg-blur" aria-hidden="true">
+
+        <!-- Imagem principal do produto -->
+        <img [src]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" class="main-img" (error)="onImageError($event)">
 
         <div class="carousel-overlay">
           <div class="overlay-content">

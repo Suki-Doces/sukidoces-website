@@ -27,7 +27,9 @@
 
 /* Transformado em display block pois virou tag <a> */
 .carousel-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--gls-color-5);
     text-decoration: none;
     width: 60%;
@@ -51,15 +53,25 @@
     /* Sombra rosa do tema */
 }
 
-.carousel-item img {
-    display: block;
-    justify-self: self-end;
-    height: 100%;
-    width: max-content;
-    display: block;
-    object-fit: cover;
-    pointer-events: none;
-    aspect-ratio: 1/1;
+.bg-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Força a imagem a preencher tudo, centralizando o corte */
+  filter: blur(25px); /* Desfoque intenso para mesclar as cores */
+  transform: scale(1.2); /* O Zoom remove a borda branca original e impede bordas vazadas do blur */
+  z-index: 1;
+  opacity: 0.6; /* Deixa o fundo levemente mais suave para destacar a imagem principal */
+}
+
+.main-img {
+  position: relative;
+  z-index: 2; /* Fica acima do fundo desfocado */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Garante que o produto inteiro apareça com a proporção correta */
 }
 
 /* --- OVERLAY DE E-COMMERCE --- */
@@ -73,6 +85,7 @@
     padding: 1rem;
     opacity: 0.95;
     transition: opacity 0.3s;
+    z-index: 3;
 }
 
 .carousel-item:hover .carousel-overlay {

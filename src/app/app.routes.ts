@@ -28,7 +28,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, title: 'SukiDoces | Home' },
   { path: 'login', component: LoginComponent, title: 'SukiDoces | Login' },
   { path: 'produtos', component: ProductListComponent, title: 'SukiDoces | Produtos' },
-  { path: 'produtos/:id', component: ProductDetailComponent, title: 'SukiDoces | Detalhes do Produto' },
+  { path: 'produtos/:id', component: ProductDetailComponent, title: 'SukiDoces | ...' },
   { path: 'carrinho', component: CartComponent, title: 'SukiDoces | Carrinho' },
   { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces | Meu Perfil' }, // Rota protegida, só acessível com token válido
   { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard], title: 'SukiDoces | Checkout' }, // Rota protegida, só acessível com token válido
@@ -40,25 +40,25 @@ export const routes: Routes = [
     component: AdminLayoutComponent, 
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent, title: 'Admin - Dashboard' },
+      { path: 'dashboard', component: DashboardComponent, title: 'SukiAdm | Dashboard' },
       
       // Rota de Pedidos
-      { path: 'pedidos', component: ListaPedidosComponent, title: 'Admin - Pedidos' },
+      { path: 'pedidos', component: ListaPedidosComponent, title: 'SukiAdm | Pedidos' },
       
       // Rota de Produtos 
-      { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' },
+      { path: 'produtos', component: ListaProdutosComponent, title: 'SukiAdm | Produtos' },
       
-      { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'Admin-Notificacao' },
+      { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'SukiAdm | Notificações' },
 
-      { path: 'clientes', component: ListaClientesComponent, title: 'Admin - Clientes' },
+      { path: 'clientes', component: ListaClientesComponent, title: 'SukiAdm | Clientes' },
 
-      { path: 'estoque', component: ControleEstoqueComponent, title: 'Admin - Estoque' },
+      { path: 'estoque', component: ControleEstoqueComponent, title: 'SukiAdm | Estoque' },
 
       // Rota de Categorias (A que acabamos de adicionar)
       { 
         path: 'categorias', 
         loadComponent: () => import('./features/admin/categorias/lista-categorias/lista-categorias.component').then(m => m.ListaCategoriasComponent), 
-        title: 'Admin - Categorias' 
+        title: 'SukiAdm | Categorias' 
       } // A última não precisa de vírgula, mas não tem problema se tiver.
     ]
   },
