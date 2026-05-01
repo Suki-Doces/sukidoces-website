@@ -6,15 +6,12 @@ import { RouterModule } from '@angular/router';
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
 
 import { environment } from 'src/environments/environments';
-import { MarketingSectionComponent } from 'src/app/shared/components/contoured-section/marketing-section/marketing-section.component';
-
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule,
-    MarketingSectionComponent
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'

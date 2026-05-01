@@ -9,6 +9,9 @@ interface User {
   nome: string;
   email: string;
   nivel: 'admin' | 'cliente';
+  cpf?: string;
+  telefone?: string;
+  endereco?: string | string[] | any;
 }
 
 @Injectable({

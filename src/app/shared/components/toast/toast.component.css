@@ -1,0 +1,83 @@
+/* Container de Notificação - Agora ele É o próprio vidro */
+.toast-container {
+  /* 1. Posicionamento Mobile */
+  position: fixed;
+  bottom: 110px; /* Espaço exato para ficar acima do hover-nav */
+  left: 50%;
+  transform: translate(-50%, 50px); /* Movimento mais curto e suave */
+  width: 90%;
+  max-width: 400px;
+  z-index: 100;
+
+  /* 2. Efeito Glassmorphism (Marsala Puro, sem tom de vinho) */
+  background-color: rgba(139, 0, 0, 0.75); 
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  /* 3. Layout Interno */
+  display: flex;
+  align-items: center; /* Centraliza o ícone com os textos */
+  gap: 16px;
+  padding: 16px 20px;
+
+  /* 4. Animação (SEM will-change para proteger o blur) */
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* Estado Visível */
+.toast-container.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ícone */
+.icon {
+  font-size: 1.8rem;
+  flex-shrink: 0; /* Impede o ícone de ser esmagado caso o texto seja longo */
+}
+
+/* Textos */
+.toast-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toast-content h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.toast-content p {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.9; /* Leve transparência para contraste com o título */
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Ajustes para Desktop */
+@media (min-width: 1050px) {
+  .toast-container {
+    bottom: 24px;
+    left: auto;
+    right: 24px;
+    transform: translate(50px, 0); /* No desktop ele desliza da direita */
+    width: auto;
+    min-width: 320px;
+  }
+
+  .toast-container.show {
+    transform: translate(0, 0);
+  }
+}
