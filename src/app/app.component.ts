@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd, ChildrenOutletContexts } from '@angular/router';
+import { glassRouteAnimation } from './route-animations';
 import { CommonModule } from '@angular/common'; // Importante para o *ngIf
 
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -12,13 +13,14 @@ import { ToastComponent } from './shared/components/toast/toast.component';
   standalone: true,
   imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, HoverNavComponent, ToastComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  animations: [glassRouteAnimation]
 })
 export class AppComponent {
   title = 'SukiDoces';
   isAdminRoute = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private contexts: ChildrenOutletContexts) {
     // Fica escutando as mudanças de rota
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -26,5 +28,9 @@ export class AppComponent {
         this.isAdminRoute = event.urlAfterRedirects.includes('/admin');
       }
     });
+    
+  }
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
 }

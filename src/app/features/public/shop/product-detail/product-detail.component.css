@@ -85,11 +85,6 @@
     color: #444;
 }
 
-.detail-description > p {
-    line-height: 1.6;
-    color: #666;
-}
-
 /* Área de compra */
 .purchase-actions {
     display: flex;
@@ -158,6 +153,7 @@
 @media (max-width: 768px) {
     .product-detail-wrapper {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     .detail-image {
         height: 300px;

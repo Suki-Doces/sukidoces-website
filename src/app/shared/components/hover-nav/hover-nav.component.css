@@ -143,9 +143,10 @@
     align-items: center;
     background: rgba(255, 255, 255, 0.7);
     border-radius: 18px;
-    padding: 5px 10px;
+    padding: 5px;
     border: 1px solid rgba(247, 181, 204, 0.5);
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
 }
 
 .hnv-search-form input {
@@ -161,7 +162,7 @@
 .hnv-search-form button {
     background: var(--color-3);
     border: none;
-    border-radius: 8px;
+    border-radius: 13px;
     color: white;
     width: 32px;
     height: 32px;
