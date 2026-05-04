@@ -29,9 +29,6 @@
 .detail-image {
     position: relative;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 8px;
     width: 100%;
     min-height: 400px;
@@ -63,8 +60,6 @@
 }
 
 .detail-info {
-    display: flex;
-    flex-direction: column;
     gap: 20px;
 }
 
@@ -124,18 +119,6 @@
 
 .btn-add-cart {
     flex-grow: 1;
-    background: var(--color-1, #e9228f);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-add-cart:hover {
-    background: var(--color-2, #f06b9a);
 }
 
 .stock-info {

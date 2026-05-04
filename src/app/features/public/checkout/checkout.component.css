@@ -104,12 +104,6 @@ input:disabled, input[readonly] {
   margin-top: 1.5rem;
 }
 
-.btn-checkout {
-  padding: 0.8rem 2.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
 .auto-save-indicator {
   text-align: right;
   color: var(--color-1);

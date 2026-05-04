@@ -62,8 +62,6 @@
 
 /* --- SEARCH FORM STYLE --- */
 .header-search-form {
-    display: flex;
-    align-items: center;
     background: var(--color-5);
     border-radius: 15px;
     padding: 5px;
@@ -85,7 +83,7 @@
     background: var(--color-3);
     border: none;
     border-radius: 10px;
-    color: white;
+    color: var(--white-color);
     width: 32px;
     height: 32px;
     padding: 0.25rem;
@@ -102,7 +100,6 @@
 
 /* --- HEADER BUTTON STYLE --- */
 .header-btn {
-    display: flex;
     background-color: transparent;
     min-width: 6rem;
     max-width: 12rem;
@@ -110,8 +107,6 @@
     height: 50px;
 
     border: 0;
-    align-items: center;
-    justify-content: center;
     position: relative;
 }
 
@@ -142,15 +137,12 @@
 /* --- HOVER NAV STYLE --- */
 
 .hdr-user-btn {
-    display: flex;
     gap: 4px;
     height: 100%;
     padding: 0 15px;
     background-color: transparent;
     border: 1px solid var(--gls-color-5);
     cursor: pointer;
-    align-items: center;
-    justify-content: center;
     border-radius: 15px;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     color: var(--color-5);
@@ -194,7 +186,7 @@
     min-width: 180px;
     
     /* Glassmorphism no Dropdown */
-    background-color: rgba(247, 181, 204, 0.7);
+    background-color: var(--gls-color-4);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 

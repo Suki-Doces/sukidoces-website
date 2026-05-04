@@ -36,7 +36,7 @@
 </nav>
 
 <div class="hdr-desktop-view hdr-user-section">
-  <form (ngSubmit)="onSearch()" class="header-search-form">
+  <form (ngSubmit)="onSearch()" class="flex-align-center header-search-form">
     <input class="hdr-srch-f-plc-hldr" [(ngModel)]="searchQuery" type="query" name="query" placeholder="O que você procura?" required>
     <button type="submit" aria-label="Pesquisar">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +49,7 @@
   </form>
 
   <a class="header-btn" routerLink="/carrinho">
-    <button class="hdr-user-btn" aria-label="Carrinho de Compras">
+    <button class="flex-center hdr-user-btn" aria-label="Carrinho de Compras">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" stroke="#ccc" stroke-width=".048" />
@@ -65,7 +65,7 @@
   </a>
 
   <div class="header-btn">
-    <button class="hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menu do perfil">
+    <button class="flex-center hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menu do perfil">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" />

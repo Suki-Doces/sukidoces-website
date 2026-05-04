@@ -2,7 +2,7 @@
     <a routerLink="/produtos" class="back-link">← Voltar para o cardápio</a>
 
     <div class="product-detail-wrapper">
-        <div class="detail-image">
+        <div class="flex-center detail-image">
             <!-- Imagem de fundo com blur -->
             <img class="img-blur-bg"
                 [src]="getProductImage(product.imagem)"
@@ -14,7 +14,7 @@
                 [alt]="'Imagem de ' + product.nome">
         </div>
 
-        <div class="detail-info">
+        <div class="flex-col detail-info">
             <h1>{{ product.nome }}</h1>
 
             <div class="detail-price">
@@ -33,8 +33,10 @@
                     <button type="button" (click)="increment()">+</button>
                 </div>
 
-                <button type="button" class="btn-add-cart" (click)="addToCart()" [disabled]="product.quantidade === 0">
-                    Adicionar ao Carrinho
+                <button type="button" class="btn btn-glass btn-primary btn-add-cart" (click)="addToCart()" [disabled]="product.quantidade === 0">
+                    <h3>
+                        Adicionar ao Carrinho
+                    </h3>
                 </button>
             </div>
 

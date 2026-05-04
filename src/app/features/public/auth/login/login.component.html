@@ -1,4 +1,4 @@
-<section class="login-container">
+<section class="flex-center login-container">
     <div class="login-box" id="loginBox">
         <svg class="logo" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329 202" width="329" height="202">
             <defs>
@@ -53,7 +53,7 @@
                     <input class="login-input" type="password" name="senha" [(ngModel)]="formData.senha"
                         placeholder="Sua senha" required />
 
-                    <button class="login-btn" type="submit" [disabled]="!loginForm.valid || isLoading">
+                    <button class="btn btn-glass btn-primary login-btn" type="submit" [disabled]="!loginForm.valid || isLoading">
                         {{ isLoading ? 'Aguarde...' : 'Entrar' }}
                     </button>
                 </form>
@@ -77,7 +77,7 @@
                     <input class="login-input" type="password" name="confirmar_senha"
                         [(ngModel)]="formData.confirmar_senha" placeholder="Confirme sua senha" required />
 
-                    <button class="login-btn" type="submit" [disabled]="!registerForm.valid || isLoading">
+                    <button class="btn btn-glass btn-primary login-btn" type="submit" [disabled]="!registerForm.valid || isLoading">
                         {{ isLoading ? 'Aguarde...' : 'Cadastrar' }}
                     </button>
                 </form>

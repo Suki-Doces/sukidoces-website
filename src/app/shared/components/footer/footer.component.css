@@ -9,8 +9,6 @@
 }
 
 .footer-info {
-    display: flex;
-    flex-direction: column;
     width: -webkit-fill-available;
 }
 
@@ -22,20 +20,16 @@
 }
 
 .footer-list {
-    display: flex;
-    flex-direction: column;
     gap: 5px;
     padding: 10px 0;
 }
 
 .footer-list>nav {
-    display: flex;
-    flex-direction: column;
     gap: 3px;
 }
 
 .f-h2 {
-    color: #fec2d8;
+    color: var(--color-4);
 }
 
 .f-txt-w {
@@ -43,10 +37,8 @@
 }
 
 .footer-about {
-    display: flex;
-    flex-direction: column;
     justify-items: center;
-    background-color: #17100E;
+    background-color: var(--black-opacity-25);
     width: 100%;
     padding: 10px;
     gap: 10px;
@@ -55,8 +47,6 @@
 }
 
 .fa-topic {
-    display: flex;
-    align-items: center;
     padding: 10px;
     gap: 10px;
 }
@@ -75,11 +65,6 @@
 
 .copyright-txt>a {
     color: var(--color-4);
-}
-
-.social-media-ico {
-    width: 25px;
-    aspect-ratio: 1/1;
 }
 
 @media (min-width: 1050px) {

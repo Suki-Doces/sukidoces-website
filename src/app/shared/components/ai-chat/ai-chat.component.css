@@ -1,0 +1,121 @@
+.chat-container {
+    width: 286px;
+    height: 500px;
+    flex-grow: 1;
+    padding: 0;
+    position: relative; 
+    bottom: 0;
+    left: 0;
+    transform: none; /* Deixa o hnv-search-panel controlar a posição */
+    overflow: hidden;
+    border-radius: 20px;
+    backdrop-filter: var(--glass-blur);
+    background-color: var(--black-opacity-25);
+}
+
+/* Cabeçalho */
+.chat-header {
+    padding: 7.5px;
+    background-color: var(--gls-color-1);
+    color: var(--white-color);
+    border-radius: 0 0 20px 20px;
+}
+
+.bot-avatar {
+    background: var(--white-color);
+    border-radius: 16.5px;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.bot-avatar svg {
+    aspect-ratio: 1/1;
+    height: 90%;
+    width: auto;
+}
+
+.btn-close-chat {
+    color: var(--white-color);
+    border-radius: 16.5px;
+    cursor: pointer;
+    padding: 0;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1/1;
+}
+
+.btn-close-chat svg {
+    margin: 0;
+    aspect-ratio: 1/1;
+    height: 100%;
+    width: auto;
+}
+
+/* Corpo (Área de Scroll) */
+.chat-body {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    gap: 10px;
+    scrollbar-width: none;
+}
+
+.msg-wrapper-user {
+    align-self: flex-end;
+    max-width: 80%;
+}
+
+.msg-wrapper-bot {
+    align-self: flex-start;
+    max-width: 80%;
+}
+
+.msg-user {
+    background: var(--color-1);
+    color: var(--white-color);
+    padding: 10px 15px;
+    border-radius: 15px 15px 5px 15px;
+}
+
+.msg-bot {
+    background: var(--white-color);
+    color: var(--text-color, #333);
+    padding: 10px 15px;
+    border-radius: 15px 15px 15px 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Rodapé (Input) */
+.chat-footer {
+    border: 0;
+    border-top: 1px solid var(--black-opacity-25);
+    height: 49px;
+    padding: 2px;
+    background-color: #f7b5ccb3;
+    gap: 2px;
+    border-radius: 20px 20px 0 0;
+}
+
+.chat-footer input {
+    flex-grow: 1;
+    height: 44px;
+    padding: 0 5px 0 15px;
+    border-radius: 18px;
+    border: 0;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.btn-send {
+    aspect-ratio: 1/1;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    margin: 2px;
+    border-radius: 17px;
+}
+
+.btn-send svg {
+    margin: 0;
+}

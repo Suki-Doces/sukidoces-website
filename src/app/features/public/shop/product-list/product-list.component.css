@@ -24,12 +24,10 @@
 
 /* --- BARRA DE FILTROS --- */
 .filters-bar {
-    display: flex;
     gap: 12px;
     margin: 0 -1rem 0 -1rem;
     padding: 1rem 1rem 1.5rem 1rem;
     overflow-x: auto;
-    align-items: center;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
 }
@@ -86,7 +84,7 @@
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.12);
+    box-shadow: 0 10px 25px rgba(var(--color-1-rgb), 0.12);
     /* Sombra baseada no var(--color-1) */
 }
 
@@ -97,7 +95,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #fdfdfd;
+    background: var(--white-color);
     aspect-ratio: 1 / 1;
     width: 100%;
     padding: 1rem;
