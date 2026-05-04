@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 // CORRIGIDO: removido 'import { query } from 'express'' — Express é backend,
 // não pode ser importado no Angular. Isso quebraria o build em produção.
@@ -14,6 +16,9 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  viewProductsLink: boolean = false;
+  viewHomeLink: boolean = false;
+
   isMenuOpen: boolean = false;
   isLoggedIn: boolean = false;
   displayName: string = 'Conta';
@@ -23,7 +28,17 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private router: Router,
     private scrolller: ViewportScroller
-  ) { }
+  ) {
+    // Check initial route
+    this.checkRoute(router.url);
+
+    // Listen to route changes
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.checkRoute(event.urlAfterRedirects);
+    });
+  }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -37,6 +52,30 @@ export class HeaderComponent implements OnInit {
         this.displayName = 'Conta';
       }
     });
+  }
+
+  private checkRoute(url: string): void {
+    // Reseta as flags
+    this.viewProductsLink = false;
+    this.viewHomeLink = false;
+
+    const isHome = url === '/' || url === '/home';
+    const isProductDetail = url.includes('/produtos/');
+    const isProductList = url.includes('/produtos');
+    const isCart = url.includes('/carrinho');
+    const isCheckout = url.includes('/checkout');
+    const isProfile = url.includes('/perfil');
+    const isLogin = url.includes('/login');
+
+    // Regra de exibição
+    if (isHome || isProductDetail || isCart || isCheckout) {
+      this.viewProductsLink = true;
+    } else if (isProductList || isProfile || isLogin) {
+      this.viewHomeLink = true;
+    } else {
+      // Fallback de segurança (ex: página 404)
+      this.viewHomeLink = true; 
+    }
   }
 
   scrollToContacts() {

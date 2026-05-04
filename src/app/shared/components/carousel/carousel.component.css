@@ -13,13 +13,11 @@
 .carousel-wrapper {
     width: 100%;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     aspect-ratio: 16 / 9;
 }
 
 .carousel-slide {
-    display: flex;
-    align-items: center;
     height: 100%;
     transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     /* Animação mais fluida */
@@ -27,9 +25,6 @@
 
 /* Transformado em display block pois virou tag <a> */
 .carousel-item {
-    display: block;
-    background-color: var(--gls-color-5);
-    text-decoration: none;
     width: 60%;
     height: 90%;
     flex-shrink: 0;
@@ -38,7 +33,7 @@
     border-radius: 15px;
     /* Bordas mais modernas */
     transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
-    transform: scale(0.9);
+    transform: scale(1);
     box-shadow: 0 4px 10px var(--box-shadow);
     position: relative;
     overflow: hidden;
@@ -46,20 +41,29 @@
 }
 
 .carousel-item.active {
-    transform: scale(1);
-    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.15);
+    transform: scale(1.05);
     /* Sombra rosa do tema */
 }
 
-.carousel-item img {
-    display: block;
-    justify-self: self-end;
-    height: 100%;
-    width: max-content;
-    display: block;
-    object-fit: cover;
-    pointer-events: none;
-    aspect-ratio: 1/1;
+.bg-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Força a imagem a preencher tudo, centralizando o corte */
+  filter: blur(25px); /* Desfoque intenso para mesclar as cores */
+  transform: scale(1.2); /* O Zoom remove a borda branca original e impede bordas vazadas do blur */
+  z-index: 1;
+  opacity: 0.6; /* Deixa o fundo levemente mais suave para destacar a imagem principal */
+}
+
+.main-img {
+  position: relative;
+  z-index: 2; /* Fica acima do fundo desfocado */
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Garante que o produto inteiro apareça com a proporção correta */
 }
 
 /* --- OVERLAY DE E-COMMERCE --- */
@@ -71,17 +75,11 @@
     align-items: flex-end;
     /* Joga o conteúdo para baixo */
     padding: 1rem;
-    opacity: 0.95;
     transition: opacity 0.3s;
-}
-
-.carousel-item:hover .carousel-overlay {
-    opacity: 1;
+    z-index: 3;
 }
 
 .overlay-content {
-    display: flex;
-    flex-direction: column;
     color: white;
     width: 100%;
     text-align: left;
@@ -121,8 +119,7 @@
 
 .btn-buy {
     width: fit-content;
-    background-color: #ffffff7e;
-    color: white;
+    color: var(--color-5);
     transition: transform 0.2s, box-shadow 0.2s;
     display: inline-block;
     border-radius: 10px;
@@ -140,7 +137,7 @@
     transform: translateY(-50%);
     border: 1px solid #F7B5CC;
     background: #fff0fa50;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(5px);
     padding: 0.75rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -170,7 +167,7 @@
 /* --- Indicadores de Posição --- */
 .indicators-wrapper {
     position: absolute;
-    bottom: 0rem;
+    bottom: -0.5rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;

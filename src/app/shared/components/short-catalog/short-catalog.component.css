@@ -104,26 +104,6 @@
     color: var(--color-1, #e9228f);
     margin: 0;
 }
-
-.btn-see-more {
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 8px;
-    background: var(--color-3, #fd84b2);
-    color: white;
-    padding: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-align: center;
-    border: none;
-    margin-top: auto;
-    transition: background 0.3s;
-}
-
-.btn-see-more:hover {
-    filter: brightness(0.9);
-}
-
 /*Fim_Templates*/
 
 /* Container da Seção */

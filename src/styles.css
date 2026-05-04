@@ -17,6 +17,11 @@ html {
     --box-shadow: #00000025;
 
     /*Main*/
+
+    /**RGB Color**/
+    --color-1-rgb: 233, 34, 144;
+
+    /**HEX Color**/
     --color-1: #e92290cc;
     --color-2: #f06b9a;
     --color-3: #fd84b2;
@@ -36,6 +41,18 @@ html {
 
     --gls-t-color-3: #5339318d;
 
+    /* Variáveis base para opacidade (Glass) */
+    --white-opacity-25: rgba(255, 255, 255, 0.25);
+    --white-opacity-40: rgba(255, 255, 255, 0.4);
+    --white-opacity-50: rgba(255, 255, 255, 0.5);
+    --white-opacity-75: rgba(255, 255, 255, 0.75);
+    --black-opacity-25: rgba(0, 0, 0, 0.25);
+    --black-opacity-40: rgba(0, 0, 0, 0.4);
+    --black-opacity-50: rgba(0, 0, 0, 0.5);
+    --black-opacity-75: rgba(0, 0, 0, 0.75);
+
+    /* Variável global para Blur padrão */
+    --glass-blur: blur(5px) saturate(180%);
 
     /*Text*/
     --t-color-1: #f06b9a;
@@ -107,36 +124,35 @@ a:hover {
     }
 }
 
-/*Estrutura de Propriedades
-
-.exemplo-componente {
-  [Posicionamento]
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 10;
-
-  [Modelo de Caixa]
-  display: block;
-  width: 100px;
-  height: 100px;
-  padding: 10px;
-  border: 1px solid #ccc;
-
-  [Tipografia]
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  color: #333;
-
-  [Visual]
-  background-color: #f0f0f0;
-  border-radius: 5px;
-
-  [Outros]
-  transform: translate(-50%, -50%);
-  transition: all 0.3s ease;
+/* FLEXBOX */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-*/
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 html {
     scroll-behavior: smooth;
@@ -187,9 +203,8 @@ html {
     -webkit-backdrop-filter: blur(5px) saturate(180%);
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 1.25rem;
-    box-shadow: 
-    0 12px 32px rgba(0, 0, 0, 0.1), /* Sombra para descolar do fundo */
-    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.6); /* Reflexo interno */
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 .glass-container::after {
@@ -200,12 +215,11 @@ html {
     width: 100%;
     height: 100%;
     border-radius: inherit;
-    background-image: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.5) 0%,
-        rgba(255, 255, 255, 0) 30%,
-        rgba(255, 255, 255, 0) 100%,
-    );
+    background-image: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(255, 255, 255, 0) 30%,
+            rgba(255, 255, 255, 0) 100%,
+        );
     pointer-events: none;
     z-index: -1;
 }
@@ -253,15 +267,14 @@ html {
     position: relative;
     z-index: 1;
     /* Para ficar acima das bolhas de fundo */
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--white-opacity-25);
     backdrop-filter: blur(5px) saturate(180%);
     -webkit-backdrop-filter: blur(5px) saturate(180%);
     /* Suporte para Safari */
     border: 1px solid rgba(0, 0, 0, 0.15);
     color: var(--gls-color-1);
     /* Rosa mais escuro para garantir legibilidade */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1),
-    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
     white-space: nowrap;
 }
 
@@ -273,18 +286,17 @@ html {
     width: 100%;
     height: 100%;
     border-radius: inherit;
-    background-image: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.5) 0%,
-        rgba(255, 255, 255, 0) 30%,
-        rgba(255, 255, 255, 0) 100%,
-    );
+    background-image: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(255, 255, 255, 0) 30%,
+            rgba(255, 255, 255, 0) 100%,
+        );
     pointer-events: none;
     z-index: -1;
 }
 
 .btn-glass:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--white-opacity-50);
     border: 1px solid rgba(0, 0, 0, 0.10);
     color: var(--gls-color-1);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
@@ -314,85 +326,6 @@ html {
 
 .btn-danger:hover {
     color: var(--gls-danger-btn);
-}
-
-.button-fill {
-    display: flex;
-    padding: 8px 16px;
-    justify-content: center;
-    align-items: center;
-
-    color: var(--white-color);
-    border-radius: 100px;
-    border: 0;
-    background-color: var(--color-3);
-    transition: filter 0.2s ease;
-}
-
-.button-fill:hover {
-    filter: brightness(0.9);
-}
-
-.button-contoured {
-    display: flex;
-    padding: 8px 16px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    color: var(--t-color-7);
-    border-radius: 100px;
-    border: 1px solid var(--t-color-7);
-    background: rgba(255, 255, 255, 0.00);
-    transition: filter 0.2s ease;
-}
-
-.button-contoured:hover {
-    filter: brightness(0);
-}
-
-.button-fill-icon {
-    display: flex;
-    padding: 5px 5px 5px 10px;
-    align-items: center;
-    gap: 5px;
-
-    border-radius: 100px;
-    border: 0;
-    background: var(--color-3);
-
-    color: var(--white-color);
-    transition: filter 0.2s ease;
-}
-
-.button-fill-icon svg {
-    width: 1.5rem;
-    aspect-ratio: 1/1;
-}
-
-.button-fill-icon:hover {
-    filter: brightness(0.9);
-}
-
-@media (min-width: 1050px) {
-    .button-fill {
-        padding: 10px 20px;
-        border-radius: 18px;
-    }
-
-    .button-contoured {
-        padding: 10px 20px;
-        gap: 10px;
-
-        border-radius: 18px;
-    }
-
-    .button-fill-icon {
-        padding: 10px 10px 10px 20px;
-        gap: 10px;
-
-        border-radius: 18px;
-    }
 }
 
 .marketing-section>img {
@@ -429,12 +362,6 @@ html {
 /*ICE CREAM SECTION*/
 .ics-highlight-txt {
     color: var(--color-1);
-}
-
-/* -- LOGIN PAGE -- */
-.login-container {
-    flex-direction: row;
-    justify-content: space-evenly;
 }
 
 @media (min-width: 1050px) {

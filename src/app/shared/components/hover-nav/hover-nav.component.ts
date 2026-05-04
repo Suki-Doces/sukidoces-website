@@ -4,16 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { AiChatComponent } from '../ai-chat/ai-chat.component';
 
 @Component({
   selector: 'app-hover-nav',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, AiChatComponent],
   templateUrl: './hover-nav.component.html',
   styleUrl: './hover-nav.component.css'
 })
 export class HoverNavComponent implements OnInit {
   isLoggedIn: boolean = false;
+  isChatOpen: boolean = false;
   displayName: string = 'Perfil';
   searchQuery: string = '';
   
@@ -25,10 +27,10 @@ export class HoverNavComponent implements OnInit {
   viewHomeBtn: boolean = false;
 
   constructor(public authService: AuthService, private router: Router) {
-    // check rota inital
+    // check rota inicial
     this.checkRoute(this.router.url);
 
-    // Detect mudanças de rotas para mudar o botão 1 (Home <-> Produtos)
+    // Detecta mudanças de rotas para mudar o botão 1 (Home <-> Produtos)
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -48,10 +50,11 @@ export class HoverNavComponent implements OnInit {
     const isCart = url.includes('/carrinho');
     const isCheckout = url.includes('/checkout');
     const isProfile = url.includes('/perfil');
+    const isLogin = url.includes('/login');
 
     if (isHome || isProductDetail || isCart || isCheckout) {
       this.viewProductsBtn = true;
-    } else if (isProductList || isProfile) {
+    } else if (isProductList || isProfile || isLogin) {
       this.viewHomeBtn = true;
     }
   }
@@ -70,12 +73,24 @@ export class HoverNavComponent implements OnInit {
   }
 
   // Alterna o menu específico
-  toggleMenu(menu: 'search' | 'profile', event: Event): void {
-    event.stopPropagation();
-    this.openMenu = this.openMenu === menu ? null : menu;
+  // Alterado para aceitar apenas os valores corretos do tipo que você definiu
+  toggleMenu(menu: 'search' | 'profile', event: Event) {
+    // 1. Essencial: Bloqueia o clique para não vazar para o documento
+    if (event) {
+      event.stopPropagation();
+    }
+
+    // 2. Alterna o estado corretamente
+    if (this.openMenu === menu) {
+      this.openMenu = null; // Corrigido de '' para null
+    } else {
+      this.openMenu = menu; 
+      this.isChatOpen = false; // Se abrir pesquisa/perfil, fecha o chat
+    }
   }
 
-  // Fecha o menu se clicar em qualquer lugar fora dele
+  // Fecha qualquer menu se clicar em qualquer lugar fora dele
+  // (Juntámos o seu closeMenu com o HostListener)
   @HostListener('document:click')
   closeMenu(): void {
     this.openMenu = null;
@@ -87,6 +102,10 @@ export class HoverNavComponent implements OnInit {
       this.router.navigate(['/produtos'], { queryParams: { query: this.searchQuery } });
       this.openMenu = null; // Fecha o painel após pesquisar
     }
+  }
+
+  toggleChat() {
+    this.isChatOpen = !this.isChatOpen;
   }
 
   // Faz logout da conta

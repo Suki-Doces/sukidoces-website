@@ -27,25 +27,39 @@
 }
 
 .detail-image {
-    width: 100%;
-    height: 450px;
-    border-radius: 15px;
+    position: relative;
     overflow: hidden;
+    border-radius: 8px;
+    width: 100%;
+    min-height: 400px;
+    height: 450px;
     background: #f8f8f8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.detail-image > img {
+/* Configura o fundo borrado */
+.img-blur-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* ou cover, dependendo do estilo da foto */
+    object-fit: cover; /* Faz a imagem preencher todo o espaço disponível */
+    filter: blur(20px); /* Controla a intensidade do borrão */
+    transform: scale(1.1); /* Importante: Remove bordas brancas nas extremidades causadas pelo blur */
+    z-index: 0;
+    opacity: 0.6; /* Opcional: deixa o fundo um pouco mais suave para destacar a imagem da frente */
+}
+
+/* Configura a imagem principal focada */
+.img-main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Garante que a imagem inteira apareça sem ser cortada */
 }
 
 .detail-info {
-    display: flex;
-    flex-direction: column;
     gap: 20px;
 }
 
@@ -64,11 +78,6 @@
     font-size: 1.1rem;
     margin-bottom: 8px;
     color: #444;
-}
-
-.detail-description > p {
-    line-height: 1.6;
-    color: #666;
 }
 
 /* Área de compra */
@@ -110,18 +119,6 @@
 
 .btn-add-cart {
     flex-grow: 1;
-    background: var(--color-1, #e9228f);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-add-cart:hover {
-    background: var(--color-2, #f06b9a);
 }
 
 .stock-info {
@@ -139,6 +136,7 @@
 @media (max-width: 768px) {
     .product-detail-wrapper {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     .detail-image {
         height: 300px;

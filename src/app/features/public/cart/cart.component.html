@@ -5,10 +5,10 @@
 
     <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-layout">
 
-        <div class="cart-items-section">
+        <div class="flex-col cart-items-section">
             <div class="cart-item-card" *ngFor="let item of cartItems">
 
-                <a [routerLink]="['/produtos', item.product.id_produto]" class="item-img-link">
+                <a [routerLink]="['/produtos', item.product.id_produto]" class="flex-center item-img-link">
                     <img [src]="getProductImage(item.product.imagem)" [alt]="'Imagem de ' + item.product.nome"
                         class="item-img" />
                 </a>
@@ -20,16 +20,16 @@
                     <p class="item-price">{{ item.product.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
                 </div>
 
-                <div class="item-actions-wrapper">
-                    <div class="qty-control">
-                        <button class="qty-btn" (click)="decrement(item)" [disabled]="item.quantity <= 1">
+                <div class="flex-between item-actions-wrapper">
+                    <div class="flex-align-center qty-control">
+                        <button class="flex-center qty-btn" (click)="decrement(item)" [disabled]="item.quantity <= 1">
                             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
                                 fill="none">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
                         </button>
                         <span class="qty-number">{{ item.quantity }}</span>
-                        <button class="qty-btn" (click)="increment(item)"
+                        <button class="flex-center qty-btn" (click)="increment(item)"
                             [disabled]="item.quantity >= item.product.quantidade">
                             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
                                 fill="none">
@@ -43,7 +43,7 @@
                         <strong>{{ (item.product.preco * item.quantity) | currency:'BRL':'symbol':'1.2-2' }}</strong>
                     </div>
 
-                    <button class="btn-remove-icon" (click)="removeItem(item.product.id_produto)" title="Remover item">
+                    <button class="flex-center btn-remove-icon" (click)="removeItem(item.product.id_produto)" title="Remover item">
                         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g stroke-width="0" />
                             <g stroke-linecap="round" stroke-linejoin="round" />
@@ -61,17 +61,17 @@
                 <h2>Resumo do Pedido</h2>
                 <hr class="summary-divider">
 
-                <div class="summary-row">
+                <div class="flex-between summary-row">
                     <span>Subtotal ({{ cartItems.length }} itens)</span>
                     <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
                 </div>
 
-                <div class="summary-row total-row">
+                <div class="flex-between summary-row total-row">
                     <span>Total</span>
                     <span class="total-price">{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
                 </div>
 
-                <div class="summary-actions">
+                <div class="flex-col summary-actions">
                     <button routerLink="/checkout" class="btn btn-glass btn-primary full-width">
                         Continuar para o Checkout
                         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,7 +92,7 @@
     </div>
 
     <ng-template #emptyCart>
-        <div class="empty-state-container">
+        <div class="flex-col-center empty-state-container">
             <svg class="empty-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
                 fill="none" stroke="var(--t-color-7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="9" cy="21" r="1"></circle>

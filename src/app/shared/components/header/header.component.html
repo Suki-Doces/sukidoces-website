@@ -1,4 +1,4 @@
-<a class="header-logo" routerLink="/home">
+<a class="header-logo" routerLink="/home" aria-label="Logo da SukiDoces, redirecionar para página home?">
   <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329 202" width="329" height="202">
     <defs>
       <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -28,16 +28,18 @@
 </a>
 <nav>
   <!-- <a routerLink="/home">Home</a> -->
-  <a routerLink="/produtos">Produtos</a>
-  <a routerLink="/historia">História</a>
-  <a (click)="scrollToContacts()" style="cursor: pointer;">Contatos</a>
+  <a *ngIf="viewProductsLink" routerLink="/produtos" class="header-link">Produtos</a>
+  <a *ngIf="viewHomeLink" routerLink="/home" class="header-link">Home</a>
+
+  <a routerLink="/historia" class="header-link">História</a>
+  <a (click)="scrollToContacts()" style="cursor: pointer;" class="header-link">Contatos</a>
 </nav>
 
 <div class="hdr-desktop-view hdr-user-section">
-  <form (ngSubmit)="onSearch()" class="header-search-form">
+  <form (ngSubmit)="onSearch()" class="flex-align-center header-search-form">
     <input class="hdr-srch-f-plc-hldr" [(ngModel)]="searchQuery" type="query" name="query" placeholder="O que você procura?" required>
     <button type="submit" aria-label="Pesquisar">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" />
         <path d="m20 20 2 2M6.75 3.27a9.5 9.5 0 1 1-3.48 3.48" stroke="#fff" stroke-width="1.5"
@@ -47,7 +49,7 @@
   </form>
 
   <a class="header-btn" routerLink="/carrinho">
-    <button class="hdr-user-btn" aria-label="Carrinho de Compras">
+    <button class="flex-center hdr-user-btn" aria-label="Carrinho de Compras">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" stroke="#ccc" stroke-width=".048" />
@@ -63,7 +65,7 @@
   </a>
 
   <div class="header-btn">
-    <button class="hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menu do perfil">
+    <button class="flex-center hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menu do perfil">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" />
@@ -80,14 +82,14 @@
       <ng-container *ngIf="isLoggedIn; else loggedOut">
         <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'dados'}" (click)="closeMenu()">Meus Dados</a>
         <hr>
-        <a class="hdr-pp-links" *ngIf="authService.isAdmin()" routerLink="/admin">Painel Admin</a>
+        <a class="hdr-pp-links" *ngIf="authService.isAdmin()" routerLink="/admin" (click)="closeMenu()">Painel Admin</a>
         <hr *ngIf="authService.isAdmin()">
         <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'pedidos' }" (click)="closeMenu()">Pedidos</a>
         <hr>
         <a class="hdr-pp-links" (click)="logout()" style="color: #e9228f; cursor: pointer;">Sair</a>
       </ng-container>
       <ng-template #loggedOut>
-        <a class="hdr-pp-links" routerLink="/login">Entrar / Cadastrar</a>
+        <a class="hdr-pp-links" routerLink="/login" (click)="closeMenu()">Entrar / Cadastrar</a>
       </ng-template>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
+import { adminGuard, authGuard } from './core/guards/auth.guard';
 
 // --- Importações da Área Pública (Loja) ---
 import { HomeComponent } from './features/public/home/home.component';
@@ -26,34 +26,34 @@ export const routes: Routes = [
   // ROTAS PÚBLICAS (Suki Doces Website)
   // ==========================================
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, title: 'SukiDoces | Home' },
-  { path: 'login', component: LoginComponent, title: 'SukiDoces | Login' },
-  { path: 'produtos', component: ProductListComponent, title: 'SukiDoces | Produtos' },
-  { path: 'produtos/:id', component: ProductDetailComponent, title: 'SukiDoces | Detalhes do Produto' },
-  { path: 'carrinho', component: CartComponent, title: 'SukiDoces | Carrinho' },
-  { path: 'perfil', component: ProfileComponent, canActivate: [authGuard], title: 'SukiDoces | Meu Perfil' }, // Rota protegida, só acessível com token válido
-  { path: 'checkout', component: CheckoutComponent, canActivate: [authGuard], title: 'SukiDoces | Checkout' }, // Rota protegida, só acessível com token válido
+  { path: 'home', component: HomeComponent, data: { animation: 'home' }, title: 'SukiDoces | Home' },
+  { path: 'login', component: LoginComponent, data: { animation: 'login' }, title: 'SukiDoces | Login' },
+  { path: 'produtos', component: ProductListComponent, data: { animation: 'produtos' }, title: 'SukiDoces | Produtos' },
+  { path: 'produtos/:id', component: ProductDetailComponent, data: { animation: 'produtos-id' }, title: 'SukiDoces | ...' },
+  { path: 'carrinho', component: CartComponent, data: { animation: 'carrinho' }, title: 'SukiDoces | Carrinho' },
+  { path: 'perfil', component: ProfileComponent, data: { animation: 'perfil' }, canActivate: [authGuard], title: 'SukiDoces | Meu Perfil' }, // Rota protegida, só acessível com token válido
+  { path: 'checkout', component: CheckoutComponent, data: { animation: 'checkout' }, canActivate: [authGuard], title: 'SukiDoces | Checkout' }, // Rota protegida, só acessível com token válido
   // ==========================================
   // ROTAS DO PAINEL ADMIN (Suki Doces Admin)
   // ==========================================
   {
     path: 'admin',
-    component: AdminLayoutComponent, 
+    component: AdminLayoutComponent, data: { animation: 'admin' }, canActivate: [adminGuard], // Protege toda a área admin, só acessível com token válido
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent, title: 'Admin - Dashboard' },
+      { path: 'dashboard', component: DashboardComponent, title: 'SukiAdm | Dashboard' },
       
       // Rota de Pedidos
-      { path: 'pedidos', component: ListaPedidosComponent, title: 'Admin - Pedidos' },
+      { path: 'pedidos', component: ListaPedidosComponent, title: 'SukiAdm | Pedidos' },
       
       // Rota de Produtos 
-      { path: 'produtos', component: ListaProdutosComponent, title: 'Admin - Produtos' },
+      { path: 'produtos', component: ListaProdutosComponent, title: 'SukiAdm | Produtos' },
       
-      { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'Admin-Notificacao' },
+      { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'SukiAdm | Notificações' },
 
-      { path: 'clientes', component: ListaClientesComponent, title: 'Admin - Clientes' },
+      { path: 'clientes', component: ListaClientesComponent, title: 'SukiAdm | Clientes' },
 
-      { path: 'estoque', component: ControleEstoqueComponent, title: 'Admin - Estoque' },
+      { path: 'estoque', component: ControleEstoqueComponent, title: 'SukiAdm | Estoque' },
 
       { path: 'configuracoes', component: PainelConfiguracoesComponent },
 
@@ -61,7 +61,7 @@ export const routes: Routes = [
       { 
         path: 'categorias', 
         loadComponent: () => import('./features/admin/categorias/lista-categorias/lista-categorias.component').then(m => m.ListaCategoriasComponent), 
-        title: 'Admin - Categorias' 
+        title: 'SukiAdm | Categorias' 
       } // A última não precisa de vírgula, mas não tem problema se tiver.
     ]
   },

@@ -24,12 +24,10 @@
 
 /* --- BARRA DE FILTROS --- */
 .filters-bar {
-    display: flex;
     gap: 12px;
     margin: 0 -1rem 0 -1rem;
     padding: 1rem 1rem 1.5rem 1rem;
     overflow-x: auto;
-    align-items: center;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
 }
@@ -86,27 +84,45 @@
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.12);
+    box-shadow: 0 10px 25px rgba(var(--color-1-rgb), 0.12);
     /* Sombra baseada no var(--color-1) */
 }
 
 /* --- IMAGEM --- */
 .card-image-link {
-    display: block;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: #fdfdfd;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    background: var(--white-color);
+    aspect-ratio: 1 / 1;
+    width: 100%;
     padding: 1rem;
 }
 
+/* Imagem desfocada ao fundo */
+.card-img-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a imagem preencher todo o container */
+    filter: blur(20px); /* Intensidade do desfoque */
+    transform: scale(1.15); /* Aumenta um pouco para evitar bordas transparentes causadas pelo blur */
+    opacity: 0.6; /* Deixa o blur um pouco mais sutil para destacar o produto */
+    z-index: 1;
+}
+
 .card-img {
-    margin: -1rem;
+    position: relative;
     width: calc(100% + 2rem);
     height: calc(100% + 2rem);
+    margin: -1rem;
     object-fit: contain;
     transition: transform 0.4s ease;
+    z-index: 2;
 }
 
 .product-card:hover .card-img {

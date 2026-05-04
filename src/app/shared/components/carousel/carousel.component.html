@@ -1,16 +1,20 @@
 <div class="carousel-container" *ngIf="products.length > 0">
   <div class="carousel-wrapper">
-    <div class="carousel-slide" [style.transform]="'translateX(' + offset + '%)'">
+    <div class="flex-align-center carousel-slide" [style.transform]="'translateX(' + offset + '%)'">
 
       <a *ngFor="let prod of products; let i = index" [routerLink]="['/produtos', prod.id_produto]"
-        class="glass-container carousel-item" [class.active]="i === currentIndex">
+        class="glass-container flex-center carousel-item" [class.active]="i === currentIndex">
 
-        <img [src]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" (error)="onImageError($event)">
+        <!-- Imagem de fundo desfocada -->
+        <img [src]="getProductImage(prod.imagem)" class="bg-blur" aria-hidden="true" fetchpriority="high">
+
+        <!-- Imagem principal do produto -->
+        <img [src]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" class="main-img" (error)="onImageError($event)">
 
         <div class="carousel-overlay">
-          <div class="overlay-content">
-            <span class="badge" *ngIf="i === 0">🏆 #1 Mais Vendido</span>
-            <span class="badge" *ngIf="i !== 0">🌟 Destaque</span>
+          <div class="flex-col overlay-content">
+            <span class="badge" *ngIf="i === 0">#1 Mais Vendido</span>
+            <span class="badge" *ngIf="i !== 0">Destaque</span>
 
             <h1 class="product-title">{{ prod.nome }}</h1>
             <p class="product-price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>

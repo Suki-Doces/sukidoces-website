@@ -1,8 +1,8 @@
 /* Container Principal (Lado a Lado) */
 .login-container {
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     min-height: 70vh;
     padding: 40px 20px;
     gap: 20px;
@@ -32,7 +32,7 @@
 }
 
 /* Estilos de Inputs e Botões da v2.0 */
-.login-input, .login-btn {
+.login-input {
     background: var(--color-5, #f9f9f9);
     width: 100%;
     padding: 12px;
@@ -49,21 +49,16 @@
 }
 
 .login-btn {
-    background-color: var(--color-1, #e9228f);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
+    width: 100%;
 }
 
-.login-btn:hover:not(:disabled) {
-    background-color: var(--color-2, #f06b9a);
+.login-btn:disabled:hover {
+    border: 1px solid var(--t-color-7);
 }
 
 .login-btn:disabled {
-    background-color: #fec8c8;
+    background-color: var(--gls-color-5);
+    color: var(--t-color-7);
     cursor: not-allowed;
 }
 

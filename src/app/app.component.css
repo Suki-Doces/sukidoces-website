@@ -1,0 +1,6 @@
+main {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden; /* Evita que a tela crie barra de rolagem horizontal durante a animação */
+  min-height: 100vh; /* Garante que o contêiner sempre tenha altura */
+}

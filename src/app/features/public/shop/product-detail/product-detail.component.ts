@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 // Services
+import { Title } from '@angular/platform-browser';
 import { CartService } from 'src/app/core/services/cart.service';
 import { Product, ProductService } from 'src/app/core/services/product.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -27,6 +28,7 @@ export class ProductDetailComponent implements OnInit {
   readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
   constructor(
+    private titleService: Title,
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
@@ -51,6 +53,7 @@ export class ProductDetailComponent implements OnInit {
       next: (data) => {
         this.product = data;
         this.isLoading = false;
+        this.titleService.setTitle(`SukiDoces | ${this.product?.nome}`);
       },
       error: (err) => {
         console.error('Erro ao carregar produto:', err);
