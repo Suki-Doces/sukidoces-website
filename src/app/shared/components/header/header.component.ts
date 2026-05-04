@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { query } from 'express';
+// CORRIGIDO: removido 'import { query } from 'express'' — Express é backend,
+// não pode ser importado no Angular. Isso quebraria o build em produção.
 
 @Component({
   selector: 'app-header',
@@ -18,14 +19,20 @@ export class HeaderComponent implements OnInit {
   displayName: string = 'Conta';
   searchQuery: string = '';
 
-  constructor(public authService: AuthService, private router: Router, private scrolller: ViewportScroller) { }
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private scrolller: ViewportScroller
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
       if (user) {
         const parts = user.nome.trim().split(' ');
-        this.displayName = parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1]}` : parts[0];
+        this.displayName = parts.length > 1
+          ? `${parts[0]} ${parts[parts.length - 1]}`
+          : parts[0];
       } else {
         this.displayName = 'Conta';
       }
@@ -55,6 +62,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
-    this.isMenuOpen = false; // Opcional: garante que o menu feche ao sair
+    this.isMenuOpen = false;
   }
 }
