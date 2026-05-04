@@ -4,7 +4,6 @@ import { CommonModule, ViewportScroller } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
 // CORRIGIDO: removido 'import { query } from 'express'' — Express é backend,
 // não pode ser importado no Angular. Isso quebraria o build em produção.
 
