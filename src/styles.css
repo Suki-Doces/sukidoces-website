@@ -204,10 +204,7 @@ html {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 1.25rem;
     box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.1),
-        /* Sombra para descolar do fundo */
-        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.6);
-    /* Reflexo interno */
+        0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 .glass-container::after {
@@ -277,8 +274,7 @@ html {
     border: 1px solid rgba(0, 0, 0, 0.15);
     color: var(--gls-color-1);
     /* Rosa mais escuro para garantir legibilidade */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1),
-        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
     white-space: nowrap;
 }
 
