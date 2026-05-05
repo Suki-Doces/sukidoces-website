@@ -5,10 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './marketing-ice-cream-section.component.html',
-  styleUrls: [
-    '../contoured-section.component.css',
-    './marketing-ice-cream-section.component.css'
-  ]
+  styleUrl: './marketing-ice-cream-section.component.css'
 
 })
 export class MarketingIceCreamSectionComponent {

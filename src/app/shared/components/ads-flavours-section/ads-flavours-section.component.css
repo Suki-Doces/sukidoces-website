@@ -15,6 +15,7 @@
     height: 150px;
     justify-content: center;
     align-items: center;
+    backdrop-filter: none;
 }
 
 .af-content {

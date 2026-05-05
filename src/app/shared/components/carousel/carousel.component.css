@@ -35,6 +35,7 @@
     transition: transform 0.5s ease-in-out, box-shadow 0.3s ease;
     transform: scale(1);
     box-shadow: 0 4px 10px var(--box-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     position: relative;
     overflow: hidden;
     /* Mantém o overlay e imagem dentro do card redondo */
@@ -42,7 +43,7 @@
 
 .carousel-item.active {
     transform: scale(1.05);
-    /* Sombra rosa do tema */
+    border: 2px solid var(--gls-color-1);
 }
 
 .bg-blur {
@@ -80,15 +81,15 @@
 }
 
 .overlay-content {
-    color: white;
+    color: var(--white-color);
     width: 100%;
     text-align: left;
 }
 
 .badge {
-    background: var(--color-1, #e9228f);
+    background: var(--color-1);
     width: fit-content;
-    color: white;
+    color: var(--white-color);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.75rem;
@@ -102,7 +103,7 @@
 
 .product-title {
     margin: 0 0 5px 0;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 4px var(--black-opacity-40);
     /* Corta o texto com "..." se for muito grande */
     white-space: nowrap;
     overflow: hidden;
@@ -112,7 +113,7 @@
 .product-price {
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--color-3, #fd84b2);
+    color: var(--color-3);
     margin-bottom: 1.2rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
@@ -127,7 +128,7 @@
 
 .carousel-item:hover .btn-buy {
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 5px 15px var(--white-opacity-25);
 }
 
 /* --- Botões de Navegação --- */
@@ -135,8 +136,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    border: 1px solid #F7B5CC;
-    background: #fff0fa50;
+    border: 1px solid var(--gls-color-4);
+    background: var(--white-opacity-25);
     backdrop-filter: blur(5px);
     padding: 0.75rem;
     cursor: pointer;
@@ -145,23 +146,22 @@
 }
 
 .nav-btn:hover {
-    background: rgba(240, 107, 154, 0.50);
+    background-color: var(--gls-color-1);
 }
 
 .nav-btn#prevBtn {
-    left: 0;
-    border-radius: 0px 20px 20px 0px;
+    left: 5%;
+    border-radius: 20px 15px 15px 20px;
 }
 
 .nav-btn#nextBtn {
-    right: 0;
-    border-radius: 20px 0px 0px 20px;
+    right: 5%;
+    border-radius: 15px 20px 20px 15px;
 }
 
 .nav-btn svg {
     width: 1.5rem;
     height: 1.5rem;
-    stroke: #1f2937;
 }
 
 /* --- Indicadores de Posição --- */

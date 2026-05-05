@@ -7,7 +7,7 @@
 .checkout-card {
   width: 100%;
   max-width: 800px;
-  background-color: var(--color-5, #fff0fa); /* Fundo sutil */
+  background-color: var(--color-5); /* Fundo sutil */
   border-radius: 12px;
   padding: 2.5rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -15,7 +15,7 @@
 }
 
 .main-title {
-  color: var(--t-color-4, #050505);
+  color: var(--t-color-4);
   font-size: 1.6rem;
   margin-bottom: 2rem;
   font-weight: 700;
@@ -28,7 +28,7 @@
 }
 
 .section-title {
-  color: var(--color-1, #e92290);
+  color: var(--color-1);
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -36,7 +36,7 @@
 
 .dashed-divider {
   border: 0;
-  border-bottom: 1px dashed var(--t-color-1, #f06b9a);
+  border-bottom: 1px dashed var(--t-color-1);
   margin: 0;
   opacity: 0.8;
 }
@@ -68,7 +68,7 @@
 .form-group label {
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--color-1, #e92290); /* Rosa do Suki-Doces */
+  color: var(--color-1);
 }
 
 /* --- Inputs --- */
@@ -76,23 +76,23 @@
   padding: 0.85rem 1rem;
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #ffffff;
-  color: var(--t-color-5, #222);
+  background: var(--white-color);
+  color: var(--t-color-5);
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.3s ease;
 }
 
 .form-input:focus {
-  border-color: var(--color-1, #e92290);
+  border-color: var(--color-1);
 }
 
 .form-input::placeholder {
-  color: #b0b0b0;
+  color: var(--t-color-7);
 }
 
 input:disabled, input[readonly] {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--white-opacity-50);
   color: var(--t-color-7);
   cursor: not-allowed;
 }
