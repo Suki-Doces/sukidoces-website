@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environments';
 
 // O "molde" de como uma notificação deve ser
 interface Notificacao {
@@ -14,30 +15,39 @@ interface Notificacao {
 @Component({
   selector: 'app-lista-notificacoes',
   standalone: true,
-  imports: [CommonModule], // <--- 2. O SEGREDO ESTÁ AQUI! Coloque o CommonModule aqui dentro
+  imports: [CommonModule],
   templateUrl: './lista-notificacoes.component.html',
   styleUrls: ['./lista-notificacoes.component.css']
 })
-
 export class ListaNotificacoesComponent implements OnInit {
   private http = inject(HttpClient);
   
-  // A nossa lista inteligente
   notificacoes: Notificacao[] = [];
+
+  private apiUrl = `${environment.apiUrl}/admin/notificacoes`;
 
   ngOnInit() {
     this.carregarNotificacoes();
   }
 
   carregarNotificacoes() {
-    // Tenta buscar da sua API real
-    this.http.get<Notificacao[]>('http://localhost:3000/suki-doces/notificacoes').subscribe({
+    // Usamos <any> porque a API devolve um objeto: { notifications: [...], unreadCount: X }
+    this.http.get<any>(this.apiUrl).subscribe({
       next: (dados) => {
-        this.notificacoes = dados;
+        // "Traduzimos" os dados do Prisma para o formato que o seu HTML do Angular espera
+        this.notificacoes = dados.notifications.map((n: any) => {
+          return {
+            id: n.id_notificacao,
+            mensagem: n.mensagem,
+            tempo: new Date(n.data_criacao).toLocaleDateString('pt-BR'), // Ex: 04/05/2026
+            icone: this.getIconePorTipo(n.tipo),
+            lida: n.lido
+          };
+        });
       },
       error: (erro) => {
-        console.log('API de notificações não encontrada, usando dados de teste.');
-        // PLANO B: Dados falsos para você ver a tela funcionando na hora!
+        console.log('API de notificações não encontrada, usando dados de teste.', erro);
+        // PLANO B (Fallback)
         this.notificacoes = [
           { id: 1, mensagem: 'O Cliente Ruben Amorin usou o cupom de 20% na sua compra.', tempo: '1m ago', icone: 'assets/icon/Cupom - icon.svg', lida: false },
           { id: 2, mensagem: 'Nova compra realizada número do Pedido #00399', tempo: '5m ago', icone: 'assets/icon/Payment - icon.svg', lida: false },
@@ -48,16 +58,35 @@ export class ListaNotificacoesComponent implements OnInit {
     });
   }
 
-  // Ação do botão "Marcar como lidas"
-  marcarTodasComoLidas() {
-    this.notificacoes.forEach(n => n.lida = true);
-    // FUTURO: Aqui você enviará um PUT para o Node.js avisando o banco de dados
+  // Função auxiliar para escolher o ícone baseado no tipo de notificação
+  getIconePorTipo(tipo: string): string {
+    switch(tipo) {
+      case 'usuario': return 'assets/admin/icon/User - icon.svg';
+      case 'pedido': return 'assets/admin/icon/Payment - icon.svg';
+      case 'carrinho': return 'assets/admin/icon/Cart - icon.svg';
+      default: return 'assets/admin/icon/Notification - icon.svg';
+    }
   }
 
-  // Ação do botão "X" de fechar
+  // AGORA FUNCIONA DE VERDADE COM O BACKEND!
+  marcarTodasComoLidas() {
+    this.http.put(`${this.apiUrl}/read-all`, {}).subscribe({
+      next: () => {
+        // Se a API confirmar, atualizamos a tela
+        this.notificacoes.forEach(n => n.lida = true);
+      },
+      error: (err) => console.error('Erro ao marcar como lidas na API', err)
+    });
+  }
+
+  // AGORA FUNCIONA DE VERDADE COM O BACKEND!
   fecharNotificacao(id: number) {
-    // Filtra a lista, removendo a notificação que foi clicada
-    this.notificacoes = this.notificacoes.filter(n => n.id !== id);
-    // FUTURO: Aqui você enviará um DELETE para o Node.js apagar do banco
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+      next: () => {
+        // Se a API apagar com sucesso, removemos da tela
+        this.notificacoes = this.notificacoes.filter(n => n.id !== id);
+      },
+      error: (err) => console.error('Erro ao deletar notificação na API', err)
+    });
   }
 }
