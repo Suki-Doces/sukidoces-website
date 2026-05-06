@@ -51,10 +51,11 @@ export class HoverNavComponent implements OnInit {
     const isCheckout = url.includes('/checkout');
     const isProfile = url.includes('/perfil');
     const isLogin = url.includes('/login');
+    const isContact = url.includes('/contatos');
 
     if (isHome || isProductDetail || isCart || isCheckout) {
       this.viewProductsBtn = true;
-    } else if (isProductList || isProfile || isLogin) {
+    } else if (isProductList || isProfile || isLogin || isContact) {
       this.viewHomeBtn = true;
     }
   }

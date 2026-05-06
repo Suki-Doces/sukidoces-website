@@ -118,3 +118,15 @@
 .btn-send svg {
     margin: 0;
 }
+
+::ng-deep .chat-product-link {
+    color: var(--color-1, #e9228f); /* Rosa SukiDoces */
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+::ng-deep .chat-product-link:hover {
+    color: var(--t-color-3, #533931); /* Marrom SukiDoces */
+}

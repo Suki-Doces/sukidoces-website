@@ -1,69 +1,78 @@
 <section class="short-catalog-section glass-container">
-    <h1>Recomendação de compra</h1>
+  <h1>Recomendação de compra</h1>
 
-    <div class="sc-nav">
-        <button class="btn"
-                [ngClass]="activeTab === 'mais-vendidos' ? 'btn-glass btn-primary' : 'btn-glass'"
-                (click)="setActiveTab('mais-vendidos')">
-            Mais Vendidos
-        </button>
-        <button class="btn"
-                [ngClass]="activeTab === 'novos' ? 'btn-glass btn-primary' : 'btn-glass'"
-                (click)="setActiveTab('novos')">
-            Novos
-        </button>
-    </div>
+  <!-- Navegação de Abas -->
+  <div class="sc-nav">
+    <button class="btn" [ngClass]="activeTab === 'mais-vendidos' ? 'btn-glass btn-primary' : 'btn-glass'"
+      (click)="setActiveTab('mais-vendidos')">
+      Mais Vendidos
+    </button>
+    <button class="btn" [ngClass]="activeTab === 'novos' ? 'btn-glass btn-primary' : 'btn-glass'"
+      (click)="setActiveTab('novos')">
+      Lançamentos
+    </button>
+  </div>
 
-    <div class="sc-items">
-    
+  <div class="sc-items">
+
+    <!-- ABA: MAIS VENDIDOS -->
     <div class="sc-scroll tab-content" [class.active]="activeTab === 'mais-vendidos'">
-      <ng-container *ngIf="bestSellers.length > 0; else noProducts">
-        
-        <a *ngFor="let prod of bestSellers" 
-           class="product-card" 
-           [routerLink]="['/produto', prod.id_produto]"> <div class="ci-square-label">
-            <img [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage" 
-                 [alt]="prod.nome">
+      <div *ngIf="isLoadingBest" style="padding: 20px;">Carregando produtos...</div>
+
+      <ng-container *ngIf="!isLoadingBest && bestSellers.length > 0; else noProductsBest">
+        <!-- Rota corrigida para /produtos/:id -->
+        <a *ngFor="let prod of bestSellers" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
+
+          <div class="ci-square-label">
+            <img [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
           </div>
-          
+
           <div class="ci-product-info">
             <h3 class="card-i-h3">{{ prod.nome }}</h3>
             <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
-            <span class="btn btn-glass btn-primary">Detalhes</span>
+            <!-- Botão com stopPropagation para não abrir o card ao tentar comprar -->
+            <button class="btn btn-glass btn-primary" style="width: 100%;" (click)="addToCart($event, prod)">
+              Comprar
+            </button>
           </div>
         </a>
-
       </ng-container>
+      <ng-template #noProductsBest>
+        <p *ngIf="!isLoadingBest" style="padding: 20px; color: var(--t-color-7);">Nenhum produto em destaque.</p>
+      </ng-template>
     </div>
 
+    <!-- ABA: NOVOS -->
     <div class="sc-scroll tab-content" [class.active]="activeTab === 'novos'">
-      <ng-container *ngIf="newArrivals.length > 0; else noProducts">
-        
-        <a *ngFor="let prod of newArrivals" 
-           class="product-card" 
-           [routerLink]="['/produto', prod.id_produto]">
-          
+      <div *ngIf="isLoadingNew" style="padding: 20px;">Carregando lançamentos...</div>
+
+      <ng-container *ngIf="!isLoadingNew && newArrivals.length > 0; else noProductsNew">
+        <!-- Rota corrigida para /produtos/:id -->
+        <a *ngFor="let prod of newArrivals" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
+
           <div class="ci-square-label">
-            <img [src]="prod.imagem ? (imageBaseUrl + prod.imagem) : defaultImage" 
-                 [alt]="prod.nome">
+            <img [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
           </div>
-          
+
           <div class="ci-product-info">
             <h3 class="card-i-h3">{{ prod.nome }}</h3>
             <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
-                <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
-                <span style="font-size: 0.7rem; background-color: #4CAF50; color: white; padding: 2px 6px; border-radius: 4px;">NOVO</span>
+              <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
+              <span
+                style="font-size: 0.65rem; background-color: var(--gls-success); color: #155724; padding: 3px 6px; border-radius: 6px; font-weight: bold;">NOVO</span>
             </div>
-            <span class="btn btn-glass btn-primary">Detalhes</span>
+            <!-- Botão de compra direto -->
+            <button class="btn btn-glass btn-primary" style="width: 100%; margin-top: 5px;"
+              (click)="addToCart($event, prod)">
+              Comprar
+            </button>
           </div>
         </a>
-
       </ng-container>
+      <ng-template #noProductsNew>
+        <p *ngIf="!isLoadingNew" style="padding: 20px; color: var(--t-color-7);">Nenhum lançamento no momento.</p>
+      </ng-template>
     </div>
 
   </div>
-  
-  <ng-template #noProducts>
-    <p style="padding: 20px;">Nenhum produto encontrado.</p>
-  </ng-template>
 </section>

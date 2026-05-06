@@ -19,8 +19,8 @@
     
     <div *ngFor="let msg of historico" 
          [ngClass]="msg.role === 'user' ? 'msg-wrapper-user' : 'msg-wrapper-bot'">
-      <div [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'">
-        {{ msg.text }}
+      <div [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'" 
+           [innerHTML]="msg.text | linkFormat">
       </div>
     </div>
     

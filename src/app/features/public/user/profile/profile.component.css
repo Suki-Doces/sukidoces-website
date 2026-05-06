@@ -1,10 +1,6 @@
-:host{
-    display: flex;
-    justify-content: center;
-}
-
 .profile-container {
     display: flex;
+    justify-self: center;
     gap: 30px;
     width: 100%; /* Adicione esta linha para fixar a largura */
     max-width: 1200px;

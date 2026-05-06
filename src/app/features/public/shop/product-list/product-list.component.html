@@ -71,7 +71,7 @@
                     <div class="price-action-wrapper">
                         <p class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
                         
-                        <button class="btn-add-cart" (click)="addToCart(prod)" aria-label="Adicionar produto ao carrinho" title="Adicionar ao carrinho">
+                        <button class="btn-add-cart" (click)="addToCart($event, prod)" aria-label="Adicionar produto ao carrinho" title="Adicionar ao carrinho">
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g stroke-width="0" />
                                 <g stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" stroke-width=".048" />
