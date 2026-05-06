@@ -1,11 +1,10 @@
-<div class="content">
+<div id="content-clientes" class="content">
   <h1>Clientes</h1>
   <p class="page-subtitle">Gerencie os seus Utilizadores aqui.</p>
 </div>
 
 <br>
 
-<!-- CARDS DE ESTATÍSTICAS -->
 <section class="stats-grid">
   <div class="stat-card">
     <div class="stat-header">
@@ -26,7 +25,6 @@
   </div>
 </section>
 
-<!-- TABELA DE CLIENTES -->
 <section class="primary-container">
   <div class="table_container">
     <div class="header-container">
@@ -59,7 +57,6 @@
           <td>R$ {{ (c.valor_total || 0) | number:'1.2-2' }}</td>
           <td>{{ c.total_pedidos || 0 }}</td>
           
-          <!-- Badges de Status -->
           <td>
             <span class="status-badge" [ngClass]="c.status === 'ativo' ? 'status-ativo' : 'status-inativo'">
               {{ c.status === 'ativo' ? 'Ativo' : 'Inativo' }}
@@ -82,7 +79,6 @@
   </div>
 </section>
 
-<!-- MODAL DE ADICIONAR / EDITAR -->
 <div class="modal" *ngIf="isModalOpen">
   <div class="modal-content">
     <div class="modal-header">

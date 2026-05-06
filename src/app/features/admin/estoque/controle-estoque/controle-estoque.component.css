@@ -1,6 +1,21 @@
 /* --- CABEÇALHO --- */
-.content h1 { font-size: 2rem; color: #2c3e50; font-weight: 800; margin-bottom: 6px; }
-.page-subtitle { color: #7f8c8d; font-size: 0.95rem; }
+#content-estoque {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+#content-estoque h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
 
 /* --- TABELA DE ESTOQUE --- */
 .table_container {
