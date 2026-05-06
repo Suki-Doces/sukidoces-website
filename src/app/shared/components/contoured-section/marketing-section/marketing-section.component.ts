@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './marketing-section.component.html',
-  styleUrl: '../contoured-section.component.css'
+  styleUrl: './marketing-section.component.css'
 })
 export class MarketingSectionComponent {
 

@@ -7,6 +7,7 @@ import { ProductListComponent } from './features/public/shop/product-list/produc
 import { ProductDetailComponent } from './features/public/shop/product-detail/product-detail.component';
 import { CartComponent } from './features/public/cart/cart.component';
 import { LoginComponent } from './features/public/auth/login/login.component';
+import { ContactComponent } from './features/public/contact/contact.component';
 import { ProfileComponent } from './features/public/user/profile/profile.component';
 import { CheckoutComponent } from './features/public/checkout/checkout.component';
 
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, data: { animation: 'home' }, title: 'SukiDoces | Home' },
   { path: 'login', component: LoginComponent, data: { animation: 'login' }, title: 'SukiDoces | Login' },
+  { path: 'contatos', component: ContactComponent, data: { animation: 'contatos' }, title: 'SukiDoces | Contatos' },
   { path: 'produtos', component: ProductListComponent, data: { animation: 'produtos' }, title: 'SukiDoces | Produtos' },
   { path: 'produtos/:id', component: ProductDetailComponent, data: { animation: 'produtos-id' }, title: 'SukiDoces | ...' },
   { path: 'carrinho', component: CartComponent, data: { animation: 'carrinho' }, title: 'SukiDoces | Carrinho' },

@@ -5,6 +5,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 // Services
 import { ProductService, Product } from 'src/app/core/services/product.service';
 import { CategoryService, Category } from 'src/app/core/services/category.service';
+import { CartService } from 'src/app/core/services/cart.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 import { environment } from 'src/environments/environments';
 
@@ -26,7 +28,6 @@ export class ProductListComponent implements OnInit {
   currentQuery: string | null = null;
   currentCategory: number | null = null;
   currentFilter: string | null = null;
-
   isLoading: boolean = true;
 
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
@@ -34,7 +35,9 @@ export class ProductListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private cartService: CartService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -99,14 +102,14 @@ export class ProductListComponent implements OnInit {
     return category.id_categoria;
   }
 
-  /**
-   * Função para capturar a ação de "Adicionar ao Carrinho"
-   */
-  addToCart(product: Product): void {
-    // Exemplo:
-    // this.cartService.addToCart(product);
-    console.log('Adicionado ao carrinho:', product.nome);
-
-    // Opcional: Aqui você pode disparar um Toast / Snackbar de sucesso
+  addToCart(event: Event, product: Product): void {
+    event.preventDefault();  // Evita comportamento padrão 
+    event.stopPropagation(); // Evita que o clique vaze para outros elementos (como links que abrem a tela do produto)
+    
+    this.cartService.addToCart(product, 1);
+    this.notificationService.showSuccess(
+        'Adicionado ao Carrinho', 
+        `O item ${product.nome} já está aguardando você no carrinho.`
+      );
   }
 }

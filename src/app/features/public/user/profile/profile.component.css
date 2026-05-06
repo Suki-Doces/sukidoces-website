@@ -1,10 +1,6 @@
-:host{
-    display: flex;
-    justify-content: center;
-}
-
 .profile-container {
     display: flex;
+    justify-self: center;
     gap: 30px;
     width: 100%; /* Adicione esta linha para fixar a largura */
     max-width: 1200px;
@@ -30,7 +26,7 @@
     width: 80px;
     height: 80px;
     background: var(--color-1);
-    color: white;
+    color: var(--white-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -66,11 +62,11 @@
 
 .profile-nav button.active {
     background: var(--gls-color-1);
-    color: white;
+    color: var(--white-color);
 }
 
 .profile-nav button.active > svg {
-    stroke: #ffffff;
+    stroke: var(--white-color);
 }
 
 /* Cards de Conteúdo */
@@ -103,7 +99,7 @@
 
 .form-group input {
     padding: 12px;
-    border: 2px solid #f0f0f0;
+    border: 1px solid var(--gls-color-4);
     border-radius: 12px;
     transition: border-color 0.3s;
 }
@@ -145,14 +141,14 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 15px;
     padding: 20px;
-    background: #fafafa;
+    background: var(--white-color);
     transition: all 0.3s ease;
 }
 
 .order-card:hover {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
     transform: translateY(-2px);
-    background: white;
+    background: var(--white-color);
 }
 
 .order-header {
@@ -218,8 +214,8 @@
     height: 60px;
     border-radius: 10px;
     object-fit: cover;
-    background-color: white;
-    border: 1px solid #eee;
+    background-color: var(--white-color);
+    border: 1px solid var(--gls-color-4);
 }
 
 .item-details p {
@@ -271,7 +267,7 @@
 
 .btn-outline:hover {
     background: var(--color-1);
-    color: white;
+    color: var(--white-color);
 }
 
 /* Mensagem de Estado Vazio */
@@ -289,7 +285,7 @@
 }
 
 .profile-title p {
-    color: #6b7280; /* var(--t-color-7) */
+    color: var(--t-color-7);
     font-size: 15px;
     margin: 0;
 }
@@ -325,7 +321,7 @@
 }
 
 .danger-zone h2 {
-    color: #721c24;
+    color: var(--black-opacity-75);
     font-size: 1.2rem;
     margin-bottom: 10px;
     margin-top: 0;

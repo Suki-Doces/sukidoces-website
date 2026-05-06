@@ -8,19 +8,19 @@
 .back-link {
     display: inline-block;
     margin-bottom: 20px;
-    color: var(--t-color-7, #828282);
+    color: var(--t-color-7);
     font-weight: 600;
     text-decoration: none;
 }
 .back-link:hover {
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
 }
 
 .product-detail-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
-    background: white;
+    background: var(--white-color);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.05);
@@ -33,7 +33,7 @@
     width: 100%;
     min-height: 400px;
     height: 450px;
-    background: #f8f8f8;
+    background: var(--gls-color-5);
 }
 
 /* Configura o fundo borrado */
@@ -65,19 +65,19 @@
 
 .detail-info > h1 {
     font-size: 2.5rem;
-    color: var(--t-color-3, #533931);
+    color: var(--t-color-3);
 }
 
 .detail-price {
     font-size: 2rem;
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
     font-weight: bold;
 }
 
 .detail-description > h3 {
     font-size: 1.1rem;
     margin-bottom: 8px;
-    color: #444;
+    color: var(--t-color-1);
 }
 
 /* Área de compra */
@@ -98,15 +98,17 @@
 .qty-selector > button {
     width: 40px;
     border: none;
-    background: #f0f0f0;
+    background: var(--gls-color-4);
     cursor: pointer;
     font-weight: bold;
     font-size: 1.2rem;
-    color: #555;
+    color: var(--t-color-5);
+    transition: background ease 0.2s;
 }
 
 .qty-selector > button:hover {
-    background: #e0e0e0;
+    background: var(--gls-color-2);
+    color: var(--white-color);
 }
 
 .qty-selector > input {

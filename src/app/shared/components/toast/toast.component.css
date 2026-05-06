@@ -50,7 +50,7 @@
 }
 
 .toast-content h3 {
-  color: #ffffff;
+  color: var(--white-color);
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0;
@@ -58,7 +58,7 @@
 }
 
 .toast-content p {
-  color: #ffffff;
+  color: var(--white-color);
   font-size: 0.9rem;
   font-weight: 400;
   opacity: 0.9; /* Leve transparência para contraste com o título */

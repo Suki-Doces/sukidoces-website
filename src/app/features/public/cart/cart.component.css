@@ -1,6 +1,6 @@
 /* --- CONTAINER PRINCIPAL --- */
 .cart-container {
-    background-color: var(--color-5, #fef2f8);
+    background-color: var(--color-5);
     padding: 2rem 1.5rem;
     margin: 2rem 1rem;
     min-height: 60vh;
@@ -16,12 +16,12 @@
 
 .cart-header {
     margin-bottom: 2rem;
-    border-bottom: 2px solid var(--color-4, #fbcfe8);
+    border-bottom: 2px solid var(--color-4);
     padding-bottom: 1rem;
 }
 
 .cart-title {
-    color: var(--t-color-3, #533931);
+    color: var(--t-color-3);
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
@@ -49,7 +49,7 @@
 .cart-item-card {
     display: flex;
     flex-direction: column;
-    background: var(--white-color, #ffffff);
+    background: var(--white-color);
     border-radius: 16px;
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
@@ -71,7 +71,7 @@
 }
 
 .item-img-link {
-    background: #fdfdfd;
+    background: var(--gls-color-5);
     border-radius: 12px;
     padding: 0.5rem;
     width: 90px;
@@ -112,11 +112,11 @@
 }
 
 .item-title-link:hover h3 {
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
 }
 
 .item-price {
-    color: var(--t-color-7, #888);
+    color: var(--t-color-7);
     font-size: 0.95rem;
     margin: 0;
 }
@@ -128,8 +128,8 @@
 
 /* --- CONTROLE DE QUANTIDADE --- */
 .qty-control {
-    background-color: var(--gls-color-5, rgba(255, 255, 255, 0.5));
-    border: 1px solid var(--color-4, #fbcfe8);
+    background-color: var(--gls-color-5);
+    border: 1px solid var(--color-4);
     border-radius: 20px;
     padding: 4px 6px;
     gap: 10px;
@@ -138,7 +138,7 @@
 .qty-btn {
     background: transparent;
     border: none;
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -147,11 +147,11 @@
 }
 
 .qty-btn:hover:not(:disabled) {
-    background: var(--color-4, #fbcfe8);
+    background: var(--color-4);
 }
 
 .qty-btn:disabled {
-    color: #ccc;
+    color: var(--black-opacity-25);
     cursor: not-allowed;
 }
 
@@ -165,13 +165,13 @@
 /* --- SUBTOTAL E AÇÕES --- */
 .item-subtotal {
     font-size: 1.15rem;
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
 }
 
 .btn-remove-icon {
     background: transparent;
     border: none;
-    color: var(--t-color-7, #888);
+    color: var(--t-color-7);
     cursor: pointer;
     padding: 8px;
     border-radius: 8px;
@@ -179,8 +179,8 @@
 }
 
 .btn-remove-icon:hover {
-    color: #e74c3c;
-    background: rgba(231, 76, 60, 0.1);
+    color: var(--gls-danger-btn);
+    background: var(--gls-danger);
 }
 
 .btn-remove-icon svg {
@@ -195,7 +195,7 @@
 }
 
 .summary-card {
-    background-color: var(--gls-color-5, rgba(255, 255, 255, 0.7));
+    background-color: var(--gls-color-5);
     padding: 2rem;
     border-radius: 16px;
 }
@@ -208,12 +208,12 @@
 
 .summary-divider {
     border: 0;
-    border-top: 1px dashed var(--color-4, #fbcfe8);
+    border-top: 1px dashed var(--color-4);
     margin: 1rem 0;
 }
 
 .summary-row {
-    color: var(--t-color-5, #555);
+    color: var(--t-color-5);
     margin-bottom: 1rem;
     font-size: 1rem;
 }
@@ -226,7 +226,7 @@
 }
 
 .total-price {
-    color: var(--color-1, #e9228f);
+    color: var(--color-1);
     font-size: 1.4rem;
 }
 
@@ -246,7 +246,7 @@
 .empty-state-container {
     padding: 4rem 1rem;
     text-align: center;
-    background: var(--white-color, #fff);
+    background: var(--white-color);
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }

@@ -3,7 +3,7 @@
     <div class="flex-align-center carousel-slide" [style.transform]="'translateX(' + offset + '%)'">
 
       <a *ngFor="let prod of products; let i = index" [routerLink]="['/produtos', prod.id_produto]"
-        class="glass-container flex-center carousel-item" [class.active]="i === currentIndex">
+        class="flex-center carousel-item" [class.active]="i === currentIndex">
 
         <!-- Imagem de fundo desfocada -->
         <img [src]="getProductImage(prod.imagem)" class="bg-blur" aria-hidden="true" fetchpriority="high">

@@ -32,7 +32,7 @@
   <a *ngIf="viewHomeLink" routerLink="/home" class="header-link">Home</a>
 
   <a routerLink="/historia" class="header-link">História</a>
-  <a (click)="scrollToContacts()" style="cursor: pointer;" class="header-link">Contatos</a>
+  <a routerLink="/contatos" style="cursor: pointer;" class="header-link">Contatos</a>
 </nav>
 
 <div class="hdr-desktop-view hdr-user-section">
@@ -42,7 +42,7 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" />
-        <path d="m20 20 2 2M6.75 3.27a9.5 9.5 0 1 1-3.48 3.48" stroke="#fff" stroke-width="1.5"
+        <path d="m20 20 2 2M6.75 3.27a9.5 9.5 0 1 1-3.48 3.48" stroke="var(--white-color)" stroke-width="1.5"
           stroke-linecap="round" />
       </svg>
     </button>
@@ -53,7 +53,7 @@
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" stroke="#ccc" stroke-width=".048" />
-        <g stroke="#fff0fa" stroke-width="1.5">
+        <g stroke="var(--color-5)" stroke-width="1.5">
           <path d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
           <path
             d="m2 3 .261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7"
@@ -69,7 +69,7 @@
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" />
-        <g stroke="#fff0fa" stroke-width="1.5">
+        <g stroke="var(--color-5)" stroke-width="1.5">
           <circle cx="12" cy="6" r="4" />
           <path d="M15 20.615c-.91.247-1.926.385-3 .385-3.866 0-7-1.79-7-4s3.134-4 7-4 7 1.79 7 4c0 .345-.077.68-.22 1"
             stroke-linecap="round" />
