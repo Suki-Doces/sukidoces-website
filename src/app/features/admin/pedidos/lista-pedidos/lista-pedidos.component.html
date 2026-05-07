@@ -9,7 +9,7 @@
       <div>
         <div class="revenue">
           <b class="revenue-title">Total</b>
-          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="...">
+          <img class="dots-icons" src="assets/images/icons/Dots - Icon.svg" alt="...">
         </div>
         <div class="vendas-text"><p>Todos os tempos</p></div>
       </div>
@@ -24,7 +24,7 @@
       <div>
         <div class="revenue">
           <b class="revenue-title">Concluídos</b>
-          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="...">
+          <img class="dots-icons" src="assets/images/icons/Dots - Icon.svg" alt="...">
         </div>
         <div class="pedidos-text"><p>Entregues</p></div>
       </div>
@@ -39,7 +39,7 @@
       <div class="dash-p-title">
         <div class="revenue">
           <b class="revenue-title">Pendentes / Cancelados</b>
-          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="...">
+          <img class="dots-icons" src="assets/images/icons/Dots - Icon.svg" alt="...">
         </div>
       </div>
       <div class="dash-p-dados">
@@ -47,7 +47,7 @@
           <b class="pendentes-text">Pendentes</b>
           <b class="pen-value-text">{{ totalPendentes }}</b>
         </div>
-        <img class="traco-icon" src="assets/admin/icon/Traco - Icon.svg" alt="|">
+        <img class="traco-icon" src="assets/images/icons/Traco - Icon.svg" alt="|">
         <div class="cancelados-parent">
           <b class="cancelados">Cancelados</b>
           <b class="cash">{{ totalCancelados }}</b>
@@ -61,7 +61,7 @@
   <section class="table_header">
     <div class="input-group">
       <input type="search" placeholder="ID ou Nome do Cliente..." [(ngModel)]="busca" (input)="aplicarFiltros()">
-      <img src="assets/admin/icon/Lupa - icon.svg" alt="Pesquisar">
+      <img src="assets/images/icons/Lupa - icon.svg" alt="Pesquisar">
     </div>
 
     <div class="table_order">
@@ -99,34 +99,22 @@
           </td>
           <td><strong>{{ p.valor_total | currency:'BRL':'symbol':'1.2-2' }}</strong></td>
           
-          <!-- COLUNA DE AÇÕES ATUALIZADA COM O NOVO DESIGN -->
           <td class="action-cell">
-            
-            <!-- Botão Clicável: Despachar -->
             <button *ngIf="p.status === 'pago'" class="btn-action btn-dispatch" (click)="updateStatus(p, 'enviado')">
               <span class="material-symbols-rounded">local_shipping</span> Despachar
             </button>
-
-            <!-- Botão Clicável: Entregue -->
             <button *ngIf="p.status === 'enviado'" class="btn-action btn-deliver" (click)="updateStatus(p, 'entregue')">
               <span class="material-symbols-rounded">check_circle</span> Entregue
             </button>
-
-            <!-- Etiqueta Visual: Aguardando Pagamento -->
             <span *ngIf="p.status === 'pendente'" class="btn-action btn-waiting">
               <span class="material-symbols-rounded">schedule</span> Aguard. Pagto
             </span>
-
-            <!-- Etiqueta Visual: Concluído -->
             <span *ngIf="p.status === 'entregue'" class="btn-action btn-done">
               <span class="material-symbols-rounded">done_all</span> Concluído
             </span>
-
-            <!-- Etiqueta Visual: Cancelado -->
             <span *ngIf="p.status === 'cancelado'" class="btn-action btn-waiting" style="background-color: #ef4343;">
               <span class="material-symbols-rounded">block</span> Cancelado
             </span>
-
           </td>
         </tr>
 

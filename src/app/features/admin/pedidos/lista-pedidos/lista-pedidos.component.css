@@ -66,6 +66,15 @@
     border-radius: 8px; border: 2px solid #ecf0f1; flex: 1; min-width: 250px;
   }
   .input-group input { border: none; outline: none; background: transparent; flex: 1; font-size: 0.95rem; }
+
+  /* --- AJUSTE DA LUPA NA BARRA DE PESQUISA --- */
+.input-group img {
+    width: 20px;       /* Define a largura ideal para a lupa */
+    height: 20px;      /* Define a altura ideal */
+    object-fit: contain; /* Garante que a imagem não distorça */
+    opacity: 0.6;      /* Deixa ela cinzinha, mais discreta */
+    transition: all 0.3s ease; /* Efeito suave se quiser colocar hover depois */
+}
   
   .table_order { display: flex; gap: 12px; flex-wrap: wrap; }
   .table_order a {

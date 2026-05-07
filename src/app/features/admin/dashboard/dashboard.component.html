@@ -8,7 +8,7 @@
       <div>
         <div class="revenue">
           <b class="revenue-title">Vendas Totais</b>
-          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="Icone de Pontos">
+          <img class="dots-icons" src="assets/images/icons/Dots - Icon.svg" alt="Icone de Pontos">
         </div>
         <div class="vendas-text">
           <p>Vendas nos últimos 7 dias</p>
@@ -19,7 +19,7 @@
           <b class="revenue-text">{{ resumo.vendasSemana | currency:'BRL':'symbol':'1.2-2' }}</b>
           <div class="frame-wrapper">
             <div class="increase-value">
-              <img class="porcentagem-de-incremento" src="assets/admin/icon/Increases Symbol - Icon.svg" alt="Aumento">
+              <img class="porcentagem-de-incremento" src="assets/images/icons/Increases Symbol - Icon.svg" alt="Aumento">
             </div>
           </div>
           <b class="increase-text">+{{ resumo.aumentoVendas }}%</b>
@@ -35,7 +35,7 @@
       <div>
         <div class="revenue">
           <b class="revenue-title">Pedidos Totais</b>
-          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="Icone de Pontos">
+          <img class="dots-icons" src="assets/images/icons/Dots - Icon.svg" alt="Icone de Pontos">
         </div>
         <div class="pedidos-text">
           <p>Últimos 7 dias</p>
@@ -46,7 +46,7 @@
           <b class="revenue-text">{{ resumo.pedidosSemana }}</b>
           <div class="frame-wrapper">
             <div class="increase-value">
-              <img class="porcentagem-de-incremento" src="assets/admin/icon/Increases Symbol - Icon.svg" alt="Aumento">
+              <img class="porcentagem-de-incremento" src="assets/images/icons/Increases Symbol - Icon.svg" alt="Aumento">
             </div>
           </div>
           <b class="increase-text">+{{ resumo.aumentoPedidos }}%</b>
@@ -62,7 +62,7 @@
       <div class="dash-p-title">
         <div class="revenue">
           <b class="revenue-title">Pendentes e Cancelados</b>
-          <img class="dots-icons" src="assets/admin/icon/Dots - Icon.svg" alt="Icone de Pontos">
+          <img class="dots-icons" src="assets/images/icons/Dots - Icon.svg" alt="Icone de Pontos">
         </div>
         <div class="vendas-text">
           <p>Últimos 7 dias</p>
@@ -73,7 +73,7 @@
           <b class="pendentes-text">Pendentes</b>
           <b class="pen-value-text">{{ resumo.pendentes }}</b>
         </div>
-        <img class="traco-icon" src="assets/admin/icon/Traco - Icon.svg" alt="Traço">
+        <img class="traco-icon" src="assets/images/icons/Traco - Icon.svg" alt="Traço">
         <div class="cancelados-parent">
           <b class="cancelados">Cancelados</b>
           <b class="cash">{{ resumo.cancelados }}</b>
@@ -102,7 +102,7 @@
             </td>
             <td style="padding-left: 50px;">{{ prod.vendas }}</td>
             <td>
-              <img [src]="prod.status === 'Em Estoque' ? 'assets/admin/icon/Green-Ball.svg' : 'assets/admin/icon/Red Ball - Icon.svg'" alt="Status" style="vertical-align:middle; width:20px; height: 8px;">
+              <img [src]="prod.status === 'Em Estoque' ? 'assets/images/icons/Green-Ball.svg' : 'assets/images/icons/Red Ball - Icon.svg'" alt="Status" style="vertical-align:middle; width:20px; height: 8px;">
               <span [style.color]="prod.corStatus" style="margin-left:6px;">{{ prod.status }}</span>
             </td>
             <td>{{ prod.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
@@ -134,7 +134,7 @@
     <section class="table_header">
       <div class="input-group">
         <input type="search" placeholder="Pesquisar...">
-        <img src="assets/admin/icon/Lupa - icon.svg" alt="Pesquisar">
+        <img src="assets/images/icons/Lupa - icon.svg" alt="Pesquisar">
       </div>
       <div class="table_order">
         <div class="table_pedidos">

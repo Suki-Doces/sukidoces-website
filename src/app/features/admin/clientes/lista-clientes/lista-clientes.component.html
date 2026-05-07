@@ -1,6 +1,6 @@
 <div id="content-clientes" class="content">
   <h1>Clientes</h1>
-  <p class="page-subtitle">Gerencie os seus Utilizadores aqui.</p>
+  <p class="page-subtitle">Gerencie os seus Usuários aqui.</p>
 </div>
 
 <br>
@@ -64,10 +64,14 @@
           </td>
 
           <td style="text-align: right;">
-            <button class="btn-acao btn-edit" (click)="abrirModal('editar', c)" title="Editar">✏️</button>
+            <button class="btn-acao btn-edit" (click)="abrirModal('editar', c)" title="Editar">
+              <img src="assets/images/icons/Editar-Icon.svg" alt="Editar" style="width: 22px; vertical-align: middle;">
+            </button>
           </td>
           <td style="text-align: left;">
-            <button class="btn-acao btn-trash" (click)="deletarCliente(c.id_cliente)" title="Deletar">🗑️</button>
+            <button class="btn-acao btn-trash" (click)="deletarCliente(c.id_cliente)" title="Deletar">
+              <img src="assets/images/icons/Trash - Icon.svg" alt="Deletar" style="width: 22px; vertical-align: middle;">
+            </button>
           </td>
         </tr>
 
