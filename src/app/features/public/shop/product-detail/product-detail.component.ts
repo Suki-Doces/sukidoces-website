@@ -37,9 +37,8 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // I - Le o ID do produto a partir da URL
+    // I - Lê o ID do produto a partir da URL
     const idParam = this.route.snapshot.paramMap.get('id');
-    console.log('ID capturado da URL:', idParam);
     const id = idParam ? parseInt(idParam, 10) : null;
 
     if (!id) {
@@ -75,7 +74,7 @@ export class ProductDetailComponent implements OnInit {
     return `${environment.productImgUrl}${imageURL}`;
   }
 
-  // IV - increment e decrementa a quantidade
+  // IV - Incrementa e decrementa a quantidade
   increment(): void {
     if (this.product && this.quantity < this.product.quantidade) {
       this.quantity++;
@@ -88,14 +87,20 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  // V - Adiciona o produto ao carrinho (ainda não implementado)
+  // V - Adiciona o produto ao carrinho (agora conectado ao banco de dados via Service)
   addToCart(): void {
     if (this.product && this.product.quantidade > 0) {
+      // Chama o serviço que envia o POST para o Node.js
       this.cartService.addToCart(this.product, this.quantity);
+      
+      // Exibe o Toast de sucesso
       this.notificationService.showSuccess(
         'Adicionado ao Carrinho', 
         `O item ${this.product.nome} já está aguardando você no carrinho.`
       );
+
+      // (Opcional) Reseta o contador para 1 após o cliente adicionar o item
+      this.quantity = 1; 
     }
   }
 }

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Product } from './product.service';
+import { environment } from 'src/environments/environments';
 
 export interface CartItem {
+  id: number;
   product: Product;
   quantity: number;
 }
@@ -11,61 +14,68 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  // Carrega o carrinho do localStorage ou retorna um array vazio
-  private cartSubject = new BehaviorSubject<CartItem[]>(this.loadCart());
+  private apiUrl = `${environment.apiUrl}/carrinho`; 
+  
+  private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
 
-  constructor() { }
-
-  // Recupera o carrinho salvo no localStorage
-  private loadCart(): CartItem[] {
-    const saved = localStorage.getItem('suki_cart');
-    return saved ? JSON.parse(saved) : [];
+  constructor(private http: HttpClient) { 
+    this.loadCartFromServer();
   }
 
-  // Salva o carrinho no localStorage e atualiza o BehaviorSubject
-  private saveCart(items: CartItem[]): void {
-    localStorage.setItem('suki_cart', JSON.stringify(items));
-    this.cartSubject.next(items);
+  loadCartFromServer(): void {
+    this.http.get<{ cartItems: any[], total: number }>(this.apiUrl).subscribe({
+      next: (response) => {
+        const items: CartItem[] = response.cartItems.map(item => ({
+          id: item.id,
+          product: item.produto,
+          quantity: item.quantidade
+        }));
+        this.cartSubject.next(items);
+      },
+      error: (err) => console.error('Erro ao carregar carrinho:', err)
+    });
   }
 
-  // Adiciona um produto ao carrinho ou atualiza a quantidade se já existir
   addToCart(product: Product, quantity: number = 1): void {
-    const items = this.cartSubject.value;
-    const existingItem = items.find(item => item.product.id_produto === product.id_produto);
-
-    if (existingItem) {
-
-      const newQty = existingItem.quantity + quantity;
-      existingItem.quantity = newQty > product.quantidade ? product.quantidade : newQty; // Limita à quantidade disponível
-    } else {
-      items.push({ product, quantity });
-    }
-    this.saveCart(items);
+    
+    const body = {
+      id_produto: product.id_produto, 
+      quantidade: quantity
+    };
+  
+    console.log('Enviando para a API:', body); 
+  
+    this.http.post(`${this.apiUrl}/add`, body).subscribe({
+      next: () => this.loadCartFromServer(),
+      error: (err) => console.error('Erro ao adicionar:', err)
+    });
   }
 
-  removeFromCart(productId: number) {
-    const items = this.cartSubject.value.filter(item => item.product.id_produto !== productId);
-    this.saveCart(items);
+  removeFromCart(itemId: number) {
+    if (!itemId) return;
+    this.http.delete(`${this.apiUrl}/${itemId}`).subscribe({
+      next: () => this.loadCartFromServer(),
+      error: (err) => console.error('Erro ao remover:', err)
+    });
   }
 
-  // Ação: Atualizar Quantidade
-  updateQuantity(productId: number, quantity: number) {
-    const items = this.cartSubject.value;
-    const item = items.find(i => i.product.id_produto === productId);
-
-    if (item && quantity > 0 && quantity <= item.product.quantidade) {
-      item.quantity = quantity;
-      this.saveCart(items);
-    }
+  updateQuantity(itemId: number, quantity: number) {
+    if (!itemId || quantity <= 0) return;
+    this.http.put(`${this.apiUrl}/${itemId}`, { quantidade: quantity }).subscribe({
+      next: () => this.loadCartFromServer(),
+      error: (err) => console.error('Erro ao atualizar:', err)
+    });
   }
 
-  // Calcula o Total R$
   getTotal(): number {
     return this.cartSubject.value.reduce((total, item) => total + (item.product.preco * item.quantity), 0);
   }
 
   clearCart() {
-    this.saveCart([]);
+    this.http.delete(this.apiUrl).subscribe({
+      next: () => this.cartSubject.next([]),
+      error: (err) => console.error('Erro ao esvaziar:', err)
+    });
   }
 }
