@@ -43,7 +43,7 @@
                         <strong>{{ (item.product.preco * item.quantity) | currency:'BRL':'symbol':'1.2-2' }}</strong>
                     </div>
 
-                    <button class="flex-center btn-remove-icon" (click)="removeItem(item.product.id_produto)" title="Remover item">
+                    <button class="flex-center btn-remove-icon" (click)="removeItem(item.id)" title="Remover item">
                         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g stroke-width="0" />
                             <g stroke-linecap="round" stroke-linejoin="round" />

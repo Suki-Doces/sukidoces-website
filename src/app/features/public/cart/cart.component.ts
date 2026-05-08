@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 
 // Servicos
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
-
 import { environment } from 'src/environments/environments';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -19,13 +19,11 @@ import { environment } from 'src/environments/environments';
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   cartTotal: number = 0;
-
   readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    // Inscreve-se para receber atualizações do carrinho
     this.cartService.cart$.subscribe(items => {
       this.cartItems = items;
       this.cartTotal = this.cartService.getTotal();
@@ -46,16 +44,24 @@ export class CartComponent implements OnInit {
   }
 
   increment(item: CartItem): void {
-    this.cartService.updateQuantity(item.product.id_produto, item.quantity + 1);
-  }
-
-  decrement(item: CartItem): void {
-    if (item.quantity > 1) {
-      this.cartService.updateQuantity(item.product.id_produto, item.quantity - 1);
+    if (item.id && item.quantity < item.product.quantidade) {
+      this.cartService.updateQuantity(item.id, item.quantity + 1);
     }
   }
 
-  removeItem(productId: number): void {
-    this.cartService.removeFromCart(productId);
+  decrement(item: CartItem): void {
+    if (item.id && item.quantity > 1) {
+      this.cartService.updateQuantity(item.id, item.quantity - 1);
+    }
+  }
+
+  removeItem(itemId: number | undefined): void {
+    if (itemId) {
+      this.cartService.removeFromCart(itemId);
+    }
+  }
+
+  clearCart(): void {
+    this.cartService.clearCart();
   }
 }
