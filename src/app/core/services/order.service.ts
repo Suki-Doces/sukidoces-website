@@ -7,12 +7,28 @@ import { environment } from 'src/environments/environments';
   providedIn: 'root'
 })
 export class OrderService {
-  // Ajuste a rota base de acordo com a sua API de pedidos
-  private readonly API_URL = `${environment.apiUrl}/pedidos`; 
+  private readonly API_URL = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) { }
 
-  getUserOrders(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/usuario/${userId}`);
+  // CORRIGIDO: era /pedidos/usuario/${userId} — rota que não existia no backend
+  // Agora usa /usuario/pedidos que lê o ID do token JWT (mais seguro)
+  getUserOrders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/usuario/pedidos`);
+  }
+
+  // Para o admin listar todos os pedidos
+  getAllOrders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/admin/pedidos`);
+  }
+
+  // Para o admin atualizar status de um pedido
+  updateOrderStatus(orderId: number, novoStatus: string): Observable<any> {
+    return this.http.patch(`${this.API_URL}/admin/${orderId}/status`, { novoStatus });
+  }
+
+  // Criar pedido (cliente)
+  createOrder(produtos: any[], metodo_pagamento: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/admin/pedidos`, { produtos, metodo_pagamento });
   }
 }

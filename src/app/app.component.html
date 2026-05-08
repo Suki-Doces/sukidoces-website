@@ -1,10 +1,11 @@
 <app-header *ngIf="!isAdminRoute"></app-header>
 
-<main [@routeAnimations]="getRouteAnimationData()">
+<main [@glassRouteAnimation]="getRouteAnimationData()">
     <router-outlet></router-outlet>
 </main>
 
 <app-footer *ngIf="!isAdminRoute"></app-footer>
+
 <app-hover-nav *ngIf="!isAdminRoute"></app-hover-nav>
 
-<app-toast *ngIf="!isAdminRoute"></app-toast>
+<app-toast></app-toast>

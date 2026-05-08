@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service'; // O teu serviço já existente
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login-admin',
@@ -15,7 +15,6 @@ export class LoginAdminComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  // Variáveis para o formulário
   email = '';
   password = '';
   isLoading = false;
@@ -30,28 +29,27 @@ export class LoginAdminComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    // Reutilizamos a função de login que já tens no AuthService
-    this.authService.login({ email: this.email, password: this.password }).subscribe({
-      next: (resposta) => {
+    // CORRIGIDO: usar loginAdmin() que aponta para /admin/login
+    // A rota /admin/login aceita credenciais de administradores
+    this.authService.loginAdmin({ email: this.email, password: this.password }).subscribe({
+      next: () => {
         this.isLoading = false;
 
-        // Verifica se quem fez o login tem permissão de 'admin'
-        // Assumindo que o teu serviço guarda o 'user' no localStorage ou devolve na resposta
-        const utilizador = JSON.parse(localStorage.getItem('user') || '{}');
+        // CORRIGIDO: era localStorage.getItem('user') — chave errada!
+        // AuthService salva em 'suki_user', não em 'user'
+        const utilizador = JSON.parse(localStorage.getItem('suki_user') || '{}');
 
-        if (utilizador.role === 'admin') {
-          // Login bem-sucedido e é admin: Vai para o Dashboard!
+        // CORRIGIDO: era utilizador.role — o backend retorna 'nivel', não 'role'
+        if (utilizador.nivel === 'admin') {
           this.router.navigate(['/admin/dashboard']);
         } else {
-          // Não é admin: Limpa o token e mostra erro
           this.authService.logout();
           this.errorMessage = 'Acesso negado: Apenas administradores podem entrar aqui.';
         }
       },
-      error: (erro) => {
+      error: () => {
         this.isLoading = false;
         this.errorMessage = 'E-mail ou palavra-passe incorretos.';
-        console.error('Erro no login admin:', erro);
       }
     });
   }

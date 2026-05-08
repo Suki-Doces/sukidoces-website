@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,75 +12,103 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  // Dados de Resumo (Você conectará no backend depois)
+  private readonly API_URL = `${environment.apiUrl}/admin/dashboard`;
+
+  // CORRIGIDO: dados agora vêm da API, não são hardcoded
   resumo = {
-    vendasSemana: 2000,
-    aumentoVendas: 10.4,
-    vendasPassada: 1640,
-    pedidosSemana: 1440,
-    aumentoPedidos: 17.4,
-    pedidosPassada: 1260,
-    pendentes: 509,
-    cancelados: 94
+    vendasSemana: 0,
+    aumentoVendas: 0,
+    vendasPassada: 0,
+    pedidosSemana: 0,
+    aumentoPedidos: 0,
+    pedidosPassada: 0,
+    pendentes: 0,
+    cancelados: 0,
+    totalVendas: 0,
+    totalPedidos: 0
   };
 
-  // Produtos em Destaque (Transformado em Array para o HTML ficar limpo)
-  produtosDestaque = [
-    { nome: 'Kit Kat', vendas: 74, status: 'Em Estoque', corStatus: '#21c45d', valor: 3.00, img: 'Kit Kat - img.jpg' },
-    { nome: 'Kinder Bueno', vendas: 56, status: 'Sem Estoque', corStatus: '#ef4343', valor: 4.50, img: 'Kinder Bueno - Img.jpg' },
-    { nome: 'Monster Energy', vendas: 98, status: 'Em Estoque', corStatus: '#21c45d', valor: 10.00, img: 'Energy Monster - Img.jpg' },
-    { nome: 'Torrada Tradicional', vendas: 33, status: 'Em Estoque', corStatus: '#21c45d', valor: 5.50, img: 'Torrada Bauducco - img.webp' }
-  ];
+  produtosDestaque: any[] = [];
+  transacoes: any[] = [];
 
-  // Transações (A tabela debaixo)
-  transacoes: any[] = [
-    // Dados iniciais baseados no seu PHP original
-    { id_pedido: 1, cliente_nome: '#6545', data_pedido: '01 Outubro | 19:20', status: 'pago', valor_total: 64 },
-    { id_pedido: 2, cliente_nome: '#5412', data_pedido: '02 Outubro | 11:45', status: 'pendente', valor_total: 32 },
-    { id_pedido: 3, cliente_nome: '#6622', data_pedido: '02 Outubro | 13:45', status: 'pago', valor_total: 16 },
-    { id_pedido: 4, cliente_nome: '#6796', data_pedido: '02 Outubro | 17:22', status: 'pago', valor_total: 25 },
-    { id_pedido: 5, cliente_nome: '#6546', data_pedido: '03 Outubro | 9:45', status: 'pendente', valor_total: 65 }
-  ];
-
-  lastId = 5; // Guarda o último ID lido
+  isLoading = true;
+  lastId = 0;
   private pollingSub!: Subscription;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    // Inicia o Polling (Substitui o setInterval do transactions-polling.js)
-    // A cada 10000ms (10 segundos), chama a função fetchNovasTransacoes
-    this.pollingSub = interval(10000).subscribe(() => {
+    // Carrega dados reais na inicialização
+    this.carregarDashboard();
+
+    // Polling a cada 30 segundos para novos pedidos
+    this.pollingSub = interval(30000).subscribe(() => {
       this.fetchNovasTransacoes();
     });
   }
 
   ngOnDestroy() {
-    // Quando você trocar de página, isso desliga o polling para não pesar o navegador
-    if (this.pollingSub) {
-      this.pollingSub.unsubscribe();
-    }
+    if (this.pollingSub) this.pollingSub.unsubscribe();
+  }
+
+  carregarDashboard() {
+    this.isLoading = true;
+    this.http.get<any>(this.API_URL).subscribe({
+      next: (dados) => {
+        this.resumo = dados.resumo;
+        this.produtosDestaque = dados.produtosDestaque;
+        this.transacoes = dados.transacoes;
+
+        // Atualiza o lastId para o polling saber de onde continuar
+        if (this.transacoes.length > 0) {
+          this.lastId = Math.max(...this.transacoes.map((t: any) => t.id_pedido));
+        }
+
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar dashboard:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   fetchNovasTransacoes() {
-    // FUTURO: Aqui chamaremos o seu Node.js (sukidoces-service)
-    /*
-    this.http.get<any[]>(`http://localhost:3000/api/admin/transacoes?last_id=${this.lastId}`).subscribe({
-      next: (novasTransacoes) => {
-        if (novasTransacoes && novasTransacoes.length > 0) {
-          // Adiciona as novas transações na lista
-          this.transacoes = [...this.transacoes, ...novasTransacoes];
-          
-          // Atualiza o lastId para o maior ID recebido
-          const maxId = Math.max(...novasTransacoes.map(t => parseInt(t.id_pedido)));
-          if (maxId > this.lastId) {
-            this.lastId = maxId;
-          }
+    // Busca apenas pedidos mais recentes que o último ID conhecido
+    this.http.get<any>(this.API_URL).subscribe({
+      next: (dados) => {
+        const todasTransacoes: any[] = dados.transacoes;
+        const novas = todasTransacoes.filter(t => t.id_pedido > this.lastId);
+
+        if (novas.length > 0) {
+          // Adiciona no topo da lista
+          this.transacoes = [...novas, ...this.transacoes];
+          this.lastId = Math.max(...novas.map(t => t.id_pedido));
+
+          // Atualiza contadores também
+          this.resumo = dados.resumo;
         }
       },
-      error: (err) => console.error('Erro ao buscar transações:', err)
+      error: (err) => console.error('Erro no polling:', err)
     });
-    */
-    console.log('Verificando novas transações... (Simulação)');
+  }
+
+  // Formata o status para exibição
+  getStatusClass(status: string): string {
+    const classes: any = {
+      pago: 'status-pago',
+      pendente: 'status-pendente',
+      enviado: 'status-enviado',
+      entregue: 'status-entregue',
+      cancelado: 'status-cancelado'
+    };
+    return classes[status] || '';
+  }
+
+  // Formata data para exibição
+  formatarData(data: string): string {
+    return new Date(data).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'
+    });
   }
 }
