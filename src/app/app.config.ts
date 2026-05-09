@@ -3,6 +3,7 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled'
       }),
     ),
-
+    provideEnvironmentNgxMask(),
     provideAnimationsAsync(),
     // Habilita o HTTP já com o seu Interceptor de autenticação tudo junto
     provideHttpClient(withInterceptors([authInterceptor]))
