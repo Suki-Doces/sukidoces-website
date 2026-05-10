@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { NgxMaskDirective } from 'ngx-mask';
 
 // Services
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -13,6 +14,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
     CommonModule,
     FormsModule,
     RouterModule,
+    NgxMaskDirective,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -26,6 +28,7 @@ export class LoginComponent {
   // Objeto para armazenar as credenciais do usuário em tempo real
   formData = {
     nome: '',
+    telefone: '',
     email: '',
     senha: '',
     confirmar_senha: '',
@@ -73,6 +76,7 @@ export class LoginComponent {
       // ====== Logica de Cadastro ======
       const novoUsuario = {
         nome: this.formData.nome,
+        telefone: this.formData.telefone,
         email: this.formData.email,
         senha: this.formData.senha
       };

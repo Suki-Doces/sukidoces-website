@@ -5,12 +5,15 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { finalize } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environments';
+import { NgxMaskDirective } from 'ngx-mask';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -21,40 +24,92 @@ export class ProfileComponent implements OnInit {
   passwordForm!: FormGroup;
 
   user: any;
-  pedidos: any[] = []; // Inicializado vazio para receber dados da API
+  pedidos: any[] = [];
 
   // Estados de UI
   isLoading: boolean = false;
   message: { type: 'success' | 'error', text: string } | null = null;
+  selectedOrder: any = null;
+
+  readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
     private orderService: OrderService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
   ) {
     this.initForms();
+  }
+
+  // Método para visualizar detalhes
+  viewOrderDetails(pedido: any): void {
+    this.selectedOrder = pedido;
+    this.activeTab = 'detalhes-pedido';
+
+    this.router.navigate([], {
+      queryParams: { tab: 'detalhes-pedido' },
+      queryParamsHandling: 'merge'
+    });
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       if (params['tab']) {
         this.activeTab = params['tab'];
+        if (this.activeTab !== 'detalhes-pedido') {
+          this.selectedOrder = null;
+        }
       }
     });
 
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.profileForm.patchValue(user);
-        this.loadOrders(); // Carrega os pedidos reais assim que o utilizador é identificado
+    this.loadDataUser();
+  }
 
-        // Lógica para extrair Nome e Sobrenome
-        const parts = user.nome.trim().split(' ');
-        this.displayName = parts.length > 1
-          ? `${parts[0]} ${parts[parts.length - 1]}`
-          : parts[0];
+  private loadDataUser(): void {
+    this.isLoading = true;
+
+    // Chamamos o serviço que vai à rota GET /perfil que configurámos no backend
+    this.userService.getProfile().subscribe({
+      next: (res: any) => {
+        // O seu backend retorna { user: { ... } }
+        const databd = res.user;
+
+        if (databd) {
+          this.user = databd;
+          this.loadOrders();
+
+          const addr: any = (databd.enderecos && databd.enderecos.length > 0)
+            ? databd.enderecos[0]
+            : {};
+
+          this.profileForm.patchValue({
+            nome: databd.nome,
+            email: databd.email,
+            telefone: databd.telefone || '',
+            cpf: databd.cpf || '',
+            cep: addr.cep || '',
+            rua: addr.logradouro || '',
+            numero: addr.numero || '',
+            complemento: addr.complemento || '',
+            bairro: addr.bairro || '',
+            cidade: addr.cidade || '',
+            estado: addr.estado || ''
+          });
+
+          const parts = databd.nome.trim().split(' ');
+          this.displayName = parts.length > 1
+            ? `${parts[0]} ${parts[parts.length - 1]}`
+            : parts[0];
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar perfil completo:', err);
+        this.isLoading = false;
       }
     });
   }
@@ -64,14 +119,15 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       email: [{ value: '', disabled: true }],
-      telefone: ['', [Validators.pattern(/^\(\d{2}\) \d{5}-\d{4}$/)]],
-      cpf: ['', [Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
-      cep: ['', [Validators.pattern(/^\d{5}-\d{3}$/)]],
-      rua: [''],
-      numero: [''],
+      telefone: ['', [Validators.required]],
+      cpf: [''],
+      cep: ['', [Validators.required]],
+      rua: ['', Validators.required],
+      numero: ['', Validators.required],
       complemento: [''],
-      bairro: [''],
-      cidade: ['']
+      bairro: ['', Validators.required],
+      cidade: ['', Validators.required],
+      estado: ['', Validators.required] // <-- Adicionado para o banco
     });
 
     // Formulário de Senha
@@ -82,7 +138,6 @@ export class ProfileComponent implements OnInit {
     }, { validators: this.mustMatch('newPassword', 'confirmPassword') });
   }
 
-  // Validador auxiliar para confirmar se as senhas coincidem
   private mustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
       const control = formGroup.controls[controlName];
@@ -92,37 +147,91 @@ export class ProfileComponent implements OnInit {
     };
   }
 
+  buscarCep(): void {
+    let cep = this.profileForm.get('cep')?.value;
 
-  // Chamada à API para atualizar dados
+    if (!cep) return;
+
+    cep = cep.replace(/\D/g, '');
+
+    if (cep.length === 8) {
+      this.http.get(`https://viacep.com.br/ws/${cep}/json/`).subscribe({
+        next: (data: any) => {
+          if (data.erro) {
+            alert('CEP não encontrado!');
+            return;
+          }
+
+          this.profileForm.patchValue({
+            rua: data.logradouro,
+            bairro: data.bairro,
+            cidade: data.localidade,
+            estado: data.uf // Adicionado para preencher o estado
+          });
+        },
+        error: (err) => {
+          console.error('Erro ao buscar o CEP:', err);
+        }
+      });
+    }
+  }
+
   updateProfile(): void {
-    if (this.profileForm.invalid || this.isLoading) return;
+    if (this.profileForm.invalid || this.isLoading) {
+      this.profileForm.markAllAsTouched();
+      return;
+    }
 
     this.isLoading = true;
     this.message = null;
 
-    // Usando updateProfile que já existe no seu UserService (não precisa passar o ID)
-    this.userService.updateProfile(this.profileForm.getRawValue())
+    // Pegamos todos os valores do formulário (incluindo o email desativado)
+    const dadosParaAtualizar = this.profileForm.getRawValue();
+
+    this.userService.updateProfile(dadosParaAtualizar)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (res: any) => {
-          this.message = { type: 'success', text: 'Dados atualizados com sucesso!' };
-          // Atualiza o utilizador no estado global para refletir as mudanças no header
-          this.authService.updateUserInStorage(this.profileForm.getRawValue());
+          this.message = { type: 'success', text: 'Dados e endereço guardados com sucesso!' };
+
+          // MUITO IMPORTANTE: Atualiza o utilizador no AuthService 
+          // para que o nome mude no Header e noutras partes do site imediatamente
+          this.authService.updateUserInStorage(dadosParaAtualizar);
+
+          // Opcional: faz scroll para o topo para ver a mensagem de sucesso
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         },
-        error: (err: any) => this.message = { type: 'error', text: 'Ocorreu um erro ao atualizar os dados.' }
+        error: (err: any) => {
+          console.error('Erro ao atualizar:', err);
+          this.message = {
+            type: 'error',
+            text: err.error?.message || 'Ocorreu um erro ao atualizar os dados no servidor.'
+          };
+        }
       });
   }
 
-  // Chamada à API para carregar pedidos reais
   loadOrders(): void {
-    if (!this.user?.id) return;
-
-    this.orderService.getUserOrders(this.user.id).subscribe({
-      next: (data: any) => this.pedidos = data,
-      error: (err: any) => console.error('Erro ao carregar pedidos', err)
+    if (!this.user) return;
+    this.orderService.getUserOrders().subscribe({
+      next: (data: any) => {
+        this.pedidos = Array.isArray(data) ? data : (data.pedidos || []);
+      },
+      error: (err) => console.error('Erro ao carregar pedidos', err)
     });
   }
-  // Chamada à API para mudar senha
+
+  getProductImage(imageURL: string | null): string {
+    if (!imageURL) return this.defaultImage;
+    if (imageURL.startsWith('http')) return imageURL;
+    return `${environment.productImgUrl}${imageURL}`;
+  }
+
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.defaultImage;
+  }
+
   changePassword(): void {
     if (this.passwordForm.invalid || this.isLoading) return;
 

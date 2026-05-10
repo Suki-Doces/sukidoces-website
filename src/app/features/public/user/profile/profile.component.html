@@ -8,22 +8,45 @@
         </div>
         <hr>
         <button (click)="activeTab = 'dados'" [class.active]="activeTab === 'dados'">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M3 14v-4c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172.654.653.943 1.528 1.07 2.828M21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172-.654-.653-.943-1.528-1.07-2.828M8 14h5m-5-4h1m7 0h-4" stroke="current-color" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M3 14v-4c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172.654.653.943 1.528 1.07 2.828M21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172-.654-.653-.943-1.528-1.07-2.828M8 14h5m-5-4h1m7 0h-4"
+                    stroke="current-color" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
             Meus Dados
         </button>
         <button (click)="activeTab = 'pedidos'" [class.active]="activeTab === 'pedidos'">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="M21.984 10c-.037-1.311-.161-2.147-.581-2.86-.598-1.015-1.674-1.58-3.825-2.708l-2-1.05C13.822 2.461 12.944 2 12 2s-1.822.46-3.578 1.382l-2 1.05C4.271 5.56 3.195 6.125 2.597 7.14 2 8.154 2 9.417 2 11.942v.117c0 2.524 0 3.787.597 4.801.598 1.015 1.674 1.58 3.825 2.709l2 1.049C10.178 21.539 11.056 22 12 22s1.822-.46 3.578-1.382l2-1.05c2.151-1.129 3.227-1.693 3.825-2.708.42-.713.544-1.549.581-2.86M21 7.5l-4 2M12 12 3 7.5m9 4.5v9.5m0-9.5 4.5-2.25.5-.25m0 0V13m0-3.5-9.5-5" stroke="current-color" stroke-width="1.5" stroke-linecap="round"/></svg>    
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M21.984 10c-.037-1.311-.161-2.147-.581-2.86-.598-1.015-1.674-1.58-3.825-2.708l-2-1.05C13.822 2.461 12.944 2 12 2s-1.822.46-3.578 1.382l-2 1.05C4.271 5.56 3.195 6.125 2.597 7.14 2 8.154 2 9.417 2 11.942v.117c0 2.524 0 3.787.597 4.801.598 1.015 1.674 1.58 3.825 2.709l2 1.049C10.178 21.539 11.056 22 12 22s1.822-.46 3.578-1.382l2-1.05c2.151-1.129 3.227-1.693 3.825-2.708.42-.713.544-1.549.581-2.86M21 7.5l-4 2M12 12 3 7.5m9 4.5v9.5m0-9.5 4.5-2.25.5-.25m0 0V13m0-3.5-9.5-5"
+                    stroke="current-color" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
             Meus Pedidos
         </button>
         <button (click)="activeTab = 'senha'" [class.active]="activeTab === 'senha'">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><g stroke="current-color" stroke-width="1.5"><circle cx="12" cy="9" r="2"/><path d="M16 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z"/><path d="M3 10.417c0-3.198 0-4.797.378-5.335.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2s1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 2.505-.837 4.437-2 5.913M3.193 14c.857 4.298 4.383 6.513 6.706 7.527.721.315 1.082.473 2.101.473 1.02 0 1.38-.158 2.101-.473.579-.252 1.231-.58 1.899-.994" stroke-linecap="round"/></g></svg>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <g stroke="current-color" stroke-width="1.5">
+                    <circle cx="12" cy="9" r="2" />
+                    <path d="M16 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z" />
+                    <path
+                        d="M3 10.417c0-3.198 0-4.797.378-5.335.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2s1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 2.505-.837 4.437-2 5.913M3.193 14c.857 4.298 4.383 6.513 6.706 7.527.721.315 1.082.473 2.101.473 1.02 0 1.38-.158 2.101-.473.579-.252 1.231-.58 1.899-.994"
+                        stroke-linecap="round" />
+                </g>
+            </svg>
             Segurança
         </button>
     </nav>
 
     <div class="profile-content">
 
-        <div *ngIf="activeTab === 'dados'" class="animate-fade" style="display: flex; flex-direction: column; gap: 30px;">
+        <div *ngIf="activeTab === 'dados'" class="animate-fade"
+            style="display: flex; flex-direction: column; gap: 30px;">
             <div class="glass-container profile-card">
                 <div class="profile-title">
                     <h2>Meus Dados</h2>
@@ -42,17 +65,17 @@
                         </div>
                         <div class="form-group">
                             <label>CPF</label>
-                            <input type="text" formControlName="cpf" placeholder="000.000.000-00">
+                            <input type="text" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
                         </div>
                         <div class="form-group">
                             <label>Telefone / WhatsApp</label>
-                            <input type="text" formControlName="telefone" placeholder="(00) 00000-0000">
+                            <input type="text" formControlName="telefone" mask="(00) 0000-0000||(00) 0 0000-0000" placeholder="(00) 00000-0000">
                         </div>
 
                         <h3 class="section-title">Endereço de Entrega</h3>
                         <div class="form-group">
                             <label>CEP</label>
-                            <input type="text" formControlName="cep" placeholder="00000-000">
+                            <input type="text" formControlName="cep" mask="00000-000" placeholder="00000-000" (blur)="buscarCep()">
                         </div>
                         <div class="form-group">
                             <label>Rua / Avenida</label>
@@ -71,8 +94,12 @@
                             <input type="text" formControlName="bairro" placeholder="Seu bairro">
                         </div>
                         <div class="form-group">
-                            <label>Cidade / Estado</label>
+                            <label>Cidade</label>
                             <input type="text" formControlName="cidade" placeholder="Cidade - UF">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado (UF)</label>
+                            <input type="text" formControlName="estado" maxlength="2" placeholder="ex: SP">
                         </div>
                     </div>
 
@@ -81,7 +108,9 @@
                     </div>
 
                     <div style="margin-top: 24px; text-align: right;">
-                        <button type="submit" class="btn btn-glass btn-primary " [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar Alterações' }}
+                        <button type="submit" class="btn btn-glass btn-primary "
+                            [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar
+                            Alterações' }}
                         </button>
                     </div>
                 </form>
@@ -90,9 +119,11 @@
             <div class="glass-container profile-card danger-zone">
                 <h2>Excluir Conta</h2>
                 <p style="margin-bottom: 20px; color: var(--t-default); font-size: 0.95rem; line-height: 1.5;">
-                    Ao excluir sua conta, você perderá acesso ao seu histórico de pedidos e seus dados serão removidos do nosso sistema. Essa ação é irreversível.
+                    Ao excluir sua conta, você perderá acesso ao seu histórico de pedidos e seus dados serão removidos
+                    do nosso sistema. Essa ação é irreversível.
                 </p>
-                <button type="button" class="btn btn-glass btn-danger" (click)="deleteAccount()">Excluir minha conta permanentemente
+                <button type="button" class="btn btn-glass btn-danger" (click)="deleteAccount()">Excluir minha conta
+                    permanentemente
                 </button>
             </div>
         </div>
@@ -104,7 +135,8 @@
 
             <div *ngIf="pedidos.length === 0" class="empty-state">
                 <p>Ainda não efetuou nenhum pedido.</p>
-                <button routerLink="/produtos" class="btn btn-glass btn-primary" style="margin-top: 15px;">Ir para a Loja</button>
+                <button routerLink="/produtos" class="btn btn-glass btn-primary" style="margin-top: 15px;">Ir para a
+                    Loja</button>
             </div>
 
             <div class="orders-list" *ngIf="pedidos.length > 0">
@@ -112,8 +144,8 @@
 
                     <div class="order-header">
                         <div>
-                            <h3>Pedido #{{ pedido.id }}</h3>
-                            <span class="order-date">{{ pedido.data | date:'dd/MM/yyyy HH:mm' }}</span>
+                            <h3>Pedido #{{ pedido.id_pedido }}</h3>
+                            <span class="order-date">{{ pedido.data_pedido | date:'dd/MM/yyyy HH:mm' }}</span>
                         </div>
                         <div class="order-status" [ngClass]="pedido.status.toLowerCase()">
                             {{ pedido.status }}
@@ -121,19 +153,25 @@
                     </div>
 
                     <div class="order-items">
-                        <div class="item" *ngFor="let item of pedido.itens">
-                            <img [src]="item.imagem || 'assets/images/produtos/default-product.svg'" [alt]="item.nome"
-                                class="item-img">
+                        <div class="item" *ngFor="let item of pedido.itens_pedido">
+
+                            <img [src]="getProductImage(item.produtos.imagem)" (error)="onImageError($event)"
+                                [alt]="item.produtos.nome" class="item-img">
+
                             <div class="item-details">
-                                <p class="item-name">{{ item.quantidade }}x {{ item.nome }}</p>
-                                <p class="item-price">{{ item.preco | currency:'BRL':'symbol' }}</p>
+                                <p class="item-name">{{ item.quantidade }}x {{ item.produtos.nome }}</p>
+
+                                <p class="item-price">{{ item.preco_unitario | currency:'BRL':'symbol' }}</p>
                             </div>
+
                         </div>
                     </div>
 
                     <div class="order-footer">
-                        <p>Total: <strong>{{ pedido.total | currency:'BRL':'symbol' }}</strong></p>
-                        <button class="btn-outline">Ver Detalhes</button>
+                        <p>Total: <strong>{{ pedido.valor_total | currency:'BRL':'symbol' }}</strong></p>
+                        <button class="btn-outline" (click)="viewOrderDetails(pedido)">
+                            Ver Detalhes
+                        </button>
                     </div>
 
                 </div>
@@ -157,17 +195,74 @@
                     <label>Confirmar Nova Senha</label>
                     <input type="password" formControlName="confirmPassword" placeholder="Repita a nova senha">
                 </div>
-                
-                <div *ngIf="message && activeTab === 'senha'" class="alert" [ngClass]="message.type" style="margin-top: 20px;">
+
+                <div *ngIf="message && activeTab === 'senha'" class="alert" [ngClass]="message.type"
+                    style="margin-top: 20px;">
                     {{ message.text }}
                 </div>
 
                 <div style="margin-top: 24px; text-align: right;">
-                    <button type="submit" class="btn btn-glass btn-primary" [disabled]="passwordForm.invalid || isLoading">
+                    <button type="submit" class="btn btn-glass btn-primary"
+                        [disabled]="passwordForm.invalid || isLoading">
                         {{ isLoading ? 'Atualizando...' : 'Atualizar Senha' }}
                     </button>
                 </div>
             </form>
+        </div>
+
+        <div *ngIf="activeTab === 'detalhes-pedido' && selectedOrder" class="glass-container profile-card profile-content">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <div class="profile-title">
+                    <h2>Pedido #{{ selectedOrder.id_pedido }}</h2>
+                    <p>Realizado em {{ selectedOrder.data_pedido | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+                <button class="btn-outline" (click)="activeTab = 'pedidos'">
+                    ← Voltar
+                </button>
+            </div>
+
+            <div class="order-card" style="margin-bottom: 20px;">
+                <div class="order-header">
+                    <h3>Informações Gerais</h3>
+                    <span class="order-status" [ngClass]="selectedOrder.status || 'pendente'">
+                        {{ selectedOrder.status || 'pendente' }}
+                    </span>
+                </div>
+                <div style="color: var(--t-color-2); display: flex; flex-direction: column; gap: 8px;">
+                    <p style="margin: 0;"><strong>Método de Pagamento:</strong> {{ selectedOrder.metodo_pagamento |
+                        uppercase }}</p>
+                </div>
+            </div>
+
+            <div class="order-card">
+                <div class="order-header">
+                    <h3>Itens do Pedido</h3>
+                </div>
+
+                <div class="order-items">
+                    <div class="item" *ngFor="let item of selectedOrder.itens_pedido"
+                        style="border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px;">
+                        <img [src]="getProductImage(item.produtos.imagem)" (error)="onImageError($event)"
+                            [alt]="item.produtos?.nome" class="item-img">
+
+                        <div class="item-details" style="flex-grow: 1;">
+                            <p class="item-name">{{ item.produtos?.nome }}</p>
+                            <p class="item-price">{{ item.quantidade }}x {{ item.preco_unitario | currency:'BRL' }}</p>
+                        </div>
+
+                        <div style="font-weight: bold; color: var(--t-color-3); font-size: 1.1rem;">
+                            {{ (item.quantidade * item.preco_unitario) | currency:'BRL' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-footer">
+                    <p>Total pago:</p>
+                    <strong>{{ selectedOrder.valor_total | currency:'BRL' }}</strong>
+                </div>
+            </div>
+
         </div>
 
     </div>
