@@ -1,76 +1,116 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { ImageFormatPipe } from 'src/app/shared/pipes/image-format.pipe';
 
-// Definindo o formato do pedido com base no seu banco de dados
 interface Pedido {
   id_pedido: number;
   cliente_nome: string;
-  endereco_entrega: string;
-  data_pedido: Date;
+  cliente_email: string;
+  data_pedido: Date | string;
   status: 'pendente' | 'pago' | 'enviado' | 'entregue' | 'cancelado';
   valor_total: number;
+  metodo_pagamento: string;
+  itens?: { nome: string; quantidade: number; imagem?: string }[];
 }
 
 @Component({
   selector: 'app-lista-pedidos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ImageFormatPipe],
   templateUrl: './lista-pedidos.component.html',
   styleUrls: ['./lista-pedidos.component.css']
 })
 export class ListaPedidosComponent implements OnInit {
-  // --- Dados Simulados (Mock) ---
-  pedidos: Pedido[] = [
-    { id_pedido: 1001, cliente_nome: 'Tiago Oliveira', endereco_entrega: 'Rua A, 123 - Santo André', data_pedido: new Date('2026-04-20T10:30:00'), status: 'pago', valor_total: 150.50 },
-    { id_pedido: 1002, cliente_nome: 'Maria Souza', endereco_entrega: 'Av. B, 45 - São Bernardo', data_pedido: new Date('2026-04-21T14:20:00'), status: 'enviado', valor_total: 89.90 },
-    { id_pedido: 1003, cliente_nome: 'Carlos Eduardo', endereco_entrega: 'Retirada na Loja', data_pedido: new Date('2026-04-22T09:15:00'), status: 'pendente', valor_total: 45.00 },
-    { id_pedido: 1004, cliente_nome: 'Ana Clara', endereco_entrega: 'Rua C, 99 - Diadema', data_pedido: new Date('2026-04-18T16:45:00'), status: 'entregue', valor_total: 210.00 },
-    { id_pedido: 1005, cliente_nome: 'Pedro Alves', endereco_entrega: 'Rua D, 12 - São Paulo', data_pedido: new Date('2026-04-19T11:10:00'), status: 'cancelado', valor_total: 35.50 },
-  ];
+  private http = inject(HttpClient);
+  
+  // URL base fixa para não dar erro no environment. 
+  // (Se o seu backend rodar em porta diferente, basta mudar aqui)
+  private apiUrl = 'http://localhost:3000/pedidos';
 
+  pedidos: Pedido[] = [];
   pedidosFiltrados: Pedido[] = [];
+
   filtroStatus: string = 'todos';
   busca: string = '';
+  isLoading = true;
 
-  // --- Contadores Estatísticos Dinâmicos ---
+  // --- Contadores Estatísticos ---
   get totalPedidos() { return this.pedidos.length; }
   get totalConcluidos() { return this.pedidos.filter(p => p.status === 'entregue').length; }
   get totalPendentes() { return this.pedidos.filter(p => p.status === 'pendente').length; }
   get totalCancelados() { return this.pedidos.filter(p => p.status === 'cancelado').length; }
-
-  ngOnInit() {
-    // Inicializa a lista mostrando todos
-    this.aplicarFiltros();
+  get totalVendas() {
+    return this.pedidos
+      .filter(p => ['pago', 'enviado', 'entregue'].includes(p.status))
+      .reduce((sum, p) => sum + Number(p.valor_total), 0);
   }
 
-  // --- Lógica de Filtro e Busca ---
+  ngOnInit() {
+    this.carregarPedidos();
+  }
+
+  carregarPedidos() {
+    this.isLoading = true;
+    this.http.get<Pedido[]>(this.apiUrl).subscribe({
+      next: (dados) => {
+        this.pedidos = dados;
+        this.aplicarFiltros();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar pedidos:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
   aplicarFiltros() {
     this.pedidosFiltrados = this.pedidos.filter(p => {
-      // Verifica Aba
       const matchStatus = this.filtroStatus === 'todos' || p.status === this.filtroStatus;
-      // Verifica Busca (Nome ou ID)
       const termo = this.busca.toLowerCase();
-      const matchBusca = p.id_pedido.toString().includes(termo) || p.cliente_nome.toLowerCase().includes(termo);
-      
+      const matchBusca = !termo ||
+        p.id_pedido.toString().includes(termo) ||
+        p.cliente_nome.toLowerCase().includes(termo) ||
+        p.cliente_email?.toLowerCase().includes(termo);
       return matchStatus && matchBusca;
     });
   }
 
   setFiltroStatus(status: string, event: Event) {
-    event.preventDefault(); // Evita que o link '# ' recarregue a tela
+    event.preventDefault();
     this.filtroStatus = status;
     this.aplicarFiltros();
   }
 
-  // --- Ações dos Botões ---
-  updateStatus(pedido: Pedido, novoStatus: 'enviado' | 'entregue') {
-    if (confirm(`Deseja alterar o status do pedido #${pedido.id_pedido} para ${novoStatus.toUpperCase()}?`)) {
-      pedido.status = novoStatus;
-      this.aplicarFiltros(); // Atualiza a tela instantaneamente
-      
-      // FUTURO: Aqui vai a chamada pro Node.js
-      // this.http.post('http://localhost:3000/api/admin/pedidos/status', { id: pedido.id_pedido, status: novoStatus }).subscribe(...);
-    }
+  // --- Ação de Atualizar Status ---
+  updateStatus(pedido: Pedido, novoStatus: string) {
+    if (!confirm(`Deseja alterar o pedido #${pedido.id_pedido} para "${novoStatus.toUpperCase()}"?`)) return;
+
+    this.http.patch(`${this.apiUrl}/${pedido.id_pedido}/status`, { status: novoStatus })
+      .subscribe({
+        next: () => {
+          pedido.status = novoStatus as any;
+          this.aplicarFiltros();
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar status:', err);
+          alert('Erro ao atualizar status no servidor.');
+        }
+      });
+  }
+
+  // --- Helpers de Formatação ---
+  formatarData(data: Date | string): string {
+    return new Date(data).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  formatarMetodo(metodo: string): string {
+    const metodos: any = { pix: 'PIX', cartao: 'Cartão', boleto: 'Boleto' };
+    return metodos[metodo] || metodo;
   }
 }

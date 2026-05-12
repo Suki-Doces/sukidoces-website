@@ -60,7 +60,7 @@
 <footer class="table">
   <section class="table_header">
     <div class="input-group">
-      <input type="search" placeholder="ID ou Nome do Cliente..." [(ngModel)]="busca" (input)="aplicarFiltros()">
+      <input type="search" placeholder="ID, Nome ou Email do Cliente..." [(ngModel)]="busca" (input)="aplicarFiltros()">
       <img src="assets/images/icons/Lupa - icon.svg" alt="Pesquisar">
     </div>
 
@@ -79,8 +79,7 @@
         <tr>
           <th>ID</th>
           <th>Cliente</th>
-          <th>Endereço</th>
-          <th>Data</th>
+          <th>Itens / Resumo</th> <th>Data</th>
           <th class="status-th">Status</th>
           <th>Valor</th>
           <th>Ações</th>
@@ -89,11 +88,19 @@
       <tbody>
         <tr *ngFor="let p of pedidosFiltrados">
           <td>#{{ p.id_pedido.toString().padStart(4, '0') }}</td>
-          <td>{{ p.cliente_nome }}</td>
-          <td [title]="p.endereco_entrega">
-            {{ p.endereco_entrega.length > 25 ? (p.endereco_entrega | slice:0:25) + '...' : p.endereco_entrega }}
+          <td>
+            <strong>{{ p.cliente_nome }}</strong><br>
+            <small style="color: #666;">{{ p.cliente_email }}</small>
           </td>
-          <td>{{ p.data_pedido | date:'dd/MM/yyyy' }}</td>
+          
+          <td>
+            <div *ngFor="let it of p.itens" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <img [src]="it.imagem | imageFormat" alt="doce" width="28" height="28" style="border-radius: 4px; object-fit: cover;">
+              <small>{{ it.quantidade }}x {{ it.nome }}</small>
+            </div>
+          </td>
+
+          <td>{{ formatarData(p.data_pedido) }}</td>
           <td>
             <p class="status" [ngClass]="p.status">{{ p.status | titlecase }}</p>
           </td>
@@ -118,8 +125,11 @@
           </td>
         </tr>
 
-        <tr *ngIf="pedidosFiltrados.length === 0">
+        <tr *ngIf="pedidosFiltrados.length === 0 && !isLoading">
           <td colspan="7" style="text-align:center; padding: 20px;">Nenhum pedido encontrado.</td>
+        </tr>
+        <tr *ngIf="isLoading">
+          <td colspan="7" style="text-align:center; padding: 20px;">Carregando pedidos...</td>
         </tr>
       </tbody>
     </table>
