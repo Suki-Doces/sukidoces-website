@@ -25,7 +25,6 @@ export class PainelConfiguracoesComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    // 1. Inicializa o formulário com as validações
     this.configForm = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -34,14 +33,13 @@ export class PainelConfiguracoesComponent implements OnInit {
       confirmaSenha: ['']
     }, { validators: this.senhasIguaisValidator });
 
-    // 2. Busca os dados reais do Admin
     this.carregarDadosAdmin();
   }
 
   carregarDadosAdmin() {
-    this.http.get<any>(`${environment.apiUrl}/admin/perfil`).subscribe({
+    // CORRIGIDO: Rota exata onde o seu server.js está apontando
+    this.http.get<any>(`${environment.apiUrl}/admin/configuracoes`).subscribe({
       next: (adminAtual) => {
-        // Preenche o formulário com os dados vindos do banco
         this.configForm.patchValue({
           nome: adminAtual.nome,
           email: adminAtual.email
@@ -53,7 +51,6 @@ export class PainelConfiguracoesComponent implements OnInit {
     });
   }
 
-  // Validador customizado: garante que a nova senha e a confirmação são iguais
   senhasIguaisValidator(control: AbstractControl): ValidationErrors | null {
     const senha = control.get('novaSenha')?.value;
     const confirma = control.get('confirmaSenha')?.value;
@@ -65,7 +62,6 @@ export class PainelConfiguracoesComponent implements OnInit {
     return null;
   }
 
-  // Lógica para quando o utilizador escolhe uma foto do PC
   onFotoSelecionada(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -84,12 +80,10 @@ export class PainelConfiguracoesComponent implements OnInit {
 
     const dadosAtualizados = this.configForm.value;
 
-    // Conexão real com a rota PUT de configuração
-    this.http.put(`${environment.apiUrl}/admin/perfil`, dadosAtualizados).subscribe({
+    // CORRIGIDO: Rota de PUT exata onde o seu server.js está apontando
+    this.http.put(`${environment.apiUrl}/admin/configuracoes`, dadosAtualizados).subscribe({
       next: () => {
         this.mensagemSucesso = 'Alterações salvas com sucesso!';
-        
-        // Limpa apenas os campos de senha após salvar
         this.configForm.patchValue({
           senhaAtual: '',
           novaSenha: '',
