@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ImageFormatPipe } from 'src/app/shared/pipes/image-format.pipe';
+import { environment } from 'src/environments/environment';
 
 interface Pedido {
   id_pedido: number;
@@ -25,9 +26,8 @@ interface Pedido {
 export class ListaPedidosComponent implements OnInit {
   private http = inject(HttpClient);
   
-  // URL base fixa para não dar erro no environment. 
-  // (Se o seu backend rodar em porta diferente, basta mudar aqui)
-  private apiUrl = 'http://localhost:3000/pedidos';
+  // CORRIGIDO: Agora usa a URL dinâmica do ambiente (localhost ou Vercel)
+  private apiUrl = `${environment.apiUrl}/pedidos`;
 
   pedidos: Pedido[] = [];
   pedidosFiltrados: Pedido[] = [];

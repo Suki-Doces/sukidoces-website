@@ -11,7 +11,7 @@ const envConfigFile = `export const environment = {
     productImgUrl: '${process.env.PRODUCT_IMG_URL}',
 };
 `;
-const targetPath = path.join(__dirname, './src/environments/environments.ts');
+const targetPath = path.join(__dirname, './src/environments/environment.ts');
 
 const envDirectory = path.join(__dirname, 'src/environments');
 if (!fs.existsSync(envDirectory)) {

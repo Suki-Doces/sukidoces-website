@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './product.service';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 export interface CartItem {
   id: number;

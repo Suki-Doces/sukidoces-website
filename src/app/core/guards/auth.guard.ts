@@ -2,17 +2,32 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
-    const router = inject(Router);
-
-    // Verifica se o token existe no navegador
-    const token = localStorage.getItem('suki_token');
-
-    if (token) {
-        return true; // Está logado, pode passar!
+function tokenIsValid(token: string | null): boolean {
+    if (!token) {
+        return false;
     }
 
-    // Não está logado? Redireciona para a página de login
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (!payload.exp) {
+            return true;
+        }
+        return payload.exp * 1000 > Date.now();
+    } catch {
+        return false;
+    }
+}
+
+export const authGuard: CanActivateFn = (route, state) => {
+    const router = inject(Router);
+    const token = localStorage.getItem('suki_token');
+
+    if (tokenIsValid(token)) {
+        return true;
+    }
+
+    localStorage.removeItem('suki_token');
+    localStorage.removeItem('suki_user');
     router.navigate(['/login']);
     return false;
 };

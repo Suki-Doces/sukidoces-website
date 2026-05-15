@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-controle-estoque',

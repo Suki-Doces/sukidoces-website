@@ -6,7 +6,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 import { NgxMaskDirective } from 'ngx-mask';
 import { HttpClient } from '@angular/common/http';
 

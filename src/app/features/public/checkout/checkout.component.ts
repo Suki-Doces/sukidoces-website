@@ -7,7 +7,7 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { CheckoutService, UsuarioCheckout } from 'src/app/core/services/checkout.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-checkout',
@@ -147,7 +147,7 @@ export class CheckoutComponent implements OnInit {
       quantidade: i.quantity
     }));
 
-    this.http.post<any>(`${environment.apiUrl}/admin/pedidos`, {
+    this.http.post<any>(`${environment.apiUrl}/pedidos`, {
       produtos,
       metodo_pagamento: this.checkoutForm.get('metodo_pagamento')?.value || 'pix',
       codigo_cupom: this.codigoCupom.toUpperCase().trim(),

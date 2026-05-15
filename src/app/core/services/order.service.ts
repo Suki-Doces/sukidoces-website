@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
@@ -38,7 +38,7 @@ export class OrderService {
 
   // Cliente: cria novo pedido no checkout
   createOrder(produtos: any[], metodo_pagamento: string, codigo_cupom?: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/admin/pedidos`, {
+    return this.http.post(`${this.API_URL}/pedidos`, {
       produtos,
       metodo_pagamento,
       ...(codigo_cupom && { codigo_cupom })

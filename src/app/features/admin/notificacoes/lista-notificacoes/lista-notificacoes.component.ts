@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 // O "molde" de como uma notificação deve ser
 interface Notificacao {

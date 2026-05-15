@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-painel-configuracoes',
@@ -17,6 +19,9 @@ export class PainelConfiguracoesComponent implements OnInit {
   // URL da foto padrão (pode vir do banco de dados no futuro)
   fotoPerfil: string = 'assets/admin/default-avatar.png'; 
 
+  // Injetando o HttpClient para conectar com o Node.js
+  private http = inject(HttpClient);
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -29,21 +34,22 @@ export class PainelConfiguracoesComponent implements OnInit {
       confirmaSenha: ['']
     }, { validators: this.senhasIguaisValidator });
 
-    // 2. Simula a busca dos dados do Admin atual (que virão do Node.js)
+    // 2. Busca os dados reais do Admin
     this.carregarDadosAdmin();
   }
 
   carregarDadosAdmin() {
-    // Aqui você faria um GET para a sua API
-    const adminAtual = {
-      nome: 'Tiago Oliveira',
-      email: 'admin@sukidoces.com'
-    };
-
-    // Preenche o formulário automaticamente com os dados do banco
-    this.configForm.patchValue({
-      nome: adminAtual.nome,
-      email: adminAtual.email
+    this.http.get<any>(`${environment.apiUrl}/admin/perfil`).subscribe({
+      next: (adminAtual) => {
+        // Preenche o formulário com os dados vindos do banco
+        this.configForm.patchValue({
+          nome: adminAtual.nome,
+          email: adminAtual.email
+        });
+      },
+      error: (err) => {
+        console.error('Erro ao carregar dados do admin:', err);
+      }
     });
   }
 
@@ -63,9 +69,7 @@ export class PainelConfiguracoesComponent implements OnInit {
   onFotoSelecionada(event: any) {
     const file = event.target.files[0];
     if (file) {
-      // Cria um link temporário para mostrar a imagem na tela antes de salvar
       this.fotoPerfil = URL.createObjectURL(file);
-      // Aqui no futuro você adiciona a lógica de enviar esse 'file' (FormData) para o Node.js
     }
   }
 
@@ -79,17 +83,23 @@ export class PainelConfiguracoesComponent implements OnInit {
     }
 
     const dadosAtualizados = this.configForm.value;
-    console.log('Dados prontos para enviar para o Node.js:', dadosAtualizados);
 
-    // Simulação do sucesso da gravação
-    // Aqui entrará o seu this.http.put('...', dadosAtualizados).subscribe(...)
-    this.mensagemSucesso = 'Alterações salvas com sucesso!';
-    
-    // Limpa apenas os campos de senha após salvar
-    this.configForm.patchValue({
-      senhaAtual: '',
-      novaSenha: '',
-      confirmaSenha: ''
+    // Conexão real com a rota PUT de configuração
+    this.http.put(`${environment.apiUrl}/admin/perfil`, dadosAtualizados).subscribe({
+      next: () => {
+        this.mensagemSucesso = 'Alterações salvas com sucesso!';
+        
+        // Limpa apenas os campos de senha após salvar
+        this.configForm.patchValue({
+          senhaAtual: '',
+          novaSenha: '',
+          confirmaSenha: ''
+        });
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar perfil:', err);
+        this.mensagemErro = err.error?.mensagem || 'Erro ao salvar as configurações. Verifique sua senha atual.';
+      }
     });
   }
 }
