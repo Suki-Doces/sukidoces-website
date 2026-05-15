@@ -8,18 +8,21 @@ export interface UsuarioCheckout {
   email: string;
   cpf: string;
   telefone?: string;
-  endereco?: string; // Novo campo adicionado
+  endereco?: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CheckoutService {
-  private apiUrl = `${environment.apiUrl}/clientes`; 
+  private apiUrl = `${environment.apiUrl}/usuario`;
 
   constructor(private http: HttpClient) {}
 
+  // CORRIGIDO: era /clientes/auto-save — rota que não existe no backend
+  // Agora salva corretamente no perfil do usuário via PUT /usuario/perfil
   autoSalvarUsuario(dados: UsuarioCheckout): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auto-save`, dados);
+    return this.http.put(`${this.apiUrl}/perfil`, {
+      nome: dados.nome,
+      telefone: dados.telefone
+    });
   }
 }
