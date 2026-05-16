@@ -94,6 +94,11 @@
                         [ngClass]="{ 'is-invalid': f['mensagem'].touched && f['mensagem'].errors }"></textarea>
                 </div>
 
+                <!-- Alerta de Erro -->
+                <div *ngIf="errorMessage" class="error-alert">
+                    {{ errorMessage }}
+                </div>
+
                 <!-- Alerta de Sucesso -->
                 <div *ngIf="successMessage" class="success-alert">
                     Mensagem enviada com sucesso! Retornaremos em breve.
@@ -110,4 +115,31 @@
         </div>
 
     </div>
+
+    <section *ngIf="messages.length > 0 || loadingHistory || historyError" class="contact-history-section">
+      <div class="history-header">
+        <h2>Histórico de mensagens</h2>
+        <p *ngIf="!messages.length && !loadingHistory && !historyError">Suas mensagens aparecerão aqui assim que você enviar um contato estando logado.</p>
+      </div>
+
+      <div *ngIf="loadingHistory" class="history-loading">Carregando histórico...</div>
+      <div *ngIf="historyError" class="error-alert">{{ historyError }}</div>
+
+      <div *ngFor="let msg of messages" class="history-card">
+        <div class="history-card-header">
+          <span class="history-subject">{{ msg.assunto }}</span>
+          <span class="history-status" [ngClass]="{ answered: msg.respondido, pending: !msg.respondido }">
+            {{ msg.respondido ? 'Respondido' : 'Pendente' }}
+          </span>
+        </div>
+        <p><strong>Enviado em:</strong> {{ msg.data_criacao | date:'short' }}</p>
+        <p><strong>Mensagem:</strong></p>
+        <p class="history-message">{{ msg.mensagem }}</p>
+        <div *ngIf="msg.respondido" class="history-reply">
+          <p><strong>Resposta:</strong></p>
+          <p>{{ msg.resposta }}</p>
+          <p><strong>Respondido em:</strong> {{ msg.data_resposta | date:'short' }}</p>
+        </div>
+      </div>
+    </section>
 </main>

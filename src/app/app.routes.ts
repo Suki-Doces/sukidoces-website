@@ -22,6 +22,7 @@ import { ControleEstoqueComponent } from './features/admin/estoque/controle-esto
 import { ListaClientesComponent } from './features/admin/clientes/lista-clientes/lista-clientes.component';
 import { PainelConfiguracoesComponent } from './features/admin/configuracoes/painel-configuracoes/painel-configuracoes.component';
 import { ListaNotificacoesComponent } from './features/admin/notificacoes/lista-notificacoes/lista-notificacoes.component';
+import { ListaContatosComponent } from './features/admin/contatos/lista-contatos/lista-contatos.component';
 export const routes: Routes = [
   // ==========================================
   // ROTAS PÚBLICAS (Suki Doces Website)
@@ -52,6 +53,7 @@ export const routes: Routes = [
       { path: 'produtos', component: ListaProdutosComponent, title: 'SukiAdm | Produtos' },
       
       { path: 'notificacoes', component: ListaNotificacoesComponent, title: 'SukiAdm | Notificações' },
+      { path: 'contatos', component: ListaContatosComponent, title: 'SukiAdm | Contatos' },
 
       { path: 'clientes', component: ListaClientesComponent, title: 'SukiAdm | Clientes' },
 

@@ -1,0 +1,19 @@
+.admin-contacts-page { padding: 1rem; }
+.page-header { margin-bottom: 1.5rem; }
+.page-header h1 { margin: 0 0 0.5rem 0; }
+.alert { padding: 0.9rem 1rem; border-radius: 0.75rem; margin-bottom: 1rem; }
+.alert-error { background: #ffe8e8; color: #8f1d1d; }
+.alert-success { background: #e6f8ec; color: #1e5f2d; }
+.loading { padding: 1rem; color: #555; }
+.empty-state { padding: 1rem; color: #555; }
+.contact-card { background: #ffffff; border: 1px solid #e3e3e3; border-radius: 1rem; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+.contact-card-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.badge { background: #f3f3f3; color: #333; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.85rem; }
+.status { font-weight: 700; }
+.status.answered { color: #1e5f2d; }
+.status.pending { color: #b95e03; }
+.contact-card-body p { margin: 0.5rem 0; }
+.message-text, .response-text { background: #fafafa; border-radius: 0.75rem; padding: 0.9rem; color: #333; }
+.reply-textarea { width: 100%; min-height: 100px; border: 1px solid #dcdcdc; border-radius: 0.75rem; padding: 0.75rem; resize: vertical; margin-bottom: 0.75rem; }
+.btn-primary { background: #0084ff; border: none; color: white; padding: 0.8rem 1.2rem; border-radius: 0.75rem; cursor: pointer; }
+.btn-primary:hover { filter: brightness(0.95); }

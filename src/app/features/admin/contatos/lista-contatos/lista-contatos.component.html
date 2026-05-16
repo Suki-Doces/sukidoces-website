@@ -1,0 +1,56 @@
+<div class="admin-contacts-page">
+  <div class="page-header">
+    <h1>Mensagens de Contato</h1>
+    <p>Aqui você vê todas as mensagens enviadas pelo formulário de contato e pode responder.</p>
+  </div>
+
+  <div *ngIf="carregando" class="loading">Carregando mensagens...</div>
+  <div *ngIf="erro" class="alert alert-error">{{ erro }}</div>
+  <div *ngIf="sucesso" class="alert alert-success">{{ sucesso }}</div>
+
+  <div *ngIf="!carregando && mensagens.length === 0" class="empty-state">
+    Nenhuma mensagem de contato recebida ainda.
+  </div>
+
+  <div *ngFor="let msg of mensagens" class="contact-card">
+    <div class="contact-card-header">
+      <div>
+        <strong>{{ msg.nome }}</strong>
+        <span class="badge">{{ msg.assunto }}</span>
+      </div>
+      <div class="status {{ msg.respondido ? 'answered' : 'pending' }}">
+        {{ msg.respondido ? 'Respondido' : 'Pendente' }}
+      </div>
+    </div>
+
+    <div class="contact-card-body">
+      <p><strong>E-mail:</strong> {{ msg.email }}</p>
+      <p><strong>Telefone:</strong> {{ msg.telefone }}</p>
+      <p><strong>Mensagem:</strong></p>
+      <p class="message-text">{{ msg.mensagem }}</p>
+    </div>
+
+    <div class="contact-card-footer">
+      <div *ngIf="msg.resposta">
+        <p><strong>Resposta enviada:</strong></p>
+        <p class="response-text">{{ msg.resposta }}</p>
+      </div>
+
+      <textarea 
+        [(ngModel)]="respostaPorMensagem[msg.id]"
+        placeholder="Digite sua resposta aqui..."
+        rows="3"
+        class="reply-textarea"
+        *ngIf="!msg.respondido"
+      ></textarea>
+
+      <button 
+        class="btn btn-primary" 
+        (click)="enviarResposta(msg.id)" 
+        *ngIf="!msg.respondido"
+      >
+        Enviar resposta
+      </button>
+    </div>
+  </div>
+</div>
