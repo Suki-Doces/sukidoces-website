@@ -1,19 +1,275 @@
-.admin-contacts-page { padding: 1rem; }
-.page-header { margin-bottom: 1.5rem; }
-.page-header h1 { margin: 0 0 0.5rem 0; }
-.alert { padding: 0.9rem 1rem; border-radius: 0.75rem; margin-bottom: 1rem; }
-.alert-error { background: #ffe8e8; color: #8f1d1d; }
-.alert-success { background: #e6f8ec; color: #1e5f2d; }
-.loading { padding: 1rem; color: #555; }
-.empty-state { padding: 1rem; color: #555; }
-.contact-card { background: #ffffff; border: 1px solid #e3e3e3; border-radius: 1rem; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
-.contact-card-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-.badge { background: #f3f3f3; color: #333; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.85rem; }
-.status { font-weight: 700; }
-.status.answered { color: #1e5f2d; }
-.status.pending { color: #b95e03; }
-.contact-card-body p { margin: 0.5rem 0; }
-.message-text, .response-text { background: #fafafa; border-radius: 0.75rem; padding: 0.9rem; color: #333; }
-.reply-textarea { width: 100%; min-height: 100px; border: 1px solid #dcdcdc; border-radius: 0.75rem; padding: 0.75rem; resize: vertical; margin-bottom: 0.75rem; }
-.btn-primary { background: #0084ff; border: none; color: white; padding: 0.8rem 1.2rem; border-radius: 0.75rem; cursor: pointer; }
-.btn-primary:hover { filter: brightness(0.95); }
+/* CONTAINER GERAL */
+.admin-dashboard-wrapper {
+  padding: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* CABEÇALHO PADRÃO SUKI DOCES */
+#content-dashboard {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+#content-dashboard h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.page-subtitle {
+  color: #7f8c8d;
+  font-size: 1.05rem;
+}
+
+/* TABELA DE ADMINISTRAÇÃO */
+.table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f2f6;
+  color: #34495e;
+  vertical-align: middle;
+}
+
+.admin-table tr:hover {
+  background-color: #fcfcfc;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+/* BADGES DE STATUS */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-success {
+  background-color: #e8f8f5;
+  color: #2ecc71;
+}
+
+.badge-warning {
+  background-color: #fef9e7;
+  color: #f39c12;
+}
+
+/* BOTÕES DA TABELA */
+.btn-action {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-action.edit {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-action.edit:hover {
+  background-color: #2980b9;
+}
+
+/* MODAL PADRÃO */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background: white;
+  width: 90%;
+  max-width: 550px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #2c3e50;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #95a5a6;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.info-group {
+  margin-bottom: 15px;
+}
+
+.info-group label {
+  display: block;
+  font-weight: 600;
+  color: #7f8c8d;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.highlight-text {
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.message-box {
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.client-msg {
+  background-color: #f1f2f6;
+  color: #2c3e50;
+  border-left: 4px solid #3498db;
+}
+
+.admin-msg {
+  background-color: #fdf2f8;
+  color: #d63031;
+  border-left: 4px solid #e84393;
+}
+
+.dashed-divider {
+  border: none;
+  border-top: 1px dashed #bdc3c7;
+  margin: 20px 0;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #e84393;
+  box-shadow: 0 0 0 3px rgba(232, 67, 147, 0.1);
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #ecf0f1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background-color: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary {
+  background-color: #bdc3c7;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #95a5a6;
+}
+
+.btn-primary {
+  background-color: #e84393;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #d63031;
+}
+
+.btn-primary:disabled {
+  background-color: #ffb8d2;
+  cursor: not-allowed;
+}
+
+/* UTILITÁRIOS */
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

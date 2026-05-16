@@ -4,19 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-interface ContactMessage {
-  id: number;
-  nome: string;
-  email: string;
-  telefone: string;
-  assunto: string;
-  mensagem: string;
-  respondido: boolean;
-  resposta: string | null;
-  data_criacao: string;
-  data_resposta: string | null;
-}
-
 @Component({
   selector: 'app-lista-contatos',
   standalone: true,
@@ -25,54 +12,62 @@ interface ContactMessage {
   styleUrls: ['./lista-contatos.component.css']
 })
 export class ListaContatosComponent implements OnInit {
+  contatos: any[] = [];
+  carregando: boolean = true;
+  erro: string = '';
+
+  contatoSelecionado: any = null;
+  respostaTexto: string = '';
+
   private http = inject(HttpClient);
 
-  mensagens: ContactMessage[] = [];
-  respostaPorMensagem: Record<number, string> = {};
-  carregando = false;
-  erro = '';
-  sucesso = '';
-
-  private apiUrl = `${environment.apiUrl}/admin/contatos`;
-
   ngOnInit() {
-    this.carregarMensagens();
+    this.carregarContatos();
   }
 
-  carregarMensagens() {
+  carregarContatos() {
     this.carregando = true;
-    this.http.get<{ messages: ContactMessage[] }>(this.apiUrl).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/admin/contatos`).subscribe({
       next: (dados) => {
-        this.mensagens = dados.messages;
+        this.contatos = dados;
         this.carregando = false;
       },
       error: (err) => {
-        console.error('Erro ao carregar mensagens de contato', err);
-        this.erro = 'Não foi possível carregar as mensagens. Tente novamente.';
+        console.error('Erro ao buscar contatos:', err);
+        this.erro = 'Erro ao carregar mensagens. Tente novamente mais tarde.';
         this.carregando = false;
       }
     });
   }
 
-  enviarResposta(id: number) {
-    const resposta = (this.respostaPorMensagem[id] || '').trim();
-    if (!resposta) {
-      this.erro = 'Preencha a resposta antes de enviar.';
-      return;
-    }
+  abrirModal(contato: any) {
+    this.contatoSelecionado = contato;
+    this.respostaTexto = '';
+  }
 
-    this.http.put<{ message: string; contato: ContactMessage }>(`${this.apiUrl}/${id}/respond`, { resposta }).subscribe({
-      next: (respostaApi) => {
-        this.sucesso = respostaApi.message;
-        this.erro = '';
-        const index = this.mensagens.findIndex(msg => msg.id === id);
-        if (index !== -1) {
-          this.mensagens[index] = respostaApi.contato;
-        }
+  fecharModal() {
+    this.contatoSelecionado = null;
+    this.respostaTexto = '';
+  }
+
+  enviarResposta() {
+    if (!this.respostaTexto.trim()) return;
+
+    const id = this.contatoSelecionado.id_contato;
+
+    this.http.put(`${environment.apiUrl}/admin/contatos/${id}/respond`, {
+      resposta: this.respostaTexto
+    }).subscribe({
+      next: () => {
+        // Atualiza o contato na tela em tempo real sem precisar recarregar a página!
+        this.contatoSelecionado.respondido = true;
+        this.contatoSelecionado.resposta = this.respostaTexto;
+        this.contatoSelecionado.data_resposta = new Date();
+        this.fecharModal();
       },
       error: (err) => {
-        console.error('Erro ao enviar resposta', err);
-        this.erro = err.error?.message || 'Falha ao registrar a resposta.';
+        console.error('Erro ao enviar resposta:', err);
+        alert('Erro ao enviar resposta. Verifique a conexão com o servidor.');
       }
     });
   }

@@ -1,55 +1,100 @@
-<div class="admin-contacts-page">
-  <div class="page-header">
+<div class="admin-dashboard-wrapper">
+  <div id="content-dashboard">
     <h1>Mensagens de Contato</h1>
-    <p>Aqui você vê todas as mensagens enviadas pelo formulário de contato e pode responder.</p>
+    <p class="page-subtitle">Gerencie as mensagens e feedbacks enviados pelos clientes da loja.</p>
   </div>
 
-  <div *ngIf="carregando" class="loading">Carregando mensagens...</div>
-  <div *ngIf="erro" class="alert alert-error">{{ erro }}</div>
-  <div *ngIf="sucesso" class="alert alert-success">{{ sucesso }}</div>
-
-  <div *ngIf="!carregando && mensagens.length === 0" class="empty-state">
-    Nenhuma mensagem de contato recebida ainda.
+  <div *ngIf="carregando" class="loading-state">
+    <p>Carregando mensagens...</p>
   </div>
 
-  <div *ngFor="let msg of mensagens" class="contact-card">
-    <div class="contact-card-header">
-      <div>
-        <strong>{{ msg.nome }}</strong>
-        <span class="badge">{{ msg.assunto }}</span>
+  <div *ngIf="erro" class="error-state">
+    <p>{{ erro }}</p>
+  </div>
+
+  <div class="table-container" *ngIf="!carregando && !erro">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Assunto</th>
+          <th>Data</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let contato of contatos">
+          <td><strong>#{{ contato.id_contato }}</strong></td>
+          <td>
+            <div class="user-info">
+              <span class="user-name">{{ contato.nome }}</span>
+              <span class="user-email">{{ contato.email }}</span>
+            </div>
+          </td>
+          <td>{{ contato.assunto }}</td>
+          <td>{{ contato.data_criacao | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <span class="badge" [ngClass]="contato.respondido ? 'badge-success' : 'badge-warning'">
+              {{ contato.respondido ? 'Respondido' : 'Pendente' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-action edit" (click)="abrirModal(contato)">
+              <span *ngIf="!contato.respondido">Responder</span>
+              <span *ngIf="contato.respondido">Ver Resposta</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="empty-state" *ngIf="contatos.length === 0">
+      <p>Nenhuma mensagem de contato recebida ainda.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="contatoSelecionado">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Mensagem de {{ contatoSelecionado.nome }}</h2>
+      <button class="close-btn" (click)="fecharModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="info-group">
+        <label>Assunto:</label>
+        <p class="highlight-text">{{ contatoSelecionado.assunto }}</p>
       </div>
-      <div class="status {{ msg.respondido ? 'answered' : 'pending' }}">
-        {{ msg.respondido ? 'Respondido' : 'Pendente' }}
+      
+      <div class="info-group">
+        <label>Mensagem do Cliente:</label>
+        <div class="message-box client-msg">
+          {{ contatoSelecionado.mensagem }}
+        </div>
+      </div>
+      
+      <hr class="dashed-divider">
+
+      <div *ngIf="contatoSelecionado.respondido" class="info-group">
+        <label>Sua Resposta (Enviada em {{ contatoSelecionado.data_resposta | date:'dd/MM/yyyy' }}):</label>
+        <div class="message-box admin-msg">
+          {{ contatoSelecionado.resposta }}
+        </div>
+      </div>
+
+      <div *ngIf="!contatoSelecionado.respondido" class="info-group">
+        <label>Escrever Resposta:</label>
+        <textarea [(ngModel)]="respostaTexto" rows="5" class="form-input" placeholder="Digite sua resposta aqui..."></textarea>
       </div>
     </div>
-
-    <div class="contact-card-body">
-      <p><strong>E-mail:</strong> {{ msg.email }}</p>
-      <p><strong>Telefone:</strong> {{ msg.telefone }}</p>
-      <p><strong>Mensagem:</strong></p>
-      <p class="message-text">{{ msg.mensagem }}</p>
-    </div>
-
-    <div class="contact-card-footer">
-      <div *ngIf="msg.resposta">
-        <p><strong>Resposta enviada:</strong></p>
-        <p class="response-text">{{ msg.resposta }}</p>
-      </div>
-
-      <textarea 
-        [(ngModel)]="respostaPorMensagem[msg.id]"
-        placeholder="Digite sua resposta aqui..."
-        rows="3"
-        class="reply-textarea"
-        *ngIf="!msg.respondido"
-      ></textarea>
-
-      <button 
-        class="btn btn-primary" 
-        (click)="enviarResposta(msg.id)" 
-        *ngIf="!msg.respondido"
-      >
-        Enviar resposta
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
+      <button *ngIf="!contatoSelecionado.respondido" class="btn btn-primary" (click)="enviarResposta()" [disabled]="!respostaTexto.trim()">
+        Enviar Resposta
       </button>
     </div>
   </div>
