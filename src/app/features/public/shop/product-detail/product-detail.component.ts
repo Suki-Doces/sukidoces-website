@@ -8,7 +8,7 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { Product, ProductService } from 'src/app/core/services/product.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-product-detail',

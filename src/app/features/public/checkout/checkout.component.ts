@@ -7,7 +7,7 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { CheckoutService, UsuarioCheckout } from 'src/app/core/services/checkout.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-checkout',

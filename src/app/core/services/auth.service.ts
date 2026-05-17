@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environments';
 
 interface User {
   id: number;
@@ -19,7 +19,6 @@ export class AuthService {
   private readonly API_URL = `${environment.apiUrl}/usuario`;
   private userSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.userSubject.asObservable();
-  isLoggedIn$: any;
 
   constructor(private http: HttpClient, private router: Router) {
     this.restoreSession();
@@ -84,6 +83,14 @@ export class AuthService {
   isAdmin(): boolean {
     const user = this.userSubject.value;
     return user?.nivel === 'admin';
+  }
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('suki_token');
+    const user = this.userSubject.value;
+
+    // Retorna true se ambos existirem (está logado)
+    return !!token && !!user;
   }
 
   registro(userData: any): Observable<any> {

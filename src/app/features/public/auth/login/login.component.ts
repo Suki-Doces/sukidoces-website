@@ -6,6 +6,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 
 // Services
 import { AuthService } from 'src/app/core/services/auth.service';
+import { CartService } from 'src/app/core/services/cart.service'; // <-- Importado
 
 @Component({
   selector: 'app-login',
@@ -20,12 +21,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  // Controla qual formulario está visivel (login ou cadastro)
   isLoginMode = true;
   isLoading = false;
   errorMessage = '';
 
-  // Objeto para armazenar as credenciais do usuário em tempo real
   formData = {
     nome: '',
     telefone: '',
@@ -34,13 +33,16 @@ export class LoginComponent {
     confirmar_senha: '',
   };
 
-  constructor(private authService: AuthService, private router: Router) { }
+  // <-- CartService Injetado no construtor
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private cartService: CartService 
+  ) { }
 
-  // Alterna entre os modos de login e cadastro
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
     this.errorMessage = '';
-    // Limpa as senhas por segurança
     this.formData.senha = '';
     this.formData.confirmar_senha = '';
   }
@@ -48,7 +50,6 @@ export class LoginComponent {
   onSubmit() {
     this.errorMessage = '';
 
-    // Validação extra para o modo de cadastro
     if (!this.isLoginMode && this.formData.senha !== this.formData.confirmar_senha) {
       this.errorMessage = 'As senhas não coincidem.';
       return;
@@ -57,13 +58,17 @@ export class LoginComponent {
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      // ====== Logica de Login ======
+      // ====== Lógica de Login ======
       this.authService.login({ email: this.formData.email, senha: this.formData.senha }).subscribe({
         next: () => {
+          
+          // -----> SINCRONIZA O CARRINHO AQUI <-----
+          this.cartService.syncGuestCartToDatabase();
+
           if (this.authService.isAdmin()) {
             this.router.navigate(['/admin/dashboard']);
           } else {
-            this.router.navigate(['/']); // Sucesso, redireciona para a página inicial
+            this.router.navigate(['/']); // Sucesso
           }
         },
         error: (err) => {
@@ -73,7 +78,7 @@ export class LoginComponent {
       });
 
     } else {
-      // ====== Logica de Cadastro ======
+      // ====== Lógica de Cadastro ======
       const novoUsuario = {
         nome: this.formData.nome,
         telefone: this.formData.telefone,
@@ -83,7 +88,11 @@ export class LoginComponent {
 
       this.authService.registro(novoUsuario).subscribe({
         next: () => {
-          this.router.navigate(['/']); // Sucesso, redireciona para a página inicial
+          // Caso o registro também já deixe o usuário logado automaticamente, sincronizamos aqui também
+          if(this.authService.isLoggedIn()) {
+             this.cartService.syncGuestCartToDatabase();
+          }
+          this.router.navigate(['/']); 
         },
         error: (err) => {
           this.errorMessage = err.error?.message || 'E-mail já cadastrado. Faça o login ou use outro e-mail.';

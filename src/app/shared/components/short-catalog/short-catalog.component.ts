@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ProductService, Product } from 'src/app/core/services/product.service';
 import { CartService } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-short-catalog',

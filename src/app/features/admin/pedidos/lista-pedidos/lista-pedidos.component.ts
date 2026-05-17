@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ImageFormatPipe } from 'src/app/shared/pipes/image-format.pipe';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environments';
 
 interface Pedido {
   id_pedido: number;

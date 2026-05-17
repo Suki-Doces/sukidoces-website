@@ -47,24 +47,38 @@
     display: none;
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1050px) {
     .ads-flavours {
         flex-direction: row;
         margin: 20px 15rem;
-        border-radius: 0;
-        gap: 40px;
+        gap: 20px;
+        border-radius: 20px;
     }
 
     .af-banner {
+        flex: 1;
         justify-content: space-between;
         border-radius: 20px;
-        height: 250px;
-        padding: 1rem
+        height: 220px;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    .af-content {
+        flex: 1;
+        align-items: flex-start;
+        padding-right: 10px;
+    }
+
+    .af-content > h1,
+    .af-content > p {
+        text-align: left;
     }
 
     .af-img {
         display: block;
-        aspect-ratio: 213/160;
-        height: 80%;
+        max-width: 45%;
+        height: 100%;
+        object-fit: contain;
     }
 }

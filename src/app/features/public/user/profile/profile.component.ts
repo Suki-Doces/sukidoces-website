@@ -6,7 +6,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { OrderService } from 'src/app/core/services/order.service';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environments';
 import { NgxMaskDirective } from 'ngx-mask';
 import { HttpClient } from '@angular/common/http';
 
@@ -41,69 +41,114 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) {
-    this.initForms();
-  }
-
-  // Método para visualizar detalhes
-  viewOrderDetails(pedido: any): void {
-    this.selectedOrder = pedido;
-    this.activeTab = 'detalhes-pedido';
-
-    this.router.navigate([], {
-      queryParams: { tab: 'detalhes-pedido' },
-      queryParamsHandling: 'merge'
-    });
-  }
+  ) { }
 
   ngOnInit(): void {
+    // Inicialização do Formulário com os novos campos (cpf e data_nascimento)
+    this.profileForm = this.fb.group({
+      nome: ['', Validators.required],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]], // Email costuma ser desabilitado
+      telefone: [''],
+      cpf: [''],
+      data_nascimento: [''],
+      cep: [''],
+      rua: [''],
+      numero: [''],
+      complemento: [''],
+      bairro: [''],
+      cidade: [''],
+      estado: ['']
+    });
+
+    this.passwordForm = this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
     this.route.queryParams.subscribe(params => {
       if (params['tab']) {
         this.activeTab = params['tab'];
-        if (this.activeTab !== 'detalhes-pedido') {
-          this.selectedOrder = null;
-        }
       }
     });
 
     this.loadDataUser();
   }
 
+  // ==========================================
+  // CARREGAR DADOS DO UTILIZADOR
+  // ==========================================
   private loadDataUser(): void {
     this.isLoading = true;
 
-    // Chamamos o serviço que vai à rota GET /perfil que configurámos no backend
     this.userService.getProfile().subscribe({
       next: (res: any) => {
-        // O seu backend retorna { user: { ... } }
-        const databd = res.user;
+        // Se o backend não enviar dentro de "user", pega a resposta direta
+        const databd = res.user || res;
 
         if (databd) {
           this.user = databd;
           this.loadOrders();
 
-          const addr: any = (databd.enderecos && databd.enderecos.length > 0)
-            ? databd.enderecos[0]
-            : {};
+          let cep = '', rua = '', numero = '', complemento = '', bairro = '', cidade = '', estado = '';
 
+          // 1. Tenta ler o endereço em formato ARRAY JSON (Padrão do Checkout)
+          if (databd.enderecos && typeof databd.enderecos === 'string') {
+            try {
+              const addrArray = JSON.parse(databd.endereco);
+              cep = addrArray[0] || '';
+              rua = addrArray[1] || '';
+              numero = addrArray[2] || '';
+              complemento = addrArray[3] || '';
+              bairro = addrArray[4] || '';
+              if (addrArray[5]) {
+                cidade = addrArray[5].split(' - ')[0] || '';
+                estado = addrArray[5].split(' - ')[1] || '';
+              }
+            } catch (e) {
+              console.error('Erro ao fazer parse do endereço', e);
+            }
+          }
+          // 2. Fallback para formato antigo (caso ainda exista na base de dados)
+          else if (databd.enderecos && databd.enderecos.length > 0) {
+            const addr = databd.enderecos[0];
+            cep = addr.cep || '';
+            rua = addr.logradouro || addr.rua || '';
+            numero = addr.numero || '';
+            complemento = addr.complemento || '';
+            bairro = addr.bairro || '';
+            cidade = addr.cidade || '';
+            estado = addr.estado || '';
+          }
+
+          // 3. Formatar Data de Nascimento para o input type="date" (YYYY-MM-DD)
+          let dataNascimentoFormatada = '';
+          if (databd.data_nascimento) {
+            dataNascimentoFormatada = databd.data_nascimento.split('T')[0];
+          }
+
+          // Preenche o formulário visual com os dados encontrados
           this.profileForm.patchValue({
-            nome: databd.nome,
-            email: databd.email,
+            nome: databd.nome || '',
+            email: databd.email || '',
             telefone: databd.telefone || '',
             cpf: databd.cpf || '',
-            cep: addr.cep || '',
-            rua: addr.logradouro || '',
-            numero: addr.numero || '',
-            complemento: addr.complemento || '',
-            bairro: addr.bairro || '',
-            cidade: addr.cidade || '',
-            estado: addr.estado || ''
+            data_nascimento: dataNascimentoFormatada,
+            cep: cep,
+            rua: rua,
+            numero: numero,
+            complemento: complemento,
+            bairro: bairro,
+            cidade: cidade,
+            estado: estado
           });
 
-          const parts = databd.nome.trim().split(' ');
-          this.displayName = parts.length > 1
-            ? `${parts[0]} ${parts[parts.length - 1]}`
-            : parts[0];
+          // Atualiza o nome de exibição
+          if (databd.nome) {
+            const parts = databd.nome.trim().split(' ');
+            this.displayName = parts.length > 1
+              ? `${parts[0]} ${parts[parts.length - 1]}`
+              : parts[0];
+          }
         }
         this.isLoading = false;
       },
@@ -114,68 +159,9 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  private initForms(): void {
-    // Formulário de Perfil
-    this.profileForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
-      email: [{ value: '', disabled: true }],
-      telefone: ['', [Validators.required]],
-      cpf: [''],
-      cep: ['', [Validators.required]],
-      rua: ['', Validators.required],
-      numero: ['', Validators.required],
-      complemento: [''],
-      bairro: ['', Validators.required],
-      cidade: ['', Validators.required],
-      estado: ['', Validators.required] // <-- Adicionado para o banco
-    });
-
-    // Formulário de Senha
-    this.passwordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
-    }, { validators: this.mustMatch('newPassword', 'confirmPassword') });
-  }
-
-  private mustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-      if (matchingControl.errors && !matchingControl.errors['mustMatch']) return;
-      matchingControl.setErrors(control.value !== matchingControl.value ? { mustMatch: true } : null);
-    };
-  }
-
-  buscarCep(): void {
-    let cep = this.profileForm.get('cep')?.value;
-
-    if (!cep) return;
-
-    cep = cep.replace(/\D/g, '');
-
-    if (cep.length === 8) {
-      this.http.get(`https://viacep.com.br/ws/${cep}/json/`).subscribe({
-        next: (data: any) => {
-          if (data.erro) {
-            alert('CEP não encontrado!');
-            return;
-          }
-
-          this.profileForm.patchValue({
-            rua: data.logradouro,
-            bairro: data.bairro,
-            cidade: data.localidade,
-            estado: data.uf // Adicionado para preencher o estado
-          });
-        },
-        error: (err) => {
-          console.error('Erro ao buscar o CEP:', err);
-        }
-      });
-    }
-  }
-
+  // ==========================================
+  // ATUALIZAR PERFIL
+  // ==========================================
   updateProfile(): void {
     if (this.profileForm.invalid || this.isLoading) {
       this.profileForm.markAllAsTouched();
@@ -185,8 +171,30 @@ export class ProfileComponent implements OnInit {
     this.isLoading = true;
     this.message = null;
 
-    // Pegamos todos os valores do formulário (incluindo o email desativado)
-    const dadosParaAtualizar = this.profileForm.getRawValue();
+    const formValue = this.profileForm.getRawValue();
+
+    // Empacota o endereço num Array, EXATAMENTE como o Checkout espera
+    const cidadeEstadoFormatado = formValue.cidade && formValue.estado
+      ? `${formValue.cidade} - ${formValue.estado}`
+      : '';
+
+    const enderecoFormatado = [
+      formValue.cep,
+      formValue.rua,
+      formValue.numero,
+      formValue.complemento,
+      formValue.bairro,
+      cidadeEstadoFormatado
+    ];
+
+    // Monta o objeto padronizado do Utilizador
+    const dadosParaAtualizar = {
+      nome: formValue.nome,
+      telefone: formValue.telefone,
+      cpf: formValue.cpf,
+      data_nascimento: formValue.data_nascimento,
+      enderecos: JSON.stringify(enderecoFormatado) // Guarda como String Array JSON
+    };
 
     this.userService.updateProfile(dadosParaAtualizar)
       .pipe(finalize(() => this.isLoading = false))
@@ -194,11 +202,12 @@ export class ProfileComponent implements OnInit {
         next: (res: any) => {
           this.message = { type: 'success', text: 'Dados e endereço guardados com sucesso!' };
 
-          // MUITO IMPORTANTE: Atualiza o utilizador no AuthService 
-          // para que o nome mude no Header e noutras partes do site imediatamente
-          this.authService.updateUserInStorage(dadosParaAtualizar);
+          // Atualiza o localStorage para o Checkout ler perfeitamente
+          this.authService.updateUserInStorage({
+            ...this.user,
+            ...dadosParaAtualizar
+          });
 
-          // Opcional: faz scroll para o topo para ver a mensagem de sucesso
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         error: (err: any) => {
@@ -207,8 +216,80 @@ export class ProfileComponent implements OnInit {
             type: 'error',
             text: err.error?.message || 'Ocorreu um erro ao atualizar os dados no servidor.'
           };
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
+  }
+
+  // ==========================================
+  // FUNÇÕES DE INTERAÇÃO COM O HTML
+  // ==========================================
+
+  // 1. Busca o CEP automaticamente usando a API ViaCEP
+  buscarCep(): void {
+    let cep = this.profileForm.get('cep')?.value;
+
+    if (cep) {
+      cep = cep.replace(/\D/g, ''); // Remove os traços da máscara
+
+      if (cep.length === 8) {
+        this.http.get(`https://viacep.com.br/ws/${cep}/json/`).subscribe({
+          next: (data: any) => {
+            if (!data.erro) {
+              // Preenche os campos do formulário automaticamente
+              this.profileForm.patchValue({
+                rua: data.logradouro,
+                bairro: data.bairro,
+                cidade: data.localidade,
+                estado: data.uf
+              });
+            }
+          },
+          error: (err) => console.error('Erro ao buscar o CEP:', err)
+        });
+      }
+    }
+  }
+
+  // 2. Abre os detalhes de um pedido específico
+  viewOrderDetails(pedido: any): void {
+    this.selectedOrder = pedido;
+    this.activeTab = 'detalhes-pedido';
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Sobe a página suavemente
+  }
+
+  // 3. Função para excluir conta (deve ser ligada à sua API)
+  deleteAccount(): void {
+    if (confirm('Tem a certeza absoluta de que deseja excluir a sua conta permanentemente? Esta ação é irreversível.')) {
+
+      /* QUANDO A ROTA DE EXCLUSÃO ESTIVER PRONTA NO NODE.JS, USE ISTO:
+      this.isLoading = true;
+      this.userService.deleteProfile().subscribe({
+        next: () => {
+          this.authService.logout();
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error('Erro ao excluir conta:', err);
+          this.isLoading = false;
+        }
+      });
+      */
+
+      alert('Funcionalidade de exclusão em desenvolvimento.');
+    }
+  }
+
+  // ==========================================
+  // MÉTODOS DE APOIO E OUTRAS FUNÇÕES
+  // ==========================================
+  switchTab(tab: string): void {
+    this.activeTab = tab;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: tab },
+      queryParamsHandling: 'merge'
+    });
   }
 
   loadOrders(): void {
@@ -248,14 +329,13 @@ export class ProfileComponent implements OnInit {
           this.passwordForm.reset();
         },
         error: (err: any) => {
-          this.message = { type: 'error', text: err.error?.message || 'Erro ao alterar senha.' };
+          this.message = { type: 'error', text: err.error?.message || 'Erro ao alterar a senha.' };
         }
       });
   }
 
-  deleteAccount(): void {
-    if (confirm('Tem certeza? Esta ação não pode ser desfeita.')) {
-      console.log('Excluir conta solicitada');
-    }
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
