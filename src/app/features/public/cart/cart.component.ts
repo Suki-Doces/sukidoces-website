@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 // Servicos
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-cart',

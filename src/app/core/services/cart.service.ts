@@ -3,7 +3,7 @@ import { BehaviorSubject, from } from 'rxjs';
 import { concatMap, finalize } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './product.service';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service'; // <-- Importado o AuthService
 
 export interface CartItem {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environments';
+import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
 // Interface usada apenas para o HTML da tela
