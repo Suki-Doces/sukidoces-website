@@ -119,6 +119,15 @@ export class CartService {
     }
   }
 
+  // ==========================================
+  // VALIDAÇÕES
+  // ==========================================
+  getItemQuantity(productId: number): number {
+    const items = this.cartSubject.value;
+    const item = items.find(i => i.product.id_produto === productId);
+    return item ? item.quantity : 0;
+  }
+
   getTotal(): number {
     return this.cartSubject.value.reduce((total, item) => total + (item.product.preco * item.quantity), 0);
   }

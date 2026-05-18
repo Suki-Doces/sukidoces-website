@@ -5,6 +5,7 @@ import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AiChatComponent } from '../ai-chat/ai-chat.component';
+import { CartService } from 'src/app/core/services/cart.service';
 
 @Component({
   selector: 'app-hover-nav',
@@ -18,15 +19,20 @@ export class HoverNavComponent implements OnInit {
   isChatOpen: boolean = false;
   displayName: string = 'Perfil';
   searchQuery: string = '';
-  
+
   // Controle de qual menu está aberto ('search' ou 'profile' ou nenhum)
   openMenu: 'search' | 'profile' | null = null;
-  
+
   // Controle de exibição dos botões de navegação
   viewProductsBtn: boolean = false;
   viewHomeBtn: boolean = false;
+  cartTotal: number = 0;
 
-  constructor(public authService: AuthService, private router: Router) {
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private cartService: CartService,
+  ) {
     // check rota inicial
     this.checkRoute(this.router.url);
 
@@ -71,6 +77,9 @@ export class HoverNavComponent implements OnInit {
         this.displayName = 'Perfil';
       }
     });
+    this.cartService.cart$.subscribe(items => {
+      this.cartTotal = items.reduce((total, item) => total + (item.product.preco * item.quantity), 0);
+    });
   }
 
   // Alterna o menu específico
@@ -85,7 +94,7 @@ export class HoverNavComponent implements OnInit {
     if (this.openMenu === menu) {
       this.openMenu = null; // Corrigido de '' para null
     } else {
-      this.openMenu = menu; 
+      this.openMenu = menu;
       this.isChatOpen = false; // Se abrir pesquisa/perfil, fecha o chat
     }
   }

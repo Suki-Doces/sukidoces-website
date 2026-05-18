@@ -12,6 +12,7 @@
     font-weight: 600;
     text-decoration: none;
 }
+
 .back-link:hover {
     color: var(--color-1);
 }
@@ -23,7 +24,7 @@
     background: var(--white-color);
     padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
 .detail-image {
@@ -43,11 +44,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a imagem preencher todo o espaço disponível */
-    filter: blur(20px); /* Controla a intensidade do borrão */
-    transform: scale(1.1); /* Importante: Remove bordas brancas nas extremidades causadas pelo blur */
+    object-fit: cover;
+    /* Faz a imagem preencher todo o espaço disponível */
+    filter: blur(20px);
+    /* Controla a intensidade do borrão */
+    transform: scale(1.1);
+    /* Importante: Remove bordas brancas nas extremidades causadas pelo blur */
     z-index: 0;
-    opacity: 0.6; /* Opcional: deixa o fundo um pouco mais suave para destacar a imagem da frente */
+    opacity: 0.6;
+    /* Opcional: deixa o fundo um pouco mais suave para destacar a imagem da frente */
 }
 
 /* Configura a imagem principal focada */
@@ -56,14 +61,15 @@
     z-index: 1;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Garante que a imagem inteira apareça sem ser cortada */
+    object-fit: contain;
+    /* Garante que a imagem inteira apareça sem ser cortada */
 }
 
 .detail-info {
     gap: 20px;
 }
 
-.detail-info > h1 {
+.detail-info>h1 {
     font-size: 2.5rem;
     color: var(--t-color-3);
 }
@@ -74,7 +80,7 @@
     font-weight: bold;
 }
 
-.detail-description > h3 {
+.detail-description>h3 {
     font-size: 1.1rem;
     margin-bottom: 8px;
     color: var(--t-color-1);
@@ -95,7 +101,7 @@
     overflow: hidden;
 }
 
-.qty-selector > button {
+.qty-selector>button {
     width: 40px;
     border: none;
     background: var(--gls-color-4);
@@ -106,12 +112,12 @@
     transition: background ease 0.2s;
 }
 
-.qty-selector > button:hover {
+.qty-selector>button:hover {
     background: var(--gls-color-2);
     color: var(--white-color);
 }
 
-.qty-selector > input {
+.qty-selector>input {
     width: 50px;
     text-align: center;
     border: none;
@@ -135,11 +141,28 @@
     color: #e74c3c;
 }
 
+/* --- ESCONDER SETAS DO INPUT NUMBER --- */
+
+/* Chrome, Safari, Edge, Opera */
+.qty-selector input::-webkit-outer-spin-button,
+.qty-selector input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.qty-selector input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    /* Para garantir compatibilidade com versões mais recentes */
+}
+
 @media (max-width: 768px) {
     .product-detail-wrapper {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
     .detail-image {
         height: 300px;
     }

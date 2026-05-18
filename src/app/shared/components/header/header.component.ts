@@ -4,8 +4,7 @@ import { CommonModule, ViewportScroller } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-// CORRIGIDO: removido 'import { query } from 'express'' — Express é backend,
-// não pode ser importado no Angular. Isso quebraria o build em produção.
+import { CartService } from 'src/app/core/services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -22,11 +21,13 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
   displayName: string = 'Conta';
   searchQuery: string = '';
+  cartTotal: number = 0;
 
   constructor(
     public authService: AuthService,
     private router: Router,
-    private scrolller: ViewportScroller
+    private scrolller: ViewportScroller,
+    private cartService: CartService
   ) {
     // Check initial route
     this.checkRoute(router.url);
@@ -51,6 +52,10 @@ export class HeaderComponent implements OnInit {
         this.displayName = 'Conta';
       }
     });
+
+    this.cartService.cart$.subscribe(items => {
+      this.cartTotal = items.reduce((total, item) => total + (item.product.preco * item.quantity), 0);
+    });
   }
 
   private checkRoute(url: string): void {
@@ -73,7 +78,7 @@ export class HeaderComponent implements OnInit {
       this.viewHomeLink = true;
     } else {
       // Fallback de segurança (ex: página 404)
-      this.viewHomeLink = true; 
+      this.viewHomeLink = true;
     }
   }
 
