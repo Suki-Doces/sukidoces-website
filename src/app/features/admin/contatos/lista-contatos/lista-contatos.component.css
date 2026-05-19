@@ -385,3 +385,187 @@
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* ABAS DO INBOX */
+.inbox-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.inbox-tab {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #596577;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.inbox-tab.active {
+  background: #eef6ff;
+  border-color: #93c5fd;
+  color: #1e5fa8;
+}
+
+.tab-count {
+  background: #f1f2f6;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.inbox-tab.active .tab-count {
+  background: #1e5fa8;
+  color: #fff;
+}
+
+/* CABEÇALHO DAS COLUNAS */
+.cl-header {
+  display: grid;
+  grid-template-columns: 44px 1fr 170px 140px 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #7f8c8d;
+  border-bottom: 1px solid #f1f2f6;
+  margin-bottom: 6px;
+}
+
+/* LINHA DE CONTATO */
+.contact-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 170px 140px 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #f1f2f6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.1s;
+}
+
+.contact-row:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+  transform: translateY(-1px);
+}
+
+.contact-row.unread {
+  border-left: 3px solid #2ecc71;
+}
+
+/* AVATAR */
+.cr-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f06b9a, #e84393);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+/* NOME + EMAIL */
+.cr-name-col { display: flex; flex-direction: column; }
+.cr-name { font-size: 14px; font-weight: 700; color: #2c3e50; }
+.cr-email { font-size: 12px; color: #7f8c8d; margin-top: 2px; }
+
+/* BADGE DE ASSUNTO */
+.subj-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.subj-duvida    { background: #e6f1fb; color: #1e5fa8; }
+.subj-sugestao  { background: #eaf3de; color: #3b6d11; }
+.subj-reclamacao{ background: #fcebeb; color: #a32d2d; }
+.subj-parcerias { background: #eeedfe; color: #3c3489; }
+
+/* DATA */
+.cr-date { font-size: 13px; color: #7f8c8d; }
+
+/* MENU DE TRÊS PONTOS */
+.cr-menu-wrap { position: relative; }
+
+.cr-menu-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+  color: #7f8c8d;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.cr-menu-btn:hover { background: rgba(0,0,0,0.04); color: #444; }
+
+.cr-dropdown {
+  position: absolute;
+  right: 0;
+  top: 34px;
+  min-width: 165px;
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.09);
+  border-radius: 8px;
+  display: none;
+  flex-direction: column;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.cr-menu-wrap:hover .cr-dropdown,
+.cr-menu-wrap:focus-within .cr-dropdown {
+  display: flex;
+}
+
+.cr-dd-item {
+  padding: 10px 14px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cr-dd-item:hover { background: #f5f8fb; }
+.cr-dd-item.danger { color: #e74c3c; }
+.cr-dd-item.danger:hover { background: #fff5f5; }
+
+/* RESPONSIVO */
+@media (max-width: 700px) {
+  .cl-header { display: none; }
+  .contact-row {
+    grid-template-columns: 44px 1fr 44px;
+    grid-template-rows: auto auto;
+  }
+  .cr-subject-col { grid-column: 2; }
+  .cr-date { grid-column: 2; font-size: 12px; }
+  .cr-menu-wrap { grid-column: 3; grid-row: 1; }
+}

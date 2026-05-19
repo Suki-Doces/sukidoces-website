@@ -59,10 +59,16 @@ export class ListaClientesComponent implements OnInit {
   abrirModal(modo: 'adicionar' | 'editar', cliente?: any) {
     this.isEditMode = modo === 'editar';
     
+    // CORREÇÃO AQUI: Remoção do campo 'senha' no momento da edição
     if (this.isEditMode && cliente) {
-      this.clienteForm = { ...cliente, senha: '' }; // A senha vem em branco por segurança
+      this.clienteForm = { 
+        id_cliente: cliente.id_cliente,
+        nome: cliente.nome,
+        email: cliente.email,
+        status: cliente.status 
+      }; 
     } else {
-      this.clienteForm = { nome: '', senha: '', status: 'ativo' }; // Form limpo
+      this.clienteForm = { nome: '', email: '', senha: '', status: 'ativo' }; // Form limpo
     }
     
     this.isModalOpen = true;
@@ -75,12 +81,7 @@ export class ListaClientesComponent implements OnInit {
   salvarCliente() {
     // Se for edição, usamos o PUT e passamos o ID. Se for novo, usamos POST.
     if (this.isEditMode) {
-      const payload: any = {
-        nome: this.clienteForm.nome,
-        status: this.clienteForm.status
-      };
-
-      this.http.put(`${this.apiUrl}/${this.clienteForm.id_cliente}`, payload).subscribe({
+      this.http.put(`${this.apiUrl}/${this.clienteForm.id_cliente}`, this.clienteForm).subscribe({
         next: () => {
           this.carregarClientes();
           this.fecharModal();
