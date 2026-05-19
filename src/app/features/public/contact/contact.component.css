@@ -38,26 +38,13 @@
 
 /* --- LADO ESQUERDO: Cards Informativos --- */
 .contact-info-wrapper {
-    gap: 1rem;
-    /* --- NOVA IMAGEM DE FUNDO AQUI --- */
-    background: url('../../../../assets/images/atendente-suki-img.webp') center/cover no-repeat;
+    gap: 0.5rem;
+    background-color: var(--gls-color-4);
     padding: 0.5rem;
-    /* Adicionado um respiro interno */
     border-radius: 20px;
-    /* Bordas arredondadas acompanhando o design */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
-}
-
-/* Camada escura opcional (Overlay) para garantir que os cards e textos destaquem */
-.contact-info-wrapper::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--black-opacity-40);
-    /* Escurece 15% da imagem de fundo */
-    z-index: 0;
 }
 
 .info-card {
@@ -67,6 +54,7 @@
     align-items: center;
     gap: 1.5rem;
     border-radius: 16px;
+    backdrop-filter: none;
     /* Garante que os cards de vidro fiquem acima da camada escura */
     position: relative;
     z-index: 1;

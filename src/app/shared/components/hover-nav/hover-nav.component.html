@@ -82,7 +82,11 @@
                         stroke-linecap="round" />
                 </g>
             </svg>
+            @if (cartTotal === 0 || !cartTotal) {
             <p>Carrinho</p>
+            } @else {
+            <p>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</p>
+            }
         </button>
     </a>
 

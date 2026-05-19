@@ -17,8 +17,6 @@ export class CheckoutService {
 
   constructor(private http: HttpClient) {}
 
-  // CORRIGIDO: era /clientes/auto-save — rota que não existe no backend
-  // Agora salva corretamente no perfil do usuário via PUT /usuario/perfil
   autoSalvarUsuario(dados: UsuarioCheckout): Observable<any> {
     return this.http.put(`${this.apiUrl}/perfil`, {
       nome: dados.nome,

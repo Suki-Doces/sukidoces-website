@@ -37,7 +37,8 @@
 
 <div class="hdr-desktop-view hdr-user-section">
   <form (ngSubmit)="onSearch()" class="flex-align-center header-search-form">
-    <input class="hdr-srch-f-plc-hldr" [(ngModel)]="searchQuery" type="query" name="query" placeholder="O que você procura?" required>
+    <input class="hdr-srch-f-plc-hldr" [(ngModel)]="searchQuery" type="query" name="query"
+      placeholder="O que você procura?" required>
     <button type="submit" aria-label="Pesquisar">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
@@ -60,12 +61,17 @@
             stroke-linecap="round" />
         </g>
       </svg>
+      @if (cartTotal === 0 || !cartTotal) {
       <p>Carrinho</p>
+      } @else {
+      <p>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</p>
+      }
     </button>
   </a>
 
   <div class="header-btn">
-    <button class="flex-center hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menu do perfil">
+    <button class="flex-center hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)"
+      aria-label="Abrir menu do perfil">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g stroke-width="0" />
         <g stroke-linecap="round" stroke-linejoin="round" />
@@ -80,11 +86,13 @@
 
     <div class="glass-container hdr-user-dropdown" [class.is-open]="isMenuOpen" (click)="$event.stopPropagation()">
       <ng-container *ngIf="isLoggedIn; else loggedOut">
-        <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'dados'}" (click)="closeMenu()">Meus Dados</a>
+        <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'dados'}" (click)="closeMenu()">Meus
+          Dados</a>
         <hr>
         <a class="hdr-pp-links" *ngIf="authService.isAdmin()" routerLink="/admin" (click)="closeMenu()">Painel Admin</a>
         <hr *ngIf="authService.isAdmin()">
-        <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'pedidos' }" (click)="closeMenu()">Pedidos</a>
+        <a class="hdr-pp-links" routerLink="/perfil" [queryParams]="{ tab: 'pedidos' }"
+          (click)="closeMenu()">Pedidos</a>
         <hr>
         <a class="hdr-pp-links" (click)="logout()" style="color: #e9228f; cursor: pointer;">Sair</a>
       </ng-container>

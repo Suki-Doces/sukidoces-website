@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 // Servicos
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -21,7 +23,12 @@ export class CartComponent implements OnInit {
   cartTotal: number = 0;
   readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.cartService.cart$.subscribe(items => {
@@ -63,5 +70,19 @@ export class CartComponent implements OnInit {
 
   clearCart(): void {
     this.cartService.clearCart();
+  }
+
+  goToCheckout(): void {
+    if (this.authService.isLoggedIn()) {
+      // Se estiver logado, vai direto para o checkout
+      this.router.navigate(['/checkout']);
+    } else {
+      // Se NÃO estiver logado, mostra o toast e manda para o login
+      this.notificationService.showError(
+        'Atenção',
+        'Por favor, faça o login ou cadastre-se para finalizar o seu pedido.'
+      );
+      this.router.navigate(['/login']);
+    }
   }
 }

@@ -81,10 +81,24 @@ export class ShortCatalogComponent implements OnInit {
     event.preventDefault(); // Impede que o clique no botão redirecione para a página do produto
     event.stopPropagation(); // Impede que o clique "vaze" para o card
 
+    // 1. Verifica quantos itens deste produto já estão no carrinho
+    const currentQtyInCart = this.cartService.getItemQuantity(product.id_produto);
+
+    // 2. Valida se a quantidade atual + 1 ultrapassa o estoque disponível
+    if (currentQtyInCart + 1 > product.quantidade) {
+      // Nota: Assumindo que o seu NotificationService tem um método showError ou showWarning.
+      // Se o nome for diferente no seu serviço, ajuste aqui!
+      this.notificationService.showError(
+        'Estoque Insuficiente',
+        `Temos apenas ${product.quantidade} unidades disponíveis de ${product.nome}.`
+      );
+      return; // Interrompe a função aqui, não adiciona ao carrinho
+    }
+
     this.cartService.addToCart(product, 1);
     this.notificationService.showSuccess(
-        'Adicionado ao Carrinho', 
-        `O item ${product.nome} já está aguardando você no carrinho.`
-      );
+      'Adicionado ao Carrinho',
+      `O item ${product.nome} já está aguardando você no carrinho.`
+    );
   }
 }

@@ -4,28 +4,28 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // Ajuste os caminhos de importação conforme seu projeto
-import { ChatService, ChatMessage } from '../../../core/services/gemini.service'; 
+import { ChatService, ChatMessage } from '../../../core/services/gemini.service';
 import { LinkFormatPipe } from '../../pipes/link-format.pipe';
 
 @Component({
   selector: 'app-ai-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, LinkFormatPipe], 
+  imports: [CommonModule, FormsModule, LinkFormatPipe],
   templateUrl: './ai-chat.component.html',
   styleUrls: ['./ai-chat.component.css']
 })
 export class AiChatComponent implements OnInit {
-  @Output() closeChat = new EventEmitter<void>(); 
+  @Output() closeChat = new EventEmitter<void>();
 
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
   mensagemUsuario: string = '';
   // Utilizamos a interface do Serviço para tipar o histórico
-  historico: ChatMessage[] = []; 
+  historico: ChatMessage[] = [];
   carregando: boolean = false;
 
   constructor(
-    private chatService: ChatService, 
+    private chatService: ChatService,
     private router: Router
   ) { }
 
@@ -47,7 +47,7 @@ export class AiChatComponent implements OnInit {
       next: (res) => {
         // 3. Salva a resposta do bot na memória oficial do Serviço
         this.chatService.adicionarRespostaBotAoHistorico(res.response);
-        
+
         // 4. Atualiza a tela pegando o histórico atualizado
         this.historico = this.chatService.getHistoricoDisplay();
         this.carregando = false;
@@ -58,7 +58,7 @@ export class AiChatComponent implements OnInit {
         console.error(err);
         // Em caso de erro, simulamos uma resposta do bot salvando na memória oficial
         this.chatService.adicionarRespostaBotAoHistorico('Desculpe, não consigo te responder agora. Tente novamente mais tarde.');
-        
+
         this.historico = this.chatService.getHistoricoDisplay();
         this.carregando = false;
 
@@ -75,14 +75,29 @@ export class AiChatComponent implements OnInit {
   onChatLinkClick(event: Event): void {
     const target = event.target as HTMLElement;
 
-    // Clicou em um link renderizado pelo Pipe?
-    if (target.tagName === 'A' && target.classList.contains('chat-product-link')) {
-      event.preventDefault(); // Bloqueia F5/Reload nativo
-      
-      const href = target.getAttribute('href');
+    // 1. Procurar a tag <a> mais próxima (corrige o problema de clicar no <strong>)
+    const link = target.closest('a.chat-product-link');
+
+    if (link) {
+      event.preventDefault(); // Bloqueia a navegação falha do navegador nativo
+
+      let href = link.getAttribute('href');
       if (href) {
+
+        // Se por acaso o SukiBot devolver um link externo (como Google ou YouTube), abre num novo separador
+        if (href.startsWith('http')) {
+          window.open(href, '_blank');
+          return;
+        }
+
+        // 2. Garantir que a rota é interpretada como absoluta a partir da raiz pelo Angular
+        if (!href.startsWith('/')) {
+          href = '/' + href;
+        }
+
+        // Navegar suavemente usando o Router interno do Angular
         this.router.navigateByUrl(href).then(() => {
-           // this.fechar(); // Descomente caso queira que o chat feche ao abrir o produto
+          // this.fechar(); // Descomente esta linha caso queira que o chat feche ao abrir a página do produto
         });
       }
     }

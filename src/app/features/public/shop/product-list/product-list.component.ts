@@ -105,11 +105,23 @@ export class ProductListComponent implements OnInit {
   addToCart(event: Event, product: Product): void {
     event.preventDefault();  // Evita comportamento padrão 
     event.stopPropagation(); // Evita que o clique vaze para outros elementos (como links que abrem a tela do produto)
-    
+
+    // 1. Verifica quantos itens deste produto já estão no carrinho
+    const currentQtyInCart = this.cartService.getItemQuantity(product.id_produto);
+
+    // 2. Valida contra o estoque
+    if (currentQtyInCart + 1 > product.quantidade) {
+      this.notificationService.showError(
+        'Estoque Insuficiente',
+        `Temos apenas ${product.quantidade} unidades disponíveis de ${product.nome}.`
+      );
+      return;
+    }
+
     this.cartService.addToCart(product, 1);
     this.notificationService.showSuccess(
-        'Adicionado ao Carrinho', 
-        `O item ${product.nome} já está aguardando você no carrinho.`
-      );
+      'Adicionado ao Carrinho',
+      `O item ${product.nome} já está aguardando você no carrinho.`
+    );
   }
 }
