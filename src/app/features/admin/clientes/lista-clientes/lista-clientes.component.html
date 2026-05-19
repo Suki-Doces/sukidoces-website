@@ -102,9 +102,9 @@
         <small *ngIf="isEditMode" style="color: #888;">O e-mail não pode ser alterado por segurança.</small>
       </div>
 
-      <div class="form-group">
-        <label>Senha {{ isEditMode ? '(Deixe em branco para manter a atual)' : '*' }}</label>
-        <input type="password" class="box" [(ngModel)]="clienteForm.senha" name="senha" [required]="!isEditMode">
+      <div class="form-group" *ngIf="!isEditMode">
+        <label>Senha *</label>
+        <input type="password" class="box" [(ngModel)]="clienteForm.senha" name="senha" required>
       </div>
 
       <div class="form-group">

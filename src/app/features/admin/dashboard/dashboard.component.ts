@@ -51,6 +51,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.pollingSub) this.pollingSub.unsubscribe();
   }
 
+  // Imagem padrão caso a imagem do produto não carregue
+  readonly defaultImage = 'assets/images/produtos/default-product.svg';
+
+  // Monta a URL da imagem do produto (mesma lógica dos componentes públicos)
+  getProductImage(imageURL: string | null): string {
+    if (!imageURL) return this.defaultImage;
+    if (imageURL.startsWith('http')) return imageURL;
+    return `${environment.productImgUrl}${imageURL}`;
+  }
+
+  // Fallback quando a tag <img> der erro
+  onImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = this.defaultImage;
+  }
+
   carregarDashboard() {
     this.isLoading = true;
     this.http.get<any>(this.API_URL).subscribe({

@@ -75,7 +75,12 @@ export class ListaClientesComponent implements OnInit {
   salvarCliente() {
     // Se for edição, usamos o PUT e passamos o ID. Se for novo, usamos POST.
     if (this.isEditMode) {
-      this.http.put(`${this.apiUrl}/${this.clienteForm.id_cliente}`, this.clienteForm).subscribe({
+      const payload: any = {
+        nome: this.clienteForm.nome,
+        status: this.clienteForm.status
+      };
+
+      this.http.put(`${this.apiUrl}/${this.clienteForm.id_cliente}`, payload).subscribe({
         next: () => {
           this.carregarClientes();
           this.fecharModal();

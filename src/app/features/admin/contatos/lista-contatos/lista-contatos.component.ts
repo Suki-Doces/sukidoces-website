@@ -18,6 +18,7 @@ export class ListaContatosComponent implements OnInit {
 
   contatoSelecionado: any = null;
   respostaTexto: string = '';
+  activeTab: 'inbox' | 'awaiting' | 'answered' = 'inbox';
 
   private http = inject(HttpClient);
 
@@ -40,9 +41,57 @@ export class ListaContatosComponent implements OnInit {
     });
   }
 
+  get inboxCount(): number {
+    return this.contatos.length;
+  }
+
+  get awaitingCount(): number {
+    return this.contatos.filter(c => !c.respondido).length;
+  }
+
+  get answeredCount(): number {
+    return this.contatos.filter(c => c.respondido).length;
+  }
+
+  get filteredContatos(): any[] {
+    if (this.activeTab === 'inbox') return this.contatos;
+    if (this.activeTab === 'awaiting') return this.contatos.filter(c => !c.respondido);
+    return this.contatos.filter(c => c.respondido);
+  }
+
   abrirModal(contato: any) {
     this.contatoSelecionado = contato;
     this.respostaTexto = '';
+  }
+
+  markAsRead(contato: any) {
+    if (contato.respondido) return;
+
+    // Tentativa de notificar backend — se não existir, atualizamos localmente
+    this.http.put(`${environment.apiUrl}/admin/contatos/${contato.id_contato}/mark-read`, {}).subscribe({
+      next: () => {
+        contato.respondido = true;
+      },
+      error: () => {
+        // Sem endpoint, apenas atualiza localmente para feedback imediato
+        contato.respondido = true;
+      }
+    });
+  }
+
+  deletarContato(contato: any) {
+    if (!confirm('Deseja realmente excluir essa mensagem?')) return;
+
+    this.http.delete(`${environment.apiUrl}/admin/contatos/${contato.id_contato}`).subscribe({
+      next: () => {
+        this.contatos = this.contatos.filter(c => c.id_contato !== contato.id_contato);
+        if (this.contatoSelecionado && this.contatoSelecionado.id_contato === contato.id_contato) this.fecharModal();
+      },
+      error: (err) => {
+        console.error('Erro ao deletar contato:', err);
+        alert('Não foi possível excluir a mensagem.');
+      }
+    });
   }
 
   fecharModal() {

@@ -12,46 +12,48 @@
     <p>{{ erro }}</p>
   </div>
 
-  <div class="table-container" *ngIf="!carregando && !erro">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Cliente</th>
-          <th>Assunto</th>
-          <th>Data</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let contato of contatos">
-          <td><strong>#{{ contato.id_contato }}</strong></td>
-          <td>
-            <div class="user-info">
-              <span class="user-name">{{ contato.nome }}</span>
-              <span class="user-email">{{ contato.email }}</span>
+  <div class="contact-list-container" *ngIf="!carregando && !erro">
+    <div class="contact-list">
+
+      <div class="contacts-header">
+        <div class="tabs">
+          <button [class.active]="activeTab==='inbox'" (click)="activeTab='inbox'">Inbox ({{ inboxCount }})</button>
+          <button [class.active]="activeTab==='awaiting'" (click)="activeTab='awaiting'">Awaiting approval ({{ awaitingCount }})</button>
+          <button [class.active]="activeTab==='answered'" (click)="activeTab='answered'">Answered ({{ answeredCount }})</button>
+        </div>
+        <div class="actions-right">
+          <button class="filter-btn">Filter</button>
+        </div>
+      </div>
+
+      <ul>
+        <li *ngFor="let contato of filteredContatos" class="contact-item" (click)="abrirModal(contato)" [class.unread]="!contato.respondido">
+          <div class="ci-avatar">{{ contato.nome ? contato.nome.charAt(0) : 'U' }}</div>
+          <div class="unread-dot" *ngIf="!contato.respondido" aria-hidden="true"></div>
+          <div class="ci-main">
+            <div class="ci-row">
+              <span class="ci-name">{{ contato.nome }}</span>
+              <span class="ci-date">{{ contato.data_criacao | date:'dd/MM/yyyy HH:mm' }}</span>
             </div>
-          </td>
-          <td>{{ contato.assunto }}</td>
-          <td>{{ contato.data_criacao | date:'dd/MM/yyyy HH:mm' }}</td>
-          <td>
-            <span class="badge" [ngClass]="contato.respondido ? 'badge-success' : 'badge-warning'">
-              {{ contato.respondido ? 'Respondido' : 'Pendente' }}
-            </span>
-          </td>
-          <td>
-            <button class="btn-action edit" (click)="abrirModal(contato)">
-              <span *ngIf="!contato.respondido">Responder</span>
-              <span *ngIf="contato.respondido">Ver Resposta</span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <div class="empty-state" *ngIf="contatos.length === 0">
-      <p>Nenhuma mensagem de contato recebida ainda.</p>
+            <div class="ci-subject">{{ contato.assunto }}</div>
+            <div class="ci-excerpt">{{ contato.mensagem | slice:0:120 }}{{ contato.mensagem && contato.mensagem.length > 120 ? '...' : '' }}</div>
+          </div>
+          <div class="ci-actions">
+            <span class="ci-status" [ngClass]="contato.respondido ? 'answered' : 'pending'">{{ contato.respondido ? 'Respondido' : 'Pendente' }}</span>
+            <div class="ci-menu-wrapper">
+              <button class="ci-menu-btn" (click)="abrirModal(contato); $event.stopPropagation()" aria-label="Ações">⋯</button>
+              <div class="ci-menu" role="menu">
+                <button class="ci-menu-item" (click)="markAsRead(contato); $event.stopPropagation()">Marcar como lida</button>
+                <button class="ci-menu-item" (click)="deletarContato(contato); $event.stopPropagation()">Excluir</button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="empty-state" *ngIf="contatos.length === 0">
+        <p>Nenhuma mensagem de contato recebida ainda.</p>
+      </div>
     </div>
   </div>
 </div>
