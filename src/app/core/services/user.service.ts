@@ -8,7 +8,7 @@ export interface UserProfile {
     nome: string;
     email: string;
     telefone?: string;
-    endereco?: string;
+    enderecos?: string;
     tipo_usuario: 'admin' | 'cliente';
 }
 

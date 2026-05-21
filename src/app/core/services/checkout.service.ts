@@ -8,7 +8,7 @@ export interface UsuarioCheckout {
   email: string;
   cpf: string;
   telefone?: string;
-  endereco?: string;
+  enderecos?: string;
 }
 
 @Injectable({ providedIn: 'root' })

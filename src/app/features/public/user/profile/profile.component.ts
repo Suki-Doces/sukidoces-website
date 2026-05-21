@@ -90,26 +90,9 @@ export class ProfileComponent implements OnInit {
           this.loadOrders();
 
           let cep = '', rua = '', numero = '', complemento = '', bairro = '', cidade = '', estado = '';
-
-          // 1. Tenta ler o endereço em formato ARRAY JSON (Padrão do Checkout)
-          if (databd.enderecos && typeof databd.enderecos === 'string') {
-            try {
-              const addrArray = JSON.parse(databd.endereco);
-              cep = addrArray[0] || '';
-              rua = addrArray[1] || '';
-              numero = addrArray[2] || '';
-              complemento = addrArray[3] || '';
-              bairro = addrArray[4] || '';
-              if (addrArray[5]) {
-                cidade = addrArray[5].split(' - ')[0] || '';
-                estado = addrArray[5].split(' - ')[1] || '';
-              }
-            } catch (e) {
-              console.error('Erro ao fazer parse do endereço', e);
-            }
-          }
-          // 2. Fallback para formato antigo (caso ainda exista na base de dados)
-          else if (databd.enderecos && databd.enderecos.length > 0) {
+        
+          // 1. Fallback para formato antigo (caso ainda exista na base de dados)
+          if (databd.enderecos && databd.enderecos.length > 0) {
             const addr = databd.enderecos[0];
             cep = addr.cep || '';
             rua = addr.logradouro || addr.rua || '';

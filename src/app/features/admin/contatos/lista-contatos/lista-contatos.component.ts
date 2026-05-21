@@ -29,9 +29,15 @@ export class ListaContatosComponent implements OnInit {
   // NOVA FUNÇÃO ATUALIZADA COM O SEU FALLBACK
   carregarContatos() {
     this.carregando = true;
-    this.http.get<any[]>(`${environment.apiUrl}/admin/contatos`).subscribe({
-      next: (dados) => {
-        this.contatos = dados.length > 0 ? dados : this.getMockContatos();
+
+    // Alterado de <any[]> para <any> pois a API envia um objeto JSON
+    this.http.get<any>(`${environment.apiUrl}/admin/contatos`).subscribe({
+      next: (resposta) => {
+        // Extraindo o array que veio dentro da propriedade 'messages'
+        const dados = resposta.messages;
+
+        // Se tiver dados reais, exibe. Se vier vazio, pode colocar [] ao invés dos mocks se quiser que fique limpo.
+        this.contatos = dados && dados.length > 0 ? dados : this.getMockContatos();
         this.carregando = false;
       },
       error: () => {
@@ -41,6 +47,8 @@ export class ListaContatosComponent implements OnInit {
       }
     });
   }
+
+  // ATENÇÃO!!! Criar rotas no back para funções de 'Marcar como lida' e 'Excluir'
 
   // OS SEUS DADOS DE EXEMPLO (MOCK)
   private getMockContatos(): any[] {
@@ -134,13 +142,13 @@ export class ListaContatosComponent implements OnInit {
 
   getSubjectClass(assunto: string): string {
     if (!assunto) return 'subj-duvida';
-    
+
     const textoNormalizado = assunto.toLowerCase();
-    
+
     if (textoNormalizado.includes('reclamação') || textoNormalizado.includes('reclamacao') || textoNormalizado.includes('problema')) {
       return 'subj-reclamacao';
     }
-    
+
     if (textoNormalizado.includes('sugestão') || textoNormalizado.includes('sugestao') || textoNormalizado.includes('elogio')) {
       return 'subj-sugestao';
     }
@@ -148,7 +156,7 @@ export class ListaContatosComponent implements OnInit {
     if (textoNormalizado.includes('parceria') || textoNormalizado.includes('fornecedor')) {
       return 'subj-parcerias';
     }
-    
+
     return 'subj-duvida';
   }
 
