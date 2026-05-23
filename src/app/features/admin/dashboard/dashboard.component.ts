@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
     if (imageURL.startsWith('http')) return imageURL;
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   // Fallback quando a tag <img> der erro

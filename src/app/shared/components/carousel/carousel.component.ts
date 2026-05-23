@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router'; // Necessário para os links dos
 
 // Importação dos serviços e environment
 import { ProductService, Product } from 'src/app/core/services/product.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-carousel',
@@ -53,7 +52,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
     if (imageURL.startsWith('http')) return imageURL;
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   onImageError(event: Event): void {

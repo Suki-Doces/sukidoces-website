@@ -8,8 +8,6 @@ import { CategoryService, Category } from 'src/app/core/services/category.servic
 import { CartService } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -65,7 +63,7 @@ export class ProductListComponent implements OnInit {
       return imageURL; // URL completa já fornecida pela API
     }
 
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   // IV - Pede produtos ao serviço com base nos filtros atuais

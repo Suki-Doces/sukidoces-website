@@ -27,7 +27,7 @@
 
 ## 📁 Folder Structure
 
-* `/assets/`: Static images, SVG icons, and product uploads.
+* `/assets/`: Static images and SVG icons used by the interface.
 * `/components/`: Modular UI components (Header, Footer, Navbars, Carousels).
 * `/css/` & `/js/`: Global styles and scripts (including cart logic and async requests).
 * `/database/`: Database connection configuration.
