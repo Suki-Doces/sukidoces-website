@@ -145,19 +145,19 @@ export class ListaContatosComponent implements OnInit {
 
     const textoNormalizado = assunto.toLowerCase();
 
-    if (textoNormalizado.includes('reclamação') || textoNormalizado.includes('reclamacao') || textoNormalizado.includes('problema')) {
-      return 'subj-reclamacao';
+    if (textoNormalizado.includes('Reclamação') || textoNormalizado.includes('Reclamacao') || textoNormalizado.includes('Problema')) {
+      return 'subj-Reclamacao';
     }
 
-    if (textoNormalizado.includes('sugestão') || textoNormalizado.includes('sugestao') || textoNormalizado.includes('elogio')) {
-      return 'subj-sugestao';
+    if (textoNormalizado.includes('sugestão') || textoNormalizado.includes('Sugestao') || textoNormalizado.includes('Elogio')) {
+      return 'subj-Sugestao';
     }
 
-    if (textoNormalizado.includes('parceria') || textoNormalizado.includes('fornecedor')) {
-      return 'subj-parcerias';
+    if (textoNormalizado.includes('Parceria') || textoNormalizado.includes('Fornecedor')) {
+      return 'subj-Parcerias';
     }
 
-    return 'subj-duvida';
+    return 'subj-Duvida';
   }
 
   abrirModal(contato: any) {
