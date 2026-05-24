@@ -8,7 +8,6 @@ import { ProductService } from 'src/app/core/services/product.service';
 // Services
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CartService } from 'src/app/core/services/cart.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   isTransitioning = false;
   errorMessage = '';
 
-  private apiUrl = environment.productImgUrl; // URL base para as imagens dos produtos
 
   formData = {
     nome: '',
@@ -71,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           ...p,
           imagemUrl: (p.imagem && p.imagem.startsWith('http'))
             ? p.imagem
-            : `${this.apiUrl}/uploads/${p.imagem}`,
+            : this.defaultImage,
           tag: ehNovo ? 'Novo' : 'Destaque'
         };
       });
@@ -108,7 +106,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
     if (imageURL.startsWith('http')) return imageURL;
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   onImageError(event: Event): void {
