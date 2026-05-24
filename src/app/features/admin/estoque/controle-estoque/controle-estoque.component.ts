@@ -14,31 +14,47 @@ import { environment } from 'src/environments/environment';
 })
 export class ControleEstoqueComponent implements OnInit {
   private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/admin/estoque`;
-  
+  private readonly tamanhoMaximoImagem = 5 * 1024 * 1024;
+  private readonly tiposImagemPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
+
   produtos: any[] = [];
-  
-  // Variáveis para controlar o Modal de Edição
   isEditModalOpen = false;
   produtoEditado: any = {};
-
-  // 1. Variable (Para guardar a foto)
   novaFotoSelecionada: File | null = null;
+
+  readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
   ngOnInit() {
     this.carregarProdutos();
   }
 
-  // 2. Função para receber a foto do HTML
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.novaFotoSelecionada = file;
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    if (!file) {
+      this.novaFotoSelecionada = null;
+      return;
     }
+
+    if (!this.tiposImagemPermitidos.includes(file.type)) {
+      alert('Use uma imagem JPG, JPEG, PNG ou WEBP.');
+      input.value = '';
+      this.novaFotoSelecionada = null;
+      return;
+    }
+
+    if (file.size > this.tamanhoMaximoImagem) {
+      alert('A imagem deve ter no maximo 5MB.');
+      input.value = '';
+      this.novaFotoSelecionada = null;
+      return;
+    }
+
+    this.novaFotoSelecionada = file;
   }
 
   carregarProdutos() {
-    // Busca os produtos na mesma rota que usamos antes
     this.http.get<any[]>(`${environment.apiUrl}/produtos`).subscribe({
       next: (dados) => {
         this.produtos = dados;
@@ -47,52 +63,50 @@ export class ControleEstoqueComponent implements OnInit {
     });
   }
 
-  readonly defaultImage = 'assets/images/produtos/default-product.svg';
-
-  // Método que monta a URL da imagem usando a API
   getProductImage(imageURL: string | null): string {
     if (!imageURL) {
       return this.defaultImage;
     }
 
-    // Se já vier uma URL completa da API, retorna ela mesma
     if (imageURL.startsWith('http')) {
       return imageURL;
     }
 
-    // Concatena a URL da API (que está no environment) com o nome da imagem
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   abrirModalEditar(produto: any) {
-    // Fazemos uma cópia do produto para não alterar a tabela antes de guardar
     this.produtoEditado = { ...produto };
+    this.novaFotoSelecionada = null;
     this.isEditModalOpen = true;
   }
 
   fecharModal() {
     this.isEditModalOpen = false;
+    this.novaFotoSelecionada = null;
   }
 
   salvarEdicao() {
     const url = `${environment.apiUrl}/produtos/${this.produtoEditado.id_produto}`;
-    
-    // Prepara os dados (garantindo que quantidade e preço são números)
-    const payload = {
-      nome: this.produtoEditado.nome,
-      descricao: this.produtoEditado.descricao, // <- Nova opção pedida!
-      quantidade: Number(this.produtoEditado.quantidade),
-      preco: Number(this.produtoEditado.preco)
-    };
 
-    this.http.put(url, payload).subscribe({
+    const formData = new FormData();
+    formData.append('nome', this.produtoEditado.nome ?? '');
+    formData.append('descricao', this.produtoEditado.descricao ?? '');
+    formData.append('quantidade', String(Number(this.produtoEditado.quantidade)));
+    formData.append('preco', String(Number(this.produtoEditado.preco)));
+
+    if (this.novaFotoSelecionada) {
+      formData.append('imagem', this.novaFotoSelecionada);
+    }
+
+    this.http.put(url, formData).subscribe({
       next: () => {
-        this.carregarProdutos(); // Recarrega a tabela atualizada
-        this.fecharModal();      // Fecha o Pop-up
+        this.carregarProdutos();
+        this.fecharModal();
       },
       error: (erro) => {
         console.error('Erro ao atualizar produto:', erro);
-        alert('Erro ao guardar alterações.');
+        alert('Erro ao guardar alteracoes.');
       }
     });
   }
@@ -103,7 +117,7 @@ export class ControleEstoqueComponent implements OnInit {
         next: () => this.carregarProdutos(),
         error: (erro) => {
           console.error('Erro ao deletar:', erro);
-          alert('Não foi possível remover o produto.');
+          alert('Nao foi possivel remover o produto.');
         }
       });
     }

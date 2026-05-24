@@ -36,7 +36,7 @@
   
         <input type="number" placeholder="Coloque a quantidade" name="product_qtd" class="box" [(ngModel)]="produto.quantidade" required>
   
-        <input type="file" accept="image/*,.webp,.jfif,.heic,.heif,.ico" name="product_image" class="box" (change)="onFileSelected($event)" required>
+        <input type="file" accept="image/jpeg,image/png,image/webp" name="product_image" class="box" (change)="onFileSelected($event)" required>
   
         <button type="submit" class="btn-submit">Adicionar Produto</button>
       </form>

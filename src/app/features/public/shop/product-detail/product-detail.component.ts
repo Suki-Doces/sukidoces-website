@@ -8,8 +8,6 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { Product, ProductService } from 'src/app/core/services/product.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -79,7 +77,7 @@ export class ProductDetailComponent implements OnInit {
       return imageURL; // URL completa já fornecida pela API
     }
 
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   // IV - Incrementa e decrementa a quantidade

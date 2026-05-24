@@ -6,8 +6,6 @@ import { RouterModule } from '@angular/router';
 import { ProductService, Product } from 'src/app/core/services/product.service';
 import { CartService } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-short-catalog',
   standalone: true,
@@ -67,7 +65,7 @@ export class ShortCatalogComponent implements OnInit {
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
     if (imageURL.startsWith('http')) return imageURL;
-    return `${environment.productImgUrl}${imageURL}`;
+    return this.defaultImage;
   }
 
   // Fallback caso a imagem quebre
