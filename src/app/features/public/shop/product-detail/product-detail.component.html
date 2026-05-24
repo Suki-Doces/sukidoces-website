@@ -1,7 +1,19 @@
-<main class="detail-container" *ngIf="!isLoading && product">
-    <a routerLink="/produtos" class="back-link">← Voltar para o cardápio</a>
+<main class="detail-container animate-fade" *ngIf="!isLoading && product">
+    <a routerLink="/produtos" class="btn btn-outline btn-glass back-link">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M4.5 12L9.5 7M4.5 12L9.5 17M4.5 12L11 12M14.5 12C16.1667 12 19.5 13 19.5 17" stroke="currentColor"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </svg>
+        <p>
+            Voltar para o catálogo
+        </p>
+    </a>
 
-    <div class="product-detail-wrapper">
+    <div class="glass-container product-detail-wrapper">
         <div class="flex-center detail-image">
             <!-- Imagem de fundo com blur -->
             <img class="img-blur-bg" [src]="getProductImage(product.imagem)" aria-hidden="true">
@@ -40,10 +52,10 @@
 
             <div class="stock-info">
                 <ng-container *ngIf="product.quantidade > 0; else outOfStock">
-                    <span class="in-stock">Disponível em stock ({{ product.quantidade }} un.)</span>
+                    <strong class="in-stock">Disponível em estoque ({{ product.quantidade }} un.)</strong>
                 </ng-container>
                 <ng-template #outOfStock>
-                    <span class="out-stock">Indisponível no momento</span>
+                    <strong class="out-stock">Indisponível no momento</strong>
                 </ng-template>
             </div>
         </div>

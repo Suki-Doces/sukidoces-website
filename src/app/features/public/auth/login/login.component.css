@@ -1,14 +1,11 @@
-/* Container Principal (Lado a Lado) */
+/* --- ESTRUTURA E LAYOUT --- */
 .login-container {
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     min-height: 70vh;
     padding: 40px 20px;
     gap: 20px;
+    display: flex;
 }
 
-/* Caixa de Login/Registo */
 .login-box {
     background: var(--white-color);
     display: flex;
@@ -30,7 +27,7 @@
     display: block;
 }
 
-/* Estilos de Inputs e Botões da v2.0 */
+/* --- FORMULÁRIO E INPUTS --- */
 .login-input {
     background: var(--color-5);
     width: 100%;
@@ -51,40 +48,26 @@
     width: 100%;
 }
 
-.login-btn:disabled:hover {
-    border: 1px solid var(--t-color-7);
-}
-
 .login-btn:disabled {
     background-color: var(--gls-color-5);
     color: var(--t-color-7);
     cursor: not-allowed;
 }
 
-/* Imagem Lateral (Candy Wallpaper) */
-.login-img {
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    height: 600px;
-    background-image: url('../../../../../assets/images/candy-wallpaper.jpg');
-    background-size: cover;
-    background-position: center;
-    border-radius: 10px;
+.login-btn:disabled:hover {
+    border: 1px solid var(--t-color-7);
 }
 
-/* Mensagens de erro */
 .error {
     color: var(--gls-danger-btn);
     font-weight: bold;
-    font-size: 0.95rem;
-    margin-bottom: 15px;
+    margin-top: 15px;
     background-color: var(--gls-danger);
     padding: 10px;
     border-radius: 8px;
 }
 
-/* --- ESTILO DO INTERRUPTOR (SWITCH) v2.0 --- */
+/* --- SWITCH (ENTRAR/CADASTRAR) --- */
 .login-switch-container {
     position: relative;
     display: flex;
@@ -110,7 +93,6 @@
     color: var(--color-1);
 }
 
-/* O fundo deslizante (a "bolinha" do interruptor) */
 .login-slider-bg {
     position: absolute;
     height: calc(100% - 10px);
@@ -124,16 +106,17 @@
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-/* Mover o slider quando o formulário de cadastro estiver ativo */
 .login-slider-bg.slide-right {
     transform: translateX(100%);
 }
 
-/* --- ÁREA DE CONTEÚDO E TRANSIÇÕES --- */
+/* --- ÁREA DE CONTEÚDO --- */
 .login-type {
     position: relative;
-    min-height: 250px;
-    overflow: hidden;
+    /* Define uma altura mínima fixa para evitar que o layout "pule" 
+       se um formulário for maior que o outro */
+    min-height: 380px;
+    overflow: visible;
 }
 
 .login-tp-page {
@@ -143,7 +126,10 @@
     width: 100%;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+
+    /* Cubic-bezier para suavidade extra (efeito de "mola" leve) */
+    transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+        transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: none;
 }
 
@@ -155,7 +141,6 @@
     position: relative;
 }
 
-/* Títulos dos inputs */
 .login-tp-page p {
     text-align: left;
     margin: 0 0 5px 5px;
@@ -170,12 +155,120 @@
     width: 100%;
 }
 
-.input-group {
-    flex: 1;
+/* --- CARROSSEL DE PRODUTOS --- */
+.login-img {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    height: -webkit-fill-available;
+    background-image: url('../../../../../assets/images/candy-wallpaper.jpg');
+    background-size: contain;
+    background-position: top;
+    border-radius: 10px;
+    padding: 20px;
+    gap: 1rem;
 }
 
+.login-img > h1 {
+    color: var(--t-color-3);
+}
+
+.product-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.product-preview.fading {
+    opacity: 0;
+}
+
+.mini-card {
+    background: var(--white-color);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.mini-card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--gls-color-3) 0px 4px 15px;
+    border: 1px solid var(--color-3);
+}
+
+.mini-card img {
+    aspect-ratio: 1/1;
+    width: 70px;
+    height: max-content;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.info .nome {
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+.info .preco {
+    color: #f178b6;
+    font-weight: 700;
+    margin: 0;
+}
+
+.badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    background: var(--gls-color-4);
+    color: var(--white-color);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.badge-novo {
+    background-color: #98ff98;
+    color: #2d5a2d;
+}
+
+.badge-destaque {
+    background-color: #ffa500;
+    color: #ffffff;
+}
+
+/* --- ANIMAÇÕES --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* --- RESPONSIVIDADE --- */
 @media (max-width: 480px) {
     .form-row {
         flex-direction: column;

@@ -104,6 +104,7 @@
     color: var(--color-1, #e9228f);
     margin: 0;
 }
+
 /*Fim_Templates*/
 
 /* Container da Seção */
@@ -153,6 +154,48 @@
     direction: ltr;
     /* Padding aumentado para garantir que o hover effect não corte nas bordas */
     padding: 5px;
+}
+
+CSS
+/* =========================================
+   Estilo Suki Doces para a Barra de Rolagem
+   ========================================= */
+
+/* 1. Suporte para Firefox */
+.sc-items {
+    scrollbar-width: thin;
+    /* Deixa a barra mais fina e elegante */
+    scrollbar-color: #f178b6 transparent;
+    /* Cor da barrinha (thumb) e do fundo (track) */
+}
+
+/* 2. Suporte para Chrome, Edge e Safari (WebKit) */
+.sc-items::-webkit-scrollbar {
+    height: 10px;
+    /* Define a grossura da barra horizontal */
+}
+
+/* O "trilho" (fundo) da barra de rolagem */
+.sc-items::-webkit-scrollbar-track {
+    background: transparent;
+    /* Deixando transparente para mesclar com o fundo rosa que você já tem */
+    border-radius: 10px;
+}
+
+/* A "barrinha" (thumb) que você arrasta */
+.sc-items::-webkit-scrollbar-thumb {
+    background-color: #f178b6;
+    /* O Rosa principal da Suki */
+    border-radius: 10px;
+    /* Cantos arredondados */
+    border: 3px solid #fae6ea;
+    /* Cria um espaço (respiro) ao redor da barrinha para não ficar grudada nas bordas */
+}
+
+/* Efeito ao passar o mouse por cima da barrinha */
+.sc-items::-webkit-scrollbar-thumb:hover {
+    background-color: #d95b96;
+    /* Um rosa levemente mais escuro para o hover */
 }
 
 @media (min-width: 1050px) {

@@ -3,7 +3,7 @@ main {
   width: 100%;
   overflow-x: hidden;
   /* Evita que a tela crie barra de rolagem horizontal durante a animação */
-  min-height: 100vh;
+  min-height: 90vh;
   /* Garante que o contêiner sempre tenha altura */
 }
 

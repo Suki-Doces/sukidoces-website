@@ -1,0 +1,53 @@
+<!-- Hero Section -->
+<section class="historia-hero">
+    <div class="container">
+        <h1 class="title fade-in">A Essência da Suki Doces</h1>
+        <p class="subtitle fade-in" style="animation-delay: 0.2s;">Doces que encantam, momentos que marcam.</p>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="historia-content">
+    <div class="container layout-grid">
+        <div class="text-content fade-in" style="animation-delay: 0.3s;">
+            <h2>Nossa Paixão</h2>
+            <p>
+                Na Suki Doces, acreditamos que cada doce carrega uma história. Somos apaixonados por
+                criar sobremesas artesanais, feitas com ingredientes selecionados e muito carinho.
+            </p>
+            <p>
+                Nossa missão não é apenas vender doces, mas entregar pequenos pedaços de felicidade
+                que transformam o dia de quem os prova. Seja bem-vindo ao nosso mundo doce!
+            </p>
+        </div>
+
+        <div class="image-content fade-in glass-effect" style="animation-delay: 0.4s;">
+            <!-- Reutilizando imagens do projeto -->
+            <img src="assets/images/candy-wallpaper.jpg" alt="Aroma e sabor Suki Doces" class="historia-img">
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Section -->
+<section class="timeline-section">
+    <div class="container">
+        <h2 class="title text-center">Nossa Trajetória</h2>
+        <div class="timeline">
+
+            <!-- Loop da Linha do Tempo -->
+            <div class="timeline-item fade-in" *ngFor="let marco of marcos; let i = index"
+                [style.animation-delay]="(i * 0.2) + 's'">
+                <div class="timeline-year">{{ marco.ano }}</div>
+                <div class="timeline-info glass-effect">
+                    <h3>{{ marco.titulo }}</h3>
+                    <p>{{ marco.texto }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Reutilização de Componente -->
+<!-- Descomente a linha abaixo se quiser adicionar a chamada de parceria B2B no final da página -->
+<!-- <app-promotion-store></app-promotion-store> -->
