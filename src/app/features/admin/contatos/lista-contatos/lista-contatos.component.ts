@@ -141,7 +141,7 @@ export class ListaContatosComponent implements OnInit {
   }
 
   getSubjectClass(assunto: string): string {
-    if (!assunto) return 'subj-duvida';
+    if (!assunto) return 'subj-Duvida';
 
     const textoNormalizado = assunto.toLowerCase();
 
@@ -149,7 +149,7 @@ export class ListaContatosComponent implements OnInit {
       return 'subj-Reclamacao';
     }
 
-    if (textoNormalizado.includes('sugestão') || textoNormalizado.includes('Sugestao') || textoNormalizado.includes('Elogio')) {
+    if (textoNormalizado.includes('Sugestão') || textoNormalizado.includes('Sugestao') || textoNormalizado.includes('Elogio')) {
       return 'subj-Sugestao';
     }
 
