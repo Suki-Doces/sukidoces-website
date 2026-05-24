@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 
 //Components
@@ -18,8 +18,8 @@ import { ShortCatalogComponent } from 'src/app/shared/components/short-catalog/s
     MarketingIceCreamSectionComponent,
     MarketingSectionComponent,
     PromotionStoreComponent,
-    ShortCatalogComponent
-  ],
+    ShortCatalogComponent,
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

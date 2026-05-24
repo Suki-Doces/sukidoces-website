@@ -89,10 +89,11 @@ export class ProfileComponent implements OnInit {
           this.loadOrders();
 
           let cep = '', rua = '', numero = '', complemento = '', bairro = '', cidade = '', estado = '';
-        
+
           // 1. Fallback para formato antigo (caso ainda exista na base de dados)
           if (databd.enderecos && databd.enderecos.length > 0) {
             const addr = databd.enderecos[0];
+            this.user.id_endereco_atual = addr.id_endereco; // Armazene o ID do endereço
             cep = addr.cep || '';
             rua = addr.logradouro || addr.rua || '';
             numero = addr.numero || '';
@@ -155,6 +156,13 @@ export class ProfileComponent implements OnInit {
 
     const formValue = this.profileForm.getRawValue();
 
+    // 1. Tratamento seguro da Data de Nascimento (ISO 8601 para o Prisma)
+    let dataNascimentoPrisma = null;
+    if (formValue.data_nascimento && formValue.data_nascimento.trim() !== '') {
+      // Converte 'YYYY-MM-DD' para o formato Date que o Prisma aceita nativamente
+      dataNascimentoPrisma = new Date(formValue.data_nascimento).toISOString();
+    }
+
     // Empacota o endereço num Array, EXATAMENTE como o Checkout espera
     const cidadeEstadoFormatado = formValue.cidade && formValue.estado
       ? `${formValue.cidade} - ${formValue.estado}`
@@ -171,14 +179,31 @@ export class ProfileComponent implements OnInit {
 
     // Monta o objeto padronizado do Utilizador
     const dadosParaAtualizar = {
+      id_usuario: this.user.id_usuario || this.user.id,
       nome: formValue.nome,
       telefone: formValue.telefone,
       cpf: formValue.cpf,
-      data_nascimento: formValue.data_nascimento,
-      enderecos: JSON.stringify(enderecoFormatado) // Guarda como String Array JSON
+      data_nascimento: dataNascimentoPrisma,
+      enderecos: {
+        update: {
+          where: {
+            // O Prisma agora saberá qual registro específico atualizar
+            id_endereco: this.user.id_endereco_atual
+          },
+          data: {
+            cep: formValue.cep,
+            logradouro: formValue.rua,
+            numero: formValue.numero,
+            complemento: formValue.complemento,
+            bairro: formValue.bairro,
+            cidade: formValue.cidade, // Ajuste para bater com o seu schema
+            estado: formValue.estado
+          }
+        }
+      }
     };
 
-    this.userService.updateProfile(dadosParaAtualizar)
+    this.userService.updateProfile(dadosParaAtualizar as any)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (res: any) => {
@@ -187,7 +212,7 @@ export class ProfileComponent implements OnInit {
           // Atualiza o localStorage para o Checkout ler perfeitamente
           this.authService.updateUserInStorage({
             ...this.user,
-            ...dadosParaAtualizar
+            ...dadosParaAtualizar,
           });
 
           window.scrollTo({ top: 0, behavior: 'smooth' });

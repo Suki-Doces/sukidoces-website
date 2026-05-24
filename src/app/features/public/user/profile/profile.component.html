@@ -1,5 +1,5 @@
 <section class="profile-container">
-    <nav class="glass-container profile-nav">
+    <nav class="glass-container profile-nav animate-fade">
         <div class="user-info-brief">
             <div class="avatar-circle">
                 {{ user?.nome?.charAt(0) }}
@@ -54,7 +54,21 @@
 
                 <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
                     <div class="form-grid">
-                        <h3 class="section-title">Informações Básicas</h3>
+                        <h3 class="section-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g stroke-width="0" />
+                                <g stroke-linecap="round" stroke-linejoin="round" />
+                                <g stroke="currentColor" stroke-width="1.5">
+                                    <circle cx="9" cy="9" r="2" />
+                                    <path d="M13 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z" />
+                                    <path
+                                        d="M22 12c0 3.771 0 5.657-1.172 6.828S17.771 20 14 20h-4c-3.771 0-5.657 0-6.828-1.172S2 15.771 2 12s0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172.47.47.751 1.054.92 1.828M19 12h-4m4-3h-5m5 6h-3"
+                                        stroke-linecap="round" />
+                                </g>
+                            </svg>
+                            Informações Básicas
+                        </h3>
                         <div class="form-group full-width">
                             <label>Nome Completo</label>
                             <input type="text" formControlName="nome" placeholder="Seu nome completo">
@@ -78,7 +92,23 @@
                             <input type="date" formControlName="data_nascimento">
                         </div>
 
-                        <h3 class="section-title">Endereço de Entrega</h3>
+                        <h3 class="section-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g stroke-width="0" />
+                                <g stroke-linecap="round" stroke-linejoin="round" />
+                                <g stroke="currentColor" stroke-width="1.5">
+                                    <path
+                                        d="M22 22H2m0-11 4.063-3.25M22 11l-8.126-6.5a3 3 0 0 0-3.748 0l-.782.625M15.5 5.5v-2A.5.5 0 0 1 16 3h2.5a.5.5 0 0 1 .5.5v5M4 22V9.5m16 0v4m0 8.5v-4.5"
+                                        stroke-linecap="round" />
+                                    <path
+                                        d="M15 22v-5c0-1.414 0-2.121-.44-2.56C14.122 14 13.415 14 12 14s-2.121 0-2.56.44M9 22v-5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                                </g>
+                            </svg>
+                            Endereço de Entrega
+                        </h3>
                         <div class="form-group">
                             <label>CEP</label>
                             <input type="text" formControlName="cep" mask="00000-000" placeholder="00000-000"

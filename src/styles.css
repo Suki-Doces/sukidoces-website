@@ -24,7 +24,7 @@ html {
     --color-1-rgb: 233, 34, 144;
 
     /**HEX Color**/
-    --color-1: #e92290cc;
+    --color-1: #e92290;
     --color-2: #f06b9a;
     --color-3: #fd84b2;
     --color-4: #f7b5cc;
@@ -32,11 +32,12 @@ html {
     --color-6: #201613;
 
     /*Glass Main*/
-    --gls-color-1: #e922908d;
+    --gls-color-1: #e92290cc;
     --gls-color-2: #f06b9acc;
     --gls-color-3: #fd84b2cc;
     --gls-color-4: #f7b5cccc;
     --gls-color-5: #fff0facc;
+    --gls-color-6: #201613cc;
     --gls-success: #65d873cc;
     --gls-danger: #ffd6d6cc;
     --gls-danger-btn: #ff3a3acc;
@@ -64,6 +65,39 @@ html {
     --t-color-5: #222222;
     --t-default: #464746;
     --t-color-7: #828282;
+}
+
+/* Largura do scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track (fundo da barra) - Usando a cor de fundo do seu design */
+::-webkit-scrollbar-track {
+    background: var(--color-5);
+    border-radius: 5px;
+}
+
+/* Thumb (a barra que desliza) - Usando o "Rosa da Suki" */
+::-webkit-scrollbar-thumb {
+    background: #f178b6;
+    /* Rosa da Suki */
+    border-radius: 5px;
+    border: 2px solid var(--color-5);
+    /* Cria um efeito de respiro */
+    transition: background 0.3s ease;
+}
+
+/* Efeito ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+    background: #d664a0;
+    /* Um tom um pouco mais escuro para hover */
+}
+
+/* Suporte para Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #f178b6 var(--color-5);
 }
 
 /* TIPOGRAPHY MOBILE */
@@ -123,6 +157,23 @@ a:hover {
     a {
         font-size: 18px;
         font-weight: 600;
+    }
+}
+
+/* FADE ANIMATE */
+.animate-fade {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -205,7 +256,7 @@ html {
     -webkit-backdrop-filter: blur(5px) saturate(180%);
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 1.25rem;
-    box-shadow:0 12px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 .glass-container::after {
@@ -230,7 +281,7 @@ html {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 1rem;
     /* Espaço entre o texto e o ícone */
     padding: 12px 28px;
     border-radius: 18px;
@@ -249,7 +300,6 @@ html {
     width: 1.5rem;
     height: auto;
     margin: -0.5rem;
-    margin-left: 0;
     aspect-ratio: 1/1;
 }
 
@@ -265,11 +315,16 @@ html {
 
 /* --- AJUSTE DA LUPA NA BARRA DE PESQUISA --- */
 .input-group img {
-    width: 20px;       /* Define a largura ideal para a lupa */
-    height: 20px;      /* Define a altura ideal */
-    object-fit: contain; /* Garante que a imagem não distorça */
-    opacity: 0.6;      /* Deixa ela cinzinha, mais discreta */
-    transition: all 0.3s ease; /* Efeito suave se quiser colocar hover depois */
+    width: 20px;
+    /* Define a largura ideal para a lupa */
+    height: 20px;
+    /* Define a altura ideal */
+    object-fit: contain;
+    /* Garante que a imagem não distorça */
+    opacity: 0.6;
+    /* Deixa ela cinzinha, mais discreta */
+    transition: all 0.3s ease;
+    /* Efeito suave se quiser colocar hover depois */
 }
 
 /* Efeito Glassmorphism (.btn-glass) */

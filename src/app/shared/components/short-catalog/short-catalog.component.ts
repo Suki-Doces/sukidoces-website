@@ -34,7 +34,7 @@ export class ShortCatalogComponent implements OnInit {
     // Carrega os Mais Vendidos
     this.productService.getProducts({ filtro: 'mais-vendidos' }).subscribe({
       next: (data) => {
-        this.bestSellers = data.slice(0, 8); // Limita a 8 itens para não quebrar o layout "short"
+        this.bestSellers = data.slice(0, 20); // Limita a 20 itens para não quebrar o layout "short"
         this.isLoadingBest = false;
       },
       error: (err) => {
@@ -46,7 +46,7 @@ export class ShortCatalogComponent implements OnInit {
     // Carrega os Lançamentos
     this.productService.getProducts({ filtro: 'novos' }).subscribe({
       next: (data) => {
-        this.newArrivals = data.slice(0, 8);
+        this.newArrivals = data.slice(0, 20);
         this.isLoadingNew = false;
       },
       error: (err) => {

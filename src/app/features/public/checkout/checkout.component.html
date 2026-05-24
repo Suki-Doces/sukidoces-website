@@ -1,6 +1,8 @@
 <div class="checkout-wrapper">
-  <div class="checkout-card">
-    <h2 class="main-title">Finalizar Pedido</h2>
+  <div class="glass-container checkout-card animate-fade">
+    <div class="checkout-header">
+      <h1 class="main-title">Finalizar Pedido</h1>
+    </div>
 
     <form [formGroup]="checkoutForm" class="checkout-form">
 
@@ -85,10 +87,10 @@
       <div *ngIf="currentStep === 2" class="animate-fade">
 
         <div class="resumo-entrega"
-          style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid rgba(255, 255, 255, 0.1);">
+          style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 2px dashed var(--gls-t-color-3);">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
             <h3 style="margin: 0; color: var(--t-color-3);">Endereço de Entrega</h3>
-            <button type="button" class="btn-outline" style="padding: 5px 10px; font-size: 0.8rem;"
+            <button type="button" class="btn btn-outline btn-glass" style="padding: 5px 10px; font-size: 0.8rem;"
               (click)="voltarParaEndereco()">Alterar</button>
           </div>
           <p style="margin: 5px 0; color: var(--t-default);">

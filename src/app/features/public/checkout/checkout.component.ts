@@ -23,6 +23,7 @@ export class CheckoutComponent implements OnInit {
   salvandoDados = false;
   isLoading = false;
   errorMessage = '';
+  user: any;
 
   // Controle de Telas (1: Endereço, 2: Pagamento)
   currentStep: number = 1;
@@ -40,8 +41,6 @@ export class CheckoutComponent implements OnInit {
   cupomMensagem = '';
   cupomErro = false;
   validandoCupom = false;
-
-  private readonly WHATSAPP_LOJA = '5511999999999';
 
   constructor(
     private fb: FormBuilder,
@@ -77,6 +76,8 @@ export class CheckoutComponent implements OnInit {
     this.userService.getProfile().subscribe({
       next: (res: any) => {
         const userData = res.user || res;
+
+        this.user = userData; // <--- ADICIONE ESTA LINHA AQUI
 
         // DICA DE DEBUG: Verifique a aba Console (F12) para ver exatamente o que a API enviou
         console.log('📦 Dados recebidos da API no Checkout:', userData);
@@ -212,15 +213,27 @@ export class CheckoutComponent implements OnInit {
   }
 
   // Transição do Step 1 para o Step 2
-  prosseguirParaPagamento(): void {
+  async prosseguirParaPagamento(): Promise<void> {
     if (this.checkoutForm.invalid) {
       this.checkoutForm.markAllAsTouched();
       return;
     }
-    this.salvarUsuarioNoBanco();
-    this.calcularFrete();
-    this.currentStep = 2;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    this.isLoading = true; // Usa a variável de loading existente para travar a tela
+
+    try {
+      // Aguarda a resposta do banco de dados antes de continuar
+      await this.salvarUsuarioNoBanco();
+
+      this.calcularFrete();
+      this.currentStep = 2; // Só passa para a tela 2 se salvar com sucesso
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error('Erro no checkout:', error);
+      this.errorMessage = 'Ocorreu um erro ao salvar o endereço. Tente novamente.';
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   voltarParaEndereco(): void {
@@ -228,30 +241,62 @@ export class CheckoutComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  private salvarUsuarioNoBanco(): void {
-    this.salvandoDados = true;
+  // Atualizado para usar o mesmo formato e serviço do Perfil
+  // Atualizado para enviar o formato de RELAÇÃO que o Prisma exige
+  private salvarUsuarioNoBanco(): Promise<any> {
     const formValue = this.checkoutForm.getRawValue();
 
-    const cidadeEstadoFormatado = formValue.cidade && formValue.estado
-      ? `${formValue.cidade} - ${formValue.estado}`
-      : '';
+    // 1. Verifique se o usuário já tem um endereço cadastrado. 
+    // Precisamos do ID desse endereço para o Prisma atualizar.
+    const idEnderecoAtual = this.user?.id_endereco_atual || this.user?.enderecos?.[0]?.id_endereco;
 
-    const enderecoFormatado = [
-      formValue.cep, formValue.rua, formValue.numero,
-      formValue.complemento, formValue.bairro, cidadeEstadoFormatado
-    ];
+    // 2. Se houver um ID, montamos o objeto no padrão "update" do Prisma.
+    // Se NÃO houver um ID, o usuário é novo e precisa do padrão "create".
+    let enderecosPayload: any = {};
 
-    const payload: UsuarioCheckout = {
+    if (idEnderecoAtual) {
+      enderecosPayload = {
+        update: {
+          where: { id_endereco: idEnderecoAtual },
+          data: {
+            cep: formValue.cep,
+            logradouro: formValue.rua,
+            numero: formValue.numero,
+            complemento: formValue.complemento,
+            bairro: formValue.bairro,
+            cidade: formValue.cidade, // <--- CORRIGIDO
+            estado: formValue.estado  // <--- CORRIGIDO
+          }
+        }
+      };
+    } else {
+      enderecosPayload = {
+        create: {
+          cep: formValue.cep,
+          logradouro: formValue.rua,
+          numero: formValue.numero,
+          complemento: formValue.complemento,
+          cidade: formValue.cidade, // <--- CORRIGIDO
+          estado: formValue.estado  // <--- CORRIGIDO
+        }
+      };
+    }
+
+    // 3. Monta o payload final
+    const dadosParaAtualizar = {
       nome: formValue.nome,
-      email: formValue.email,
-      cpf: formValue.cpf,
       telefone: formValue.telefone,
-      enderecos: JSON.stringify(enderecoFormatado)
+      cpf: formValue.cpf,
+      // Passa o objeto estruturado em vez do Array plano
+      enderecos: enderecosPayload
     };
 
-    this.checkoutService.autoSalvarUsuario(payload).subscribe({
-      next: () => { this.salvandoDados = false; },
-      error: () => { this.salvandoDados = false; }
+    // 4. Retorna a Promise
+    return new Promise((resolve, reject) => {
+      this.userService.updateProfile(dadosParaAtualizar).subscribe({
+        next: (res) => resolve(res),
+        error: (err) => reject(err)
+      });
     });
   }
 

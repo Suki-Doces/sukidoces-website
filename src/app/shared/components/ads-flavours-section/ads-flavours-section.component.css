@@ -37,10 +37,12 @@
 
 .ads-flavours>.af-one {
     background: radial-gradient(50% 50% at 50% 50%, #81E8A8 0%, #67B992 100%);
+    border-radius: 20px 20px 10px 10px;
 }
 
 .ads-flavours>.af-two {
     background: radial-gradient(50% 50% at 50% 50%, #FFCE92 0%, #FF7B00 100%);
+    border-radius: 10px 10px 20px 20px;
 }
 
 .af-img {
@@ -58,10 +60,14 @@
     .af-banner {
         flex: 1;
         justify-content: space-between;
-        border-radius: 20px;
         height: 220px;
         padding: 20px;
         overflow: hidden;
+    }
+
+    .ads-flavours>.af-one,
+    .ads-flavours>.af-two {
+        border-radius: 20px;
     }
 
     .af-content {
@@ -70,8 +76,8 @@
         padding-right: 10px;
     }
 
-    .af-content > h1,
-    .af-content > p {
+    .af-content>h1,
+    .af-content>p {
         text-align: left;
     }
 

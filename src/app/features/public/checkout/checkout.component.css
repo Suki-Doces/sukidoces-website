@@ -1,23 +1,24 @@
 .checkout-wrapper {
   display: flex;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1rem;
 }
 
 .checkout-card {
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   background-color: var(--color-5); /* Fundo sutil */
-  border-radius: 12px;
   padding: 2.5rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(233, 34, 144, 0.1);
+}
+
+.checkout-header {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--color-4);
+    padding-bottom: 1rem;
 }
 
 .main-title {
-  color: var(--t-color-4);
-  font-size: 1.6rem;
-  margin-bottom: 2rem;
+  color: var(--t-color-3);
   font-weight: 700;
 }
 

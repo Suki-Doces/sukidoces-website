@@ -47,24 +47,30 @@
 }
 
 .bg-blur {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Força a imagem a preencher tudo, centralizando o corte */
-  filter: blur(25px); /* Desfoque intenso para mesclar as cores */
-  transform: scale(1.2); /* O Zoom remove a borda branca original e impede bordas vazadas do blur */
-  z-index: 1;
-  opacity: 0.6; /* Deixa o fundo levemente mais suave para destacar a imagem principal */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Força a imagem a preencher tudo, centralizando o corte */
+    filter: blur(25px);
+    /* Desfoque intenso para mesclar as cores */
+    transform: scale(1.2);
+    /* O Zoom remove a borda branca original e impede bordas vazadas do blur */
+    z-index: 1;
+    opacity: 0.6;
+    /* Deixa o fundo levemente mais suave para destacar a imagem principal */
 }
 
 .main-img {
-  position: relative;
-  z-index: 2; /* Fica acima do fundo desfocado */
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Garante que o produto inteiro apareça com a proporção correta */
+    position: relative;
+    z-index: 2;
+    /* Fica acima do fundo desfocado */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Garante que o produto inteiro apareça com a proporção correta */
 }
 
 /* --- OVERLAY DE E-COMMERCE --- */
@@ -141,12 +147,15 @@
     backdrop-filter: blur(5px);
     padding: 0.75rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     z-index: 1;
+    stroke: var(--gls-color-6);
 }
 
 .nav-btn:hover {
     background-color: var(--gls-color-1);
+    transform: translateY(-50%) scale(1.1);
+    stroke: var(--white-color);
 }
 
 .nav-btn#prevBtn {
