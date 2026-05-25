@@ -395,7 +395,7 @@
 }
 
 .inbox-tab {
-  background: transparent;
+  background: #ffffff;
   border: 1px solid #e0e0e0;
   padding: 7px 14px;
   border-radius: 999px;
@@ -410,7 +410,7 @@
 }
 
 .inbox-tab.active {
-  background: #eef6ff;
+  background: #ffffff;
   border-color: #93c5fd;
   color: #1e5fa8;
 }
@@ -569,4 +569,25 @@
   .cr-subject-col { grid-column: 2; }
   .cr-date { grid-column: 2; font-size: 12px; }
   .cr-menu-wrap { grid-column: 3; grid-row: 1; }
+}
+
+/* Cores para os Badges de Assunto */
+.subj-Duvida {
+  background-color: #e3f2fd; 
+  color: #1565c0;
+}
+
+.subj-Reclamacao {
+  background-color: #ffebee; 
+  color: #c62828;
+}
+
+.subj-Sugestao {
+  background-color: #f3e5f5; 
+  color: #7b1fa2;
+}
+
+.subj-Parcerias {
+  background-color: #e8f5e9; 
+  color: #2e7d32;
 }
