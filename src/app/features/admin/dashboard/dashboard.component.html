@@ -97,7 +97,7 @@
         <tbody>
           <tr class="active-row" *ngFor="let prod of produtosDestaque">
             <td style="display: flex; align-items: center;">
-              <img class="kit-img" [src]="getProductImage(prod.img)" (error)="onImageError($event)" [alt]="prod.nome">
+              <img class="kit-img" [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
               <span class="kit-text" style="position:static; padding-left:10px;">{{ prod.nome }}</span>
             </td>
             <td style="padding-left: 50px;">{{ prod.vendas }}</td>
@@ -105,7 +105,7 @@
               <img [src]="prod.status === 'Em Estoque' ? 'assets/images/icons/Green-Ball.svg' : 'assets/images/icons/Red Ball - Icon.svg'" alt="Status" style="vertical-align:middle; width:20px; height: 8px;">
               <span [style.color]="prod.corStatus" style="margin-left:6px;">{{ prod.status }}</span>
             </td>
-            <td>{{ prod.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td>{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</td>
           </tr>
         </tbody>
       </table>

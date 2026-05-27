@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { NgxMaskDirective } from 'ngx-mask';
 
 interface ContactMessage {
   id_contato: number;
@@ -20,7 +21,7 @@ interface ContactMessage {
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })

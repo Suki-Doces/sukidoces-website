@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   lastId = 0;
   private pollingSub!: Subscription;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     // Carrega dados reais na inicialização
@@ -54,11 +54,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Imagem padrão caso a imagem do produto não carregue
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
-  // Monta a URL da imagem do produto (mesma lógica dos componentes públicos)
+  // Monta a URL da imagem do produto
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
-    if (imageURL.startsWith('http')) return imageURL;
-    return this.defaultImage;
+
+    // Se for um link externo (Cloudinary) ou imagem em base64, aceita direto
+    if (imageURL.startsWith('http') || imageURL.startsWith('data:image')) {
+      return imageURL;
+    }
+
+    // Se já incluir o caminho 'assets', aceita direto
+    if (imageURL.startsWith('assets/')) {
+      return imageURL;
+    }
+
+    // Se o backend enviar apenas o nome do ficheiro (ex: 'trufa.webp')
+    return `assets/images/produtos/${imageURL}`;
   }
 
   // Fallback quando a tag <img> der erro

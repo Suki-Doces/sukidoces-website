@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" formControlName="telefone" class="glass-input"
+                        <input type="tel" id="telefone" formControlName="telefone" class="glass-input" mask="(00) 0000-0000||(00) 0 0000-0000"
                             placeholder="(00) 00000-0000"
                             [ngClass]="{ 'is-invalid': f['telefone'].touched && f['telefone'].errors }">
                     </div>
@@ -116,7 +116,7 @@
 
     </div>
 
-    <section *ngIf="messages.length > 0 || loadingHistory || historyError" class="contact-history-section">
+    <section *ngIf="messages.length > 0 || loadingHistory || historyError" class="glass-container contact-history-section">
       <div class="history-header">
         <h2>Histórico de mensagens</h2>
         <p *ngIf="!messages.length && !loadingHistory && !historyError">Suas mensagens aparecerão aqui assim que você enviar um contato estando logado.</p>

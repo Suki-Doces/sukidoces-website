@@ -1,7 +1,6 @@
 <section class="short-catalog-section glass-container">
   <h1>Recomendação de compra</h1>
 
-  <!-- Navegação de Abas -->
   <div class="sc-nav">
     <button class="btn" [ngClass]="activeTab === 'mais-vendidos' ? 'btn-glass btn-primary' : 'btn-glass'"
       (click)="setActiveTab('mais-vendidos')">
@@ -15,12 +14,10 @@
 
   <div class="sc-items">
 
-    <!-- ABA: MAIS VENDIDOS -->
     <div class="sc-scroll tab-content" [class.active]="activeTab === 'mais-vendidos'">
       <div *ngIf="isLoadingBest" style="padding: 20px;">Carregando produtos...</div>
 
       <ng-container *ngIf="!isLoadingBest && bestSellers.length > 0; else noProductsBest">
-        <!-- Rota corrigida para /produtos/:id -->
         <a *ngFor="let prod of bestSellers" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
 
           <div class="ci-square-label">
@@ -30,10 +27,27 @@
           <div class="ci-product-info">
             <h3 class="card-i-h3">{{ prod.nome }}</h3>
             <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
-            <!-- Botão com stopPropagation para não abrir o card ao tentar comprar -->
-            <button class="btn btn-glass btn-primary" style="width: 100%;" (click)="addToCart($event, prod)">
-              Comprar
-            </button>
+
+            <div class="card-actions">
+              <div class="quantity-selector" (click)="$event.stopPropagation()">
+                <button type="button" class="qty-btn" (click)="decreaseQuantity(prod.id_produto, $event)"
+                  [disabled]="getQuantidade(prod.id_produto) <= 1">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                  </svg>
+                </button>
+                <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
+                <button type="button" class="qty-btn" (click)="increaseQuantity(prod.id_produto, $event)">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+              <button class="add-cart-btn" (click)="addToCart($event, prod)">
+                Comprar
+              </button>
+            </div>
+
           </div>
         </a>
       </ng-container>
@@ -42,12 +56,10 @@
       </ng-template>
     </div>
 
-    <!-- ABA: NOVOS -->
     <div class="sc-scroll tab-content" [class.active]="activeTab === 'novos'">
       <div *ngIf="isLoadingNew" style="padding: 20px;">Carregando lançamentos...</div>
 
       <ng-container *ngIf="!isLoadingNew && newArrivals.length > 0; else noProductsNew">
-        <!-- Rota corrigida para /produtos/:id -->
         <a *ngFor="let prod of newArrivals" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
 
           <div class="ci-square-label">
@@ -56,16 +68,33 @@
 
           <div class="ci-product-info">
             <h3 class="card-i-h3">{{ prod.nome }}</h3>
-            <div style="display:flex; justify-content:space-between; align-items:center; width:100%">
-              <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
+            <div
+              style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom: 4px;">
+              <h2 class="price" style="margin: 0;">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
               <span
                 style="font-size: 0.65rem; background-color: var(--gls-success); color: #155724; padding: 3px 6px; border-radius: 6px; font-weight: bold;">NOVO</span>
             </div>
-            <!-- Botão de compra direto -->
-            <button class="btn btn-glass btn-primary" style="width: 100%; margin-top: 5px;"
-              (click)="addToCart($event, prod)">
-              Comprar
-            </button>
+
+            <div class="card-actions">
+              <div class="quantity-selector" (click)="$event.stopPropagation()">
+                <button type="button" class="qty-btn" (click)="decreaseQuantity(prod.id_produto, $event)"
+                  [disabled]="getQuantidade(prod.id_produto) <= 1">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                  </svg>
+                </button>
+                <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
+                <button type="button" class="qty-btn" (click)="increaseQuantity(prod.id_produto, $event)">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+              <button class="add-cart-btn" (click)="addToCart($event, prod)">
+                Comprar
+              </button>
+            </div>
+
           </div>
         </a>
       </ng-container>

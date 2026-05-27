@@ -128,12 +128,6 @@
     background: #fff;
 }
 
-/* Inversão de cor para imagens/ícones svg ao passar o mouse */
-.sidebar-nav .nav-link:hover .nav-icon,
-.sidebar-nav .nav-link.active .nav-icon {
-    filter: invert(1);
-}
-
 .sidebar-nav .nav-link .nav-label {
     transition: opacity 0.4s ease;
 }

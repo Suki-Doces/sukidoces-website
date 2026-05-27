@@ -108,10 +108,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a imagem preencher todo o container */
-    filter: blur(20px); /* Intensidade do desfoque */
-    transform: scale(1.15); /* Aumenta um pouco para evitar bordas transparentes causadas pelo blur */
-    opacity: 0.6; /* Deixa o blur um pouco mais sutil para destacar o produto */
+    object-fit: cover;
+    /* Faz a imagem preencher todo o container */
+    filter: blur(20px);
+    /* Intensidade do desfoque */
+    transform: scale(1.15);
+    /* Aumenta um pouco para evitar bordas transparentes causadas pelo blur */
+    opacity: 0.6;
+    /* Deixa o blur um pouco mais sutil para destacar o produto */
     z-index: 1;
 }
 
@@ -171,16 +175,7 @@
     margin-bottom: 0.8rem;
 }
 
-/* --- ÁREA DE PREÇO E CARRINHO --- */
-.price-action-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto;
-    /* Empurra para a base inferior sempre */
-    gap: 0.5rem;
-}
-
+/* --- ÁREA DE PREÇO E AÇÕES (ATUALIZADA) --- */
 .price {
     color: var(--color-1);
     font-weight: 700;
@@ -188,34 +183,92 @@
     margin: 0;
 }
 
-/* Botão de Add ao Carrinho Otimizado p/ Toque (44px min para Lighthouse) */
-.btn-add-cart {
-    width: 44px;
-    height: 44px;
-    padding: 8px;
+/* Container que segura o Seletor e o Botão de Comprar */
+.card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+    /* Empurra para o fundo da info */
+    width: 100%;
+}
+
+/* O "Pill" (cápsula) do Seletor de Quantidade */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--gls-color-5);
+    border-radius: 999px;
+    padding: 4px;
+    min-width: 80px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Botões do + e do - */
+.qty-btn {
+    background: var(--white-color);
+    border: none;
+    color: var(--t-color-3);
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--gls-color-5);
-    color: var(--color-1);
-    stroke: var(--color-1);
-    border: 1px solid var(--color-4);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.qty-btn:hover:not(:disabled) {
+    background: var(--color-1);
+    color: var(--white-color);
+}
+
+.qty-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Texto do Número */
+.qty-value {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--t-color-3);
+    width: 22px;
+    text-align: center;
+}
+
+/* Botão Principal de Comprar */
+.add-cart-btn {
+    flex-grow: 1;
+    background: var(--color-1);
+    color: var(--white-color);
+    border: none;
+    border-radius: 999px;
+    padding: 0 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    /* Alinha perfeitamente com a altura do seletor */
 }
 
-.btn-add-cart:hover,
-.btn-add-cart:focus {
-    background-color: var(--color-1);
-    stroke: var(--color-5);
-    color: var(--white-color);
-    transform: scale(1.05);
-    outline: none;
+.add-cart-btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.03);
 }
 
-.btn-add-cart:active {
-    transform: scale(0.95);
+.add-cart-btn:active {
+    transform: scale(0.97);
 }
 
 /* --- EMPTY STATE --- */
@@ -239,7 +292,6 @@
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
 }
-
 
 /* --- DESKTOP (A partir de tablets em diante) --- */
 @media (min-width: 768px) {

@@ -26,7 +26,8 @@
 
         <div class="filter-separator" aria-hidden="true">|</div>
 
-        <button *ngFor="let cat of categories; trackBy: trackByCategoryId" class="btn" routerLink="/produtos" [queryParams]="{ categoria: cat.id_categoria }"
+        <button *ngFor="let cat of categories; trackBy: trackByCategoryId" class="btn" routerLink="/produtos"
+            [queryParams]="{ categoria: cat.id_categoria }"
             [class]="(currentCategory === cat.id_categoria) ? 'btn-glass btn-primary' : 'btn-glass'">
             {{ cat.nome }}
         </button>
@@ -41,22 +42,11 @@
 
             <article *ngFor="let prod of products; trackBy: trackByProductId" class="product-card">
 
-                <a [routerLink]="['/produtos', prod.id_produto]" class="card-image-link" [attr.aria-label]="'Ver detalhes de ' + prod.nome">
-                    <!-- Fundo: Imagem com blur -->
-                    <img
-                        class="card-img-blur"
-                        [src]="getProductImage(prod.imagem)"
-                        aria-hidden="true"
-                    />
-                    <!-- Frente: Imagem Principal -->
-                    <img
-                        class="card-img"
-                        [src]="getProductImage(prod.imagem)"
-                        [alt]="'Imagem de ' + prod.nome"
-                        (error)="onImageError($event)"
-                        loading="lazy"
-                        decoding="async"
-                    />
+                <a [routerLink]="['/produtos', prod.id_produto]" class="card-image-link"
+                    [attr.aria-label]="'Ver detalhes de ' + prod.nome">
+                    <img class="card-img-blur" [src]="getProductImage(prod.imagem)" aria-hidden="true" />
+                    <img class="card-img" [src]="getProductImage(prod.imagem)" [alt]="'Imagem de ' + prod.nome"
+                        (error)="onImageError($event)" loading="lazy" decoding="async" />
                 </a>
 
                 <div class="card-info">
@@ -68,21 +58,40 @@
                         {{ prod.nome_categoria }}
                     </small>
 
-                    <div class="price-action-wrapper">
-                        <p class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
-                        
-                        <button class="btn-add-cart" (click)="addToCart($event, prod)" aria-label="Adicionar produto ao carrinho" title="Adicionar ao carrinho">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g stroke-width="0" />
-                                <g stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" stroke-width=".048" />
-                                <g stroke-width="1.5">
-                                <path d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                <path
-                                    d="m2 3 .261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7"
-                                    stroke-linecap="round" />
-                                </g>
-                            </svg>
+                    <p class="price" style="margin-top: 8px; margin-bottom: 0;">
+                        {{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}
+                    </p>
+
+                    <div class="card-actions">
+
+                        <div class="quantity-selector" (click)="$event.stopPropagation(); $event.preventDefault()">
+
+                            <button type="button" class="qty-btn"
+                                (click)="$event.stopPropagation(); $event.preventDefault(); decreaseQuantity(prod.id_produto, $event)"
+                                [disabled]="getQuantidade(prod.id_produto) <= 1">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                                </svg>
+                            </button>
+
+                            <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
+
+                            <button type="button" class="qty-btn"
+                                (click)="$event.stopPropagation(); $event.preventDefault(); increaseQuantity(prod.id_produto, $event)">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <button class="add-cart-btn"
+                            (click)="$event.stopPropagation(); $event.preventDefault(); addToCart($event, prod)"
+                            aria-label="Adicionar produto ao carrinho" title="Adicionar ao carrinho">
+                            Comprar
                         </button>
+
                     </div>
                 </div>
             </article>
@@ -92,14 +101,16 @@
 
     <ng-template #noProducts>
         <div class="no-products-container">
-            <svg class="no-products-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--t-color-7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="no-products-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                fill="none" stroke="var(--t-color-7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 <path d="M11 8v2"></path>
                 <path d="M11 14h.01"></path>
             </svg>
             <p class="no-products-text">Ops! Nenhum produto encontrado.</p>
-            <button *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos" class="btn btn-glass btn-primary">
+            <button *ngIf="currentQuery || currentCategory || currentFilter" routerLink="/produtos"
+                class="btn btn-glass btn-primary">
                 Ver todos os produtos
             </button>
         </div>

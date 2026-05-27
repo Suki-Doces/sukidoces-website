@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ProductService, Product } from 'src/app/core/services/product.service';
 import { CartService } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
+
 @Component({
   selector: 'app-short-catalog',
   standalone: true,
@@ -21,6 +22,9 @@ export class ShortCatalogComponent implements OnInit {
 
   isLoadingBest = true;
   isLoadingNew = true;
+
+  // Objeto para rastrear a quantidade temporária de cada produto pelo ID
+  quantidades: { [id_produto: number]: number } = {};
 
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
@@ -56,12 +60,36 @@ export class ShortCatalogComponent implements OnInit {
     });
   }
 
+  // ==========================================
+  // FUNÇÕES DE CONTROLE DE QUANTIDADE (NOVAS)
+  // ==========================================
+
+  getQuantidade(id: number): number {
+    return this.quantidades[id] || 1;
+  }
+
+  increaseQuantity(id: number, event: Event) {
+    event.stopPropagation(); // Evita abrir a página do produto ao clicar no botão +
+    const current = this.getQuantidade(id);
+    this.quantidades[id] = current + 1;
+  }
+
+  decreaseQuantity(id: number, event: Event) {
+    event.stopPropagation(); // Evita abrir a página do produto ao clicar no botão -
+    const current = this.getQuantidade(id);
+    if (current > 1) {
+      this.quantidades[id] = current - 1;
+    }
+  }
+
+  // ==========================================
+
   // Alterna as abas
   setActiveTab(tab: 'mais-vendidos' | 'novos'): void {
     this.activeTab = tab;
   }
 
-  // Monta a URL da imagem[cite: 13]
+  // Monta a URL da imagem
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
     if (imageURL.startsWith('http')) return imageURL;
@@ -74,18 +102,19 @@ export class ShortCatalogComponent implements OnInit {
     imgElement.src = this.defaultImage;
   }
 
-  // Função Funcional de Adicionar ao Carrinho
+  // Função Funcional de Adicionar ao Carrinho Atualizada
   addToCart(event: Event, product: Product): void {
     event.preventDefault(); // Impede que o clique no botão redirecione para a página do produto
     event.stopPropagation(); // Impede que o clique "vaze" para o card
 
+    // Puxa a quantidade que a pessoa escolheu na interface deste item específico
+    const quantidadeSelecionada = this.getQuantidade(product.id_produto);
+
     // 1. Verifica quantos itens deste produto já estão no carrinho
     const currentQtyInCart = this.cartService.getItemQuantity(product.id_produto);
 
-    // 2. Valida se a quantidade atual + 1 ultrapassa o estoque disponível
-    if (currentQtyInCart + 1 > product.quantidade) {
-      // Nota: Assumindo que o seu NotificationService tem um método showError ou showWarning.
-      // Se o nome for diferente no seu serviço, ajuste aqui!
+    // 2. Valida se a quantidade atual + a quantidade que ela quer levar ultrapassa o estoque disponível
+    if (currentQtyInCart + quantidadeSelecionada > product.quantidade) {
       this.notificationService.showError(
         'Estoque Insuficiente',
         `Temos apenas ${product.quantidade} unidades disponíveis de ${product.nome}.`
@@ -93,10 +122,15 @@ export class ShortCatalogComponent implements OnInit {
       return; // Interrompe a função aqui, não adiciona ao carrinho
     }
 
-    this.cartService.addToCart(product, 1);
+    // 3. Adiciona enviando o número real escolhido
+    this.cartService.addToCart(product, quantidadeSelecionada);
+
     this.notificationService.showSuccess(
       'Adicionado ao Carrinho',
-      `O item ${product.nome} já está aguardando você no carrinho.`
+      `Adicionou ${quantidadeSelecionada}x ${product.nome} ao carrinho!`
     );
+
+    // 4. Reseta o contador do seletor visual de volta para 1 para este doce
+    this.quantidades[product.id_produto] = 1;
   }
 }
