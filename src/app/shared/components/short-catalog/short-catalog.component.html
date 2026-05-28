@@ -18,18 +18,25 @@
       <div *ngIf="isLoadingBest" style="padding: 20px;">Carregando produtos...</div>
 
       <ng-container *ngIf="!isLoadingBest && bestSellers.length > 0; else noProductsBest">
-        <a *ngFor="let prod of bestSellers" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
 
-          <div class="ci-square-label">
+        <div *ngFor="let prod of bestSellers" class="product-card">
+
+          <a [routerLink]="['/produtos', prod.id_produto]" class="ci-square-label"
+            style="text-decoration: none; cursor: pointer; display: flex;">
             <img [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
-          </div>
+          </a>
 
           <div class="ci-product-info">
-            <h3 class="card-i-h3">{{ prod.nome }}</h3>
+
+            <a [routerLink]="['/produtos', prod.id_produto]"
+              style="text-decoration: none; color: inherit; cursor: pointer;">
+              <h3 class="card-i-h3">{{ prod.nome }}</h3>
+            </a>
+
             <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
 
             <div class="card-actions">
-              <div class="quantity-selector" (click)="$event.stopPropagation()">
+              <div class="quantity-selector">
                 <button type="button" class="qty-btn" (click)="decreaseQuantity(prod.id_produto, $event)"
                   [disabled]="getQuantidade(prod.id_produto) <= 1">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
@@ -49,7 +56,7 @@
             </div>
 
           </div>
-        </a>
+        </div>
       </ng-container>
       <ng-template #noProductsBest>
         <p *ngIf="!isLoadingBest" style="padding: 20px; color: var(--t-color-7);">Nenhum produto em destaque.</p>
@@ -60,14 +67,21 @@
       <div *ngIf="isLoadingNew" style="padding: 20px;">Carregando lançamentos...</div>
 
       <ng-container *ngIf="!isLoadingNew && newArrivals.length > 0; else noProductsNew">
-        <a *ngFor="let prod of newArrivals" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
 
-          <div class="ci-square-label">
+        <div *ngFor="let prod of newArrivals" class="product-card">
+
+          <a [routerLink]="['/produtos', prod.id_produto]" class="ci-square-label"
+            style="text-decoration: none; cursor: pointer; display: flex;">
             <img [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
-          </div>
+          </a>
 
           <div class="ci-product-info">
-            <h3 class="card-i-h3">{{ prod.nome }}</h3>
+
+            <a [routerLink]="['/produtos', prod.id_produto]"
+              style="text-decoration: none; color: inherit; cursor: pointer;">
+              <h3 class="card-i-h3">{{ prod.nome }}</h3>
+            </a>
+
             <div
               style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom: 4px;">
               <h2 class="price" style="margin: 0;">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
@@ -76,7 +90,7 @@
             </div>
 
             <div class="card-actions">
-              <div class="quantity-selector" (click)="$event.stopPropagation()">
+              <div class="quantity-selector">
                 <button type="button" class="qty-btn" (click)="decreaseQuantity(prod.id_produto, $event)"
                   [disabled]="getQuantidade(prod.id_produto) <= 1">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
@@ -96,7 +110,7 @@
             </div>
 
           </div>
-        </a>
+        </div>
       </ng-container>
       <ng-template #noProductsNew>
         <p *ngIf="!isLoadingNew" style="padding: 20px; color: var(--t-color-7);">Nenhum lançamento no momento.</p>
