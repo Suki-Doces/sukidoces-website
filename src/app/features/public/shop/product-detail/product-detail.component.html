@@ -4,8 +4,8 @@
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
-                <path d="M4.5 12L9.5 7M4.5 12L9.5 17M4.5 12L11 12M14.5 12C16.1667 12 19.5 13 19.5 17" stroke="currentColor"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5 12L9.5 7M4.5 12L9.5 17M4.5 12L11 12M14.5 12C16.1667 12 19.5 13 19.5 17"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
             </g>
         </svg>
         <p>
@@ -15,10 +15,8 @@
 
     <div class="glass-container product-detail-wrapper">
         <div class="flex-center detail-image">
-            <!-- Imagem de fundo com blur -->
             <img class="img-blur-bg" [src]="getProductImage(product.imagem)" aria-hidden="true">
 
-            <!-- Imagem principal -->
             <img class="img-main" [src]="getProductImage(product.imagem)" [alt]="'Imagem de ' + product.nome">
         </div>
 
@@ -35,11 +33,25 @@
             </div>
 
             <div class="purchase-actions">
-                <div class="qty-selector">
-                    <button type="button" (click)="decrement()">-</button>
-                    <input type="number" [value]="quantity" (input)="onQuantityChange($event)" min="1"
-                        [max]="product.quantidade">
-                    <button type="button" (click)="increment()">+</button>
+
+                <div class="quantity-selector">
+                    <button type="button" class="qty-btn" (click)="decrement()" [disabled]="quantity <= 1">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                        </svg>
+                    </button>
+
+                    <input type="number" class="qty-value-input" [value]="quantity" (input)="onQuantityChange($event)"
+                        min="1" [max]="product.quantidade">
+
+                    <button type="button" class="qty-btn" (click)="increment()"
+                        [disabled]="quantity >= product.quantidade">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
                 </div>
 
                 <button type="button" class="btn btn-glass btn-primary btn-add-cart" (click)="addToCart()"

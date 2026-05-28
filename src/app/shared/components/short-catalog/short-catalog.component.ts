@@ -89,6 +89,22 @@ export class ShortCatalogComponent implements OnInit {
     this.activeTab = tab;
   }
 
+  // Função que verifica se a data tem menos de 7 dias
+  isRecente(dataCriacao?: string): boolean {
+    // Se o produto não tiver data, não é novo
+    if (!dataCriacao) return false;
+
+    const dataProduto = new Date(dataCriacao);
+    const hoje = new Date();
+
+    // Calcula a diferença de tempo
+    const diffTime = Math.abs(hoje.getTime() - dataProduto.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // Retorna VERDADEIRO se for menor ou igual a 7 dias
+    return diffDays <= 7;
+  }
+
   // Monta a URL da imagem
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;

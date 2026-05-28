@@ -188,10 +188,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    margin-top: 12px;
-    /* Empurra para o fundo da info */
+    gap: 6px;
+    margin-top: auto;
+    /* Força sempre para a base inferior */
+    padding-top: 12px;
     width: 100%;
+
+    /* A MÁGICA DE PROTEÇÃO: Se a tela esmagar, o botão quebra de linha sem estourar o card! */
+    flex-wrap: wrap;
 }
 
 /* O "Pill" (cápsula) do Seletor de Quantidade */
@@ -201,8 +205,10 @@
     justify-content: space-between;
     background-color: var(--gls-color-5);
     border-radius: 999px;
-    padding: 4px;
-    min-width: 80px;
+    padding: 3px 4px;
+    min-width: 76px;
+    flex-grow: 1;
+    /* Permite crescer se houver espaço */
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -211,8 +217,8 @@
     background: var(--white-color);
     border: none;
     color: var(--t-color-3);
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -237,29 +243,32 @@
 /* Texto do Número */
 .qty-value {
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--t-color-3);
-    width: 22px;
+    width: 18px;
     text-align: center;
 }
 
-/* Botão Principal de Comprar */
+/* --- BOTÃO DE COMPRAR (Base) --- */
 .add-cart-btn {
-    flex-grow: 1;
-    background: var(--color-1);
-    color: var(--white-color);
+    flex-grow: 2;
+    /* Tenta ocupar a maior parte do espaço restante */
+    background: var(--color-1, #e9228f);
+    color: var(--white-color, #ffffff);
     border: none;
     border-radius: 999px;
-    padding: 0 12px;
+    padding: 0 10px;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 36px;
-    /* Alinha perfeitamente com a altura do seletor */
+    gap: 6px;
+    height: 32px;
+    min-width: 32px;
+    /* Nunca some da tela */
 }
 
 .add-cart-btn:hover {
@@ -269,6 +278,79 @@
 
 .add-cart-btn:active {
     transform: scale(0.97);
+}
+
+/* ESSENCIAL: Impede o ícone do SVG de ficar gigante */
+.cart-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* --- RESPONSIVIDADE EXTREMA --- */
+@media (max-width: 480px) {
+    .btn-text {
+        display: none;
+    }
+
+    .add-cart-btn {
+        flex-grow: 0;
+        width: 32px;
+        padding: 0;
+    }
+}
+
+/* --- EMPTY STATE --- */
+.no-products-container {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.no-products-svg {
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+}
+
+.no-products-text {
+    color: var(--t-color-3);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- DESKTOP (A partir de tablets em diante) --- */
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1050px) {
+    .filters-bar {
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+
+    .catalog-container {
+        margin: 2.5rem auto;
+        padding: 2.5rem;
+        max-width: 1200px;
+    }
+
+    .product-grid {
+        margin: -2.5rem;
+        padding: 2.5rem;
+    }
+
+    .catalog-title {
+        font-size: 2.2rem;
+    }
 }
 
 /* --- EMPTY STATE --- */

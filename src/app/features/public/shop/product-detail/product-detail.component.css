@@ -43,14 +43,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Faz a imagem preencher todo o espaço disponível */
     filter: blur(20px);
-    /* Controla a intensidade do borrão */
     transform: scale(1.1);
-    /* Importante: Remove bordas brancas nas extremidades causadas pelo blur */
     z-index: 0;
     opacity: 0.6;
-    /* Opcional: deixa o fundo um pouco mais suave para destacar a imagem da frente */
 }
 
 /* Configura a imagem principal focada */
@@ -60,7 +56,6 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* Garante que a imagem inteira apareça sem ser cortada */
 }
 
 .detail-info {
@@ -89,38 +84,77 @@
     display: flex;
     gap: 15px;
     margin-top: 20px;
-    height: 50px;
+    min-height: 50px;
+    /* Substituído de height fixa para mínima */
+    flex-wrap: wrap;
+    /* Permite que os elementos desçam se a tela apertar */
 }
 
-.qty-selector {
+/* --- NOVO SELETOR DE QUANTIDADE (Formato Cápsula) --- */
+.quantity-selector {
     display: flex;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--gls-color-5, #f1f2f6);
+    border-radius: 999px;
+    padding: 6px;
+    min-width: 140px;
+    /* Um pouco mais largo para a página de detalhes */
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.qty-selector>button {
-    width: 40px;
+.qty-btn {
+    background: var(--white-color, #ffffff);
     border: none;
-    background: var(--gls-color-4);
+    color: var(--t-color-3, #333);
+    width: 38px;
+    /* Botões maiores e ergonómicos para a página principal */
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: var(--t-color-5);
-    transition: background ease 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    padding: 0;
 }
 
-.qty-selector>button:hover {
-    background: var(--gls-color-2);
-    color: var(--white-color);
+.qty-btn:hover:not(:disabled) {
+    background: var(--color-1, #e9228f);
+    color: var(--white-color, #ffffff);
 }
 
-.qty-selector>input {
-    width: 50px;
+.qty-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* O input central disfarçado de texto */
+.qty-value-input {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--t-color-3, #333);
+    width: 45px;
     text-align: center;
     border: none;
-    font-size: 1.1rem;
+    background: transparent;
     outline: none;
+}
+
+/* --- ESCONDER SETAS DO INPUT NUMBER --- */
+/* Chrome, Safari, Edge, Opera */
+.qty-value-input::-webkit-outer-spin-button,
+.qty-value-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.qty-value-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .btn-add-cart {
@@ -139,29 +173,48 @@
     color: #e74c3c;
 }
 
-/* --- ESCONDER SETAS DO INPUT NUMBER --- */
-
-/* Chrome, Safari, Edge, Opera */
-.qty-selector input::-webkit-outer-spin-button,
-.qty-selector input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox */
-.qty-selector input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-    /* Para garantir compatibilidade com versões mais recentes */
-}
-
 @media (max-width: 768px) {
+    .detail-container {
+        padding: 20px 15px;
+        /* Menos margem nas laterais em mobile */
+    }
+
     .product-detail-wrapper {
         grid-template-columns: 1fr;
         gap: 20px;
+        padding: 20px;
+        /* Dá mais espaço de respiro para o cartão no mobile */
     }
 
     .detail-image {
         height: 300px;
+        min-height: auto;
+    }
+}
+
+/* --- MAGIA PARA TELAS PEQUENAS (S8, S10, etc) --- */
+@media (max-width: 480px) {
+    .purchase-actions {
+        flex-direction: column;
+        /* Coloca o Carrinho por baixo da Quantidade */
+        gap: 12px;
+    }
+
+    .quantity-selector {
+        width: 100%;
+        /* Ocupa a largura toda para ficar bonito */
+        justify-content: space-between;
+    }
+
+    .qty-btn {
+        width: 44px;
+        /* Aumenta um pouco a área de toque no mobile */
+        height: 44px;
+    }
+
+    .btn-add-cart {
+        width: 100%;
+        min-height: 50px;
+        /* Garante que o botão fique alto e fácil de tocar */
     }
 }
