@@ -85,7 +85,8 @@
                             <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
 
                             <button type="button" class="qty-btn"
-                                (click)="$event.stopPropagation(); $event.preventDefault(); increaseQuantity(prod.id_produto, $event)">
+                                (click)="$event.stopPropagation(); $event.preventDefault(); increaseQuantity(prod.id_produto, prod.quantidade, $event)"
+                                [disabled]="getQuantidade(prod.id_produto) >= prod.quantidade">
                                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
                                     stroke-width="3">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />

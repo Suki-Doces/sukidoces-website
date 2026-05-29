@@ -93,11 +93,15 @@
 
     <ng-template #emptyCart>
         <div class="flex-col-center empty-state-container">
-            <svg class="empty-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
-                fill="none" stroke="var(--t-color-7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            <svg class="empty-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                    <path
+                        d="m11.5 12.5 3-3m0 3-3-3M2 3l.261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7"
+                        stroke-linecap="round" />
+                </g>
             </svg>
             <h2 class="empty-title">O seu carrinho está vazio!</h2>
             <p class="empty-text">Que tal dar uma olhada nos nossos doces e encher esse carrinho?</p>

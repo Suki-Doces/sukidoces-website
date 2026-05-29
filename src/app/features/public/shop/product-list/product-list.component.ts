@@ -82,11 +82,15 @@ export class ProductListComponent implements OnInit {
     return this.quantidades[id] || 1;
   }
 
-  increaseQuantity(id: number, event: Event) {
+  // Aumenta a quantidade respeitando o stock
+  increaseQuantity(id: number, estoqueMaximo: number, event: Event) {
     event.preventDefault();
     event.stopPropagation();
+
     const current = this.getQuantidade(id);
-    this.quantidades[id] = current + 1;
+    if (current < estoqueMaximo) {
+      this.quantidades[id] = current + 1;
+    }
   }
 
   decreaseQuantity(id: number, event: Event) {

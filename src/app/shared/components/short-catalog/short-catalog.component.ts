@@ -68,10 +68,15 @@ export class ShortCatalogComponent implements OnInit {
     return this.quantidades[id] || 1;
   }
 
-  increaseQuantity(id: number, event: Event) {
-    event.stopPropagation(); // Evita abrir a página do produto ao clicar no botão +
+  // Aumenta a quantidade respeitando o stock
+  increaseQuantity(id: number, estoqueMaximo: number, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
     const current = this.getQuantidade(id);
-    this.quantidades[id] = current + 1;
+    if (current < estoqueMaximo) {
+      this.quantidades[id] = current + 1;
+    }
   }
 
   decreaseQuantity(id: number, event: Event) {
