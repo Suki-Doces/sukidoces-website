@@ -35,7 +35,8 @@
 
 @media (min-width: 992px) {
     .cart-layout {
-        grid-template-columns: 1.8fr 1fr; /* Coluna da lista maior que a do resumo */
+        grid-template-columns: 1fr 380px;
+        /* Coluna da lista flexível, resumo fixo */
     }
 }
 
@@ -58,7 +59,8 @@
 
 .cart-item-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(233, 34, 143, 0.08); /* Sombra baseada na cor primária */
+    box-shadow: 0 8px 20px rgba(233, 34, 143, 0.08);
+    /* Sombra baseada na cor primária */
 }
 
 @media (min-width: 600px) {
@@ -71,16 +73,17 @@
 .item-img-link {
     background: var(--gls-color-5);
     border-radius: 12px;
-    padding: 0.5rem;
     width: 90px;
     height: 90px;
     flex-shrink: 0;
 }
 
 .item-img {
+    aspect-ratio: 1/1;
+    border-radius: 4px;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: max-content;
+    object-fit: cover;
     transition: transform 0.3s ease;
 }
 
@@ -121,7 +124,9 @@
 
 .item-actions-wrapper {
     gap: 1.5rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
 }
 
 /* --- CONTROLE DE QUANTIDADE --- */
@@ -186,46 +191,133 @@
     height: 20px;
 }
 
-/* --- RESUMO DO PEDIDO --- */
-.cart-summary-section {
-    position: sticky;
-    top: 2rem;
+/* =========================================
+   EFEITO COMPROVANTE (RECIBO FISCAL) - CARRINHO
+========================================= */
+.checkout-summary-section {
+    position: relative;
 }
 
 .summary-card {
-    background-color: var(--gls-color-5);
-    padding: 2rem;
-    border-radius: 16px;
+    background: var(--white-color);
+    border-radius: 16px 16px 0 0;
+    padding: 2rem 1.5rem 2.5rem 1.5rem;
+    position: sticky;
+    top: 110px;
+    border: none;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
 }
 
-.summary-card h2 {
+.summary-card::after {
+    content: "";
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background-size: 24px 24px;
+    background-image:
+        linear-gradient(135deg, var(--white-color) 50%, transparent 50%),
+        linear-gradient(225deg, var(--white-color) 50%, transparent 50%);
+    background-position: 0 0, 12px 0;
+}
+
+.summary-title {
     color: var(--t-color-3);
-    font-size: 1.3rem;
-    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px dashed rgba(0, 0, 0, 0.15);
+}
+
+.summary-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-bottom: 1.5rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    font-size: 0.95rem;
+    color: var(--t-color-5);
+}
+
+.summary-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
+    z-index: 0;
+}
+
+.item-name {
+    background: var(--white-color);
+    padding-right: 8px;
+    z-index: 1;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.item-price {
+    background: var(--white-color);
+    padding-left: 8px;
+    z-index: 1;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
 .summary-divider {
-    border: 0;
-    border-top: 1px dashed var(--color-4);
-    margin: 1rem 0;
+    border: none;
+    border-top: 2px dashed rgba(0, 0, 0, 0.15);
+    margin: 1.2rem 0;
 }
 
 .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.90rem;
     color: var(--t-color-5);
-    margin-bottom: 1rem;
-    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.total-row {
-    margin-top: 1.5rem;
-    font-size: 1.2rem;
+.summary-row span:last-child {
+    font-family: 'Courier New', Courier, monospace;
     font-weight: 700;
-    color: var(--t-color-3);
+    font-size: 1.05rem;
 }
 
-.total-price {
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 800;
     color: var(--color-1);
-    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.summary-total span:last-child {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.6rem;
 }
 
 .summary-actions {
@@ -233,7 +325,7 @@
     margin-top: 2rem;
 }
 
-.full-width {
+.summary-card .full-width-btn {
     width: 100%;
     text-align: center;
     justify-content: center;
@@ -272,6 +364,100 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   RESPONSIVIDADE (TABLET E MOBILE) - CARRINHO
+========================================= */
+
+/* TABLETS (Entre 768px e 991px) */
+@media (max-width: 991px) {
+    .cart-layout {
+        /* No tablet, a nota fiscal e a lista empilham-se, mas limitamos a largura do resumo */
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        max-width: 500px;
+        margin: 0 auto;
+        /* Centraliza a nota fiscal */
+    }
+}
+
+/* SMARTPHONES (Telas menores que 768px) */
+@media (max-width: 768px) {
+    .cart-container {
+        /* Reduz as margens laterais enormes para dar espaço ao conteúdo */
+        margin: 2.5rem 1rem;
+        padding: 2rem 1.5rem;
+        min-height: auto;
+    }
+
+    .cart-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .cart-title {
+        font-size: 1.5rem;
+    }
+
+    .cart-item-card {
+        padding: 1rem;
+        gap: 1rem;
+        align-items: center;
+        /* Centraliza a imagem com os textos no mobile */
+    }
+
+    .item-name {
+        white-space: normal;
+    }
+
+    /* Reduz a imagem ligeiramente no telemóvel */
+    .item-img-link {
+        width: 80px;
+        height: 80px;
+    }
+
+    .item-actions-wrapper {
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    /* Ajusta o padding da "nota fiscal" para caber no telemóvel */
+    .summary-card {
+        padding: 1.5rem 1rem 2rem 1rem;
+        max-width: 100%;
+    }
+
+    .summary-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* SMARTPHONES MUITO PEQUENOS (Ex: iPhone SE) */
+@media (max-width: 480px) {
+    .cart-item-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .item-img-link {
+        width: 120px;
+        height: 120px;
+    }
+
+    .item-actions-wrapper {
+        flex-wrap: wrap;
+        /* Permite quebrar linha se não couber tudo */
+        justify-content: center;
+    }
 }

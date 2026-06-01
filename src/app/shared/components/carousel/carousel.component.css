@@ -1,4 +1,6 @@
-/* Adicione ou substitua no seu arquivo existente */
+/* =========================================
+   ESTILIZAÇÃO DO CARROSSEL
+========================================= */
 
 .carousel-container {
     display: flex;
@@ -93,7 +95,7 @@
 }
 
 .badge {
-    background: var(--color-1);
+    background-color: var(--color-1);
     width: fit-content;
     color: var(--white-color);
     padding: 6px 14px;
@@ -195,4 +197,68 @@
 
 .indicator.active {
     background-color: var(--color-2);
+}
+
+/* =========================================
+   ANIMAÇÃO DE ENTRADA SUAVE (FADE IN)
+========================================= */
+
+.carousel-fade-in {
+    animation: smoothFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    opacity: 0;
+    /* Começa invisível para não piscar */
+}
+
+@keyframes smoothFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* =========================================
+   SKELETON LOADER (CARREGAMENTO)
+========================================= */
+
+.skeleton-slide {
+    /* Centraliza perfeitamente o esqueleto no ecrã para evitar que fique cortado à esquerda */
+    justify-content: center;
+    transform: none !important;
+}
+
+.skeleton-item {
+    display: flex;
+    /* Um rosa muito suave */
+    background-color: var(--gls-color-5);
+    border: 1px solid var(--black-opacity-25) !important;
+    box-shadow: none;
+    pointer-events: none;
+    /* Remove interação */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Efeito de brilho que passa da esquerda para a direita */
+.skeleton-item::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.6),
+            transparent);
+    animation: shimmer 1.5s infinite ease-in-out;
+    z-index: 10;
+}
+
+@keyframes shimmer {
+    100% {
+        left: 200%;
+    }
 }

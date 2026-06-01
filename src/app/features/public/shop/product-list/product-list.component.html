@@ -1,4 +1,4 @@
-<main class="glass-container catalog-container animate-fade">
+<main class="glass-container catalog-container animate-fade" aria-label="Lista de produtos">
 
     <ng-container *ngIf="currentQuery; else defaultTitle">
         <h1 class="catalog-title">Resultados para: "{{ currentQuery }}"</h1>
@@ -33,21 +33,21 @@
         </button>
     </nav>
 
-    <div *ngIf="isLoading" class="loading-state">
-        <p>Um momento ...</p>
+    <div *ngIf="isLoading" class="loading-state animate-fade">
+        <div class="loader-circle"></div>
     </div>
 
-    <section class="product-grid" *ngIf="!isLoading">
+    <section class="product-grid animate-fade" *ngIf="!isLoading">
         <ng-container *ngIf="products.length > 0; else noProducts">
 
             <article *ngFor="let prod of products; trackBy: trackByProductId" class="product-card">
 
-                <a [routerLink]="['/produtos', prod.id_produto]" class="card-image-link"
+                <div [routerLink]="['/produtos', prod.id_produto]" class="card-image-link"
                     [attr.aria-label]="'Ver detalhes de ' + prod.nome">
-                    <img class="card-img-blur" [src]="getProductImage(prod.imagem)" aria-hidden="true" />
+                    <img class="card-img-blur" [src]="getProductImage(prod.imagem)" aria-hidden="true" loading="eager" fetchpriority="high"/>
                     <img class="card-img" [src]="getProductImage(prod.imagem)" [alt]="'Imagem de ' + prod.nome"
                         (error)="onImageError($event)" loading="lazy" decoding="async" />
-                </a>
+                </div>
 
                 <div class="card-info">
                     <a [routerLink]="['/produtos', prod.id_produto]" class="card-title-link">
@@ -73,7 +73,7 @@
                     <div class="card-actions">
 
                         <div class="quantity-selector" (click)="$event.stopPropagation(); $event.preventDefault()">
-                            <button type="button" class="qty-btn"
+                            <button type="button" class="qty-btn" aria-label="Diminuir quantidade"
                                 (click)="$event.stopPropagation(); $event.preventDefault(); decreaseQuantity(prod.id_produto, $event)"
                                 [disabled]="getQuantidade(prod.id_produto) <= 1">
                                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
@@ -84,7 +84,7 @@
 
                             <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
 
-                            <button type="button" class="qty-btn"
+                            <button type="button" class="qty-btn" aria-label="Aumentar quantidade"
                                 (click)="$event.stopPropagation(); $event.preventDefault(); increaseQuantity(prod.id_produto, prod.quantidade, $event)"
                                 [disabled]="getQuantidade(prod.id_produto) >= prod.quantidade">
                                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"
@@ -94,7 +94,7 @@
                             </button>
                         </div>
 
-                        <button class="add-cart-btn"
+                        <button class="btn btn-glass btn-primary add-cart-btn" aria-label="Adicionar ao carrinho"
                             (click)="$event.stopPropagation(); $event.preventDefault(); addToCart($event, prod)">
                             <svg class="cart-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g stroke-width="0" />

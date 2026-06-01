@@ -59,6 +59,10 @@
     box-sizing: border-box;
 }
 
+.card-image-link:hover::after {
+    width: 0;
+}
+
 .card-img-blur {
     position: absolute;
     top: 0;
@@ -101,12 +105,12 @@
     outline: none;
 }
 
-.card-title-link:hover .card-i-h3 {
+.card-title-link:hover .card-i-h2 {
     color: var(--color-1, #e9228f);
 }
 
 .card-i-h3 {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: var(--t-color-5, #222);
     margin: 0 0 4px 0;
     font-weight: 600;
@@ -187,18 +191,13 @@
 
 .add-cart-btn {
     flex-grow: 1;
-    background: var(--color-1, #e9228f);
-    color: var(--white-color, #ffffff);
-    border: none;
-    border-radius: 999px;
+    background: var(--color-1);
+    color: var(--white-color);
     padding: 0 10px;
     font-weight: 600;
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 32px;
 }
 

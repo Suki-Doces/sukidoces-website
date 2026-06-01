@@ -1,26 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { RouterModule ,Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { NgxMaskDirective } from 'ngx-mask';
+
+// IMPORTAÇÕES DE SEGURANÇA E AMBIENTE
+import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { CheckoutService } from 'src/app/core/services/checkout.service';
+
 import { CartService } from 'src/app/core/services/cart.service';
 import { OrderService } from 'src/app/core/services/order.service';
-import { CheckoutService, UsuarioCheckout } from 'src/app/core/services/checkout.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { NgxMaskDirective } from 'ngx-mask';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
+  imports: [CommonModule, RouterModule,ReactiveFormsModule, NgxMaskDirective],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
   checkoutForm!: FormGroup;
-  salvandoDados = false;
+  salvandoDados = false; // Controla o estado de auto-save em background
   isLoading = false;
   errorMessage = '';
   user: any;
@@ -45,12 +48,13 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService,
     private cartService: CartService,
     private orderService: OrderService,
-    private checkoutService: CheckoutService,
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    // SERVIÇOS INJETADOS PARA SEGURANÇA
+    private authService: AuthService,
+    private checkoutService: CheckoutService
   ) { }
 
   ngOnInit(): void {
@@ -67,7 +71,13 @@ export class CheckoutComponent implements OnInit {
       bairro: ['', Validators.required],
       cidade: ['', Validators.required],
       estado: ['', Validators.required],
-      metodo_pagamento: ['pix', Validators.required]
+      metodo_pagamento: ['pix', Validators.required],
+      // Campos do Cartão
+      card_number: [''],
+      card_name: [''],
+      card_expiry: [''],
+      card_cvv: [''],
+      parcelas: ['1']
     });
 
     this.isLoading = true;
@@ -76,26 +86,19 @@ export class CheckoutComponent implements OnInit {
     this.userService.getProfile().subscribe({
       next: (res: any) => {
         const userData = res.user || res;
+        this.user = userData;
 
-        this.user = userData; // <--- ADICIONE ESTA LINHA AQUI
-
-        // DICA DE DEBUG: Verifique a aba Console (F12) para ver exatamente o que a API enviou
         console.log('📦 Dados recebidos da API no Checkout:', userData);
 
         if (userData) {
           let cep = '', rua = '', numero = '', complemento = '', bairro = '', cidade = '', estado = '';
-
-          // LÓGICA À PROVA DE BALAS: Pega o campo, independentemente de vir no singular ou plural
           const enderecoBruto = userData.endereco || userData.enderecos;
 
           if (enderecoBruto) {
             try {
-              // Se vier como String (JSON), faz o parse. Se o backend já devolveu como Array, usa direto.
               const addrArray = typeof enderecoBruto === 'string' ? JSON.parse(enderecoBruto) : enderecoBruto;
 
               if (Array.isArray(addrArray)) {
-
-                // CASO A: Novo padrão (Array de Strings: ["cep", "rua", "numero", ...])
                 if (typeof addrArray[0] === 'string') {
                   cep = addrArray[0] || '';
                   rua = addrArray[1] || '';
@@ -108,9 +111,7 @@ export class CheckoutComponent implements OnInit {
                     cidade = partes[0] ? partes[0].trim() : '';
                     estado = partes[1] ? partes[1].trim() : '';
                   }
-                }
-                // CASO B: Formato legado (Array de Objetos: [{ cep: "...", logradouro: "..." }])
-                else if (addrArray.length > 0 && addrArray[0].cep) {
+                } else if (addrArray.length > 0 && addrArray[0].cep) {
                   const addr = addrArray[0];
                   cep = addr.cep || '';
                   rua = addr.logradouro || addr.rua || '';
@@ -122,11 +123,10 @@ export class CheckoutComponent implements OnInit {
                 }
               }
             } catch (e) {
-              console.error('❌ Erro no parse do endereço (Dados corrompidos no banco?):', e);
+              console.error('❌ Erro de segurança: Parse do endereço falhou.', e);
             }
           }
 
-          // Injeta os dados no formulário visual
           this.checkoutForm.patchValue({
             nome: userData.nome || '',
             email: userData.email || '',
@@ -135,7 +135,8 @@ export class CheckoutComponent implements OnInit {
             cep, rua, numero, complemento, bairro, cidade, estado
           });
 
-          // Se estiver tudo preenchido corretamente, pula a Step 1 e vai para o Pagamento
+          this.calcularFrete();
+
           if (this.isDadosCompletos()) {
             this.currentStep = 2;
           }
@@ -156,19 +157,24 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  // Verifica se o utilizador já tem perfil com dados completos 
+  setPaymentMethod(method: string) {
+    this.checkoutForm.get('metodo_pagamento')?.setValue(method);
+    const cardFields = ['card_number', 'card_name', 'card_expiry', 'card_cvv'];
+
+    if (method === 'cartao') {
+      cardFields.forEach(f => this.checkoutForm.get(f)?.setValidators(Validators.required));
+    } else {
+      cardFields.forEach(f => this.checkoutForm.get(f)?.clearValidators());
+    }
+    cardFields.forEach(f => this.checkoutForm.get(f)?.updateValueAndValidity());
+  }
+
   private isDadosCompletos(): boolean {
     const raw = this.checkoutForm.getRawValue();
-    // Usa o ?.trim() para garantir que uma string com espaços em branco não conte como "preenchido"
     return !!(
-      raw.cpf?.trim() &&
-      raw.telefone?.trim() &&
-      raw.cep?.trim() &&
-      raw.rua?.trim() &&
-      raw.numero?.trim() &&
-      raw.bairro?.trim() &&
-      raw.cidade?.trim() &&
-      raw.estado?.trim()
+      raw.cpf?.trim() && raw.telefone?.trim() && raw.cep?.trim() &&
+      raw.rua?.trim() && raw.numero?.trim() && raw.bairro?.trim() &&
+      raw.cidade?.trim() && raw.estado?.trim()
     );
   }
 
@@ -176,20 +182,63 @@ export class CheckoutComponent implements OnInit {
     return Math.max(0, this.subtotal - this.desconto) + this.frete;
   }
 
-  // Calcula o frete de acordo com o Estado
   calcularFrete(): void {
     const estado = this.checkoutForm.get('estado')?.value?.toUpperCase();
 
-    if (this.subtotal >= 50) {
-      this.frete = 0; // Frete Grátis acima de R$50
+    // Pega a cidade e remove os acentos para evitar erros de digitação (Ex: SÃO PAULO vs SAO PAULO)
+    const cidadeRaw = this.checkoutForm.get('cidade')?.value || '';
+    const cidade = cidadeRaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
+
+    // Começa com frete zero e assume que não é grátis
+    this.frete = 0;
+    this.freteGratis = false;
+
+    if (!estado) return; // Se não há estado preenchido, não calcula
+
+    // --- LÓGICA DE FRETE REALISTA (ORIGEM: DIADEMA - SP) ---
+
+    if (estado === 'SP') {
+      // Região Metropolitana e ABC Paulista
+      const cidadesABC_SP = [
+        'SAO PAULO', 'SAO BERNARDO DO CAMPO', 'SANTO ANDRE',
+        'SAO CAETANO DO SUL', 'MAUA', 'RIBEIRAO PIRES', 'RIO GRANDE DA SERRA'
+      ];
+
+      if (cidade === 'DIADEMA') {
+        this.frete = 5.90; // Entrega super barata na mesma cidade
+        if (this.subtotal >= 50) this.freteGratis = true; // Frete Grátis acima de R$ 50 para Diadema
+      }
+      else if (cidadesABC_SP.includes(cidade)) {
+        this.frete = 9.90; // Região vizinha (ABC e Capital)
+        if (this.subtotal >= 100) this.freteGratis = true; // Frete Grátis acima de R$ 100
+      }
+      else {
+        this.frete = 16.90; // Interior e Litoral de SP
+        if (this.subtotal >= 150) this.freteGratis = true; // Frete Grátis acima de R$ 150
+      }
+
     } else {
-      // Exemplo de taxa por local: SP = 8.90, Outros = 15.90
-      this.frete = (estado === 'SP') ? 8.90 : 15.90;
+      // Outros Estados do Brasil
+      const sulSudeste = ['RJ', 'MG', 'ES', 'PR', 'SC', 'RS'];
+
+      if (sulSudeste.includes(estado)) {
+        this.frete = 24.90; // Estados mais próximos
+      } else {
+        this.frete = 38.90; // Norte, Nordeste e Centro-Oeste
+      }
+
+      // Para fora de SP, o frete grátis só compensa em compras grandes
+      if (this.subtotal >= 250) {
+        this.freteGratis = true;
+      }
     }
-    this.freteGratis = this.frete === 0;
+
+    // Se atingiu a regra de frete grátis, o valor é zerado
+    if (this.freteGratis) {
+      this.frete = 0;
+    }
   }
 
-  // Busca o CEP via API (mesmo do perfil)
   buscarCep(): void {
     let cep = this.checkoutForm.get('cep')?.value;
     if (cep) {
@@ -204,7 +253,9 @@ export class CheckoutComponent implements OnInit {
                 cidade: data.localidade,
                 estado: data.uf
               });
-              this.calcularFrete(); // Recalcula o frete se mudar o estado
+              this.calcularFrete();
+              // Chama o Auto-Save mal o CEP preencha os dados
+              this.autoSalvarUsuario();
             }
           }
         });
@@ -212,25 +263,48 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  // Transição do Step 1 para o Step 2
+  // NOVA FUNÇÃO: AUTO-SAVE EM BACKGROUND
+  autoSalvarUsuario(): void {
+    if (this.isDadosCompletos()) {
+      this.salvandoDados = true;
+      this.salvarUsuarioNoBanco()
+        .then(() => {
+          console.log('✅ Dados salvos automaticamente em background');
+          this.salvandoDados = false;
+        })
+        .catch(err => {
+          console.error('❌ Erro no auto-save:', err);
+          this.salvandoDados = false;
+        });
+    }
+  }
+
   async prosseguirParaPagamento(): Promise<void> {
+    this.errorMessage = ''; // Limpa erros antigos
+
     if (this.checkoutForm.invalid) {
       this.checkoutForm.markAllAsTouched();
+      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios a vermelho.';
+
+      // Ajuda para o programador: Mostra no console qual campo está a falhar
+      Object.keys(this.checkoutForm.controls).forEach(key => {
+        const controlErrors = this.checkoutForm.get(key)?.errors;
+        if (controlErrors != null) {
+          console.log(`❌ Campo inválido: ${key}`, controlErrors);
+        }
+      });
       return;
     }
 
-    this.isLoading = true; // Usa a variável de loading existente para travar a tela
-
+    this.isLoading = true;
     try {
-      // Aguarda a resposta do banco de dados antes de continuar
       await this.salvarUsuarioNoBanco();
-
       this.calcularFrete();
-      this.currentStep = 2; // Só passa para a tela 2 se salvar com sucesso
+      this.currentStep = 2;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error('Erro no checkout:', error);
-      this.errorMessage = 'Ocorreu um erro ao salvar o endereço. Tente novamente.';
+      this.errorMessage = 'Ocorreu um erro ao guardar o endereço. Verifique a ligação e tente novamente.';
     } finally {
       this.isLoading = false;
     }
@@ -241,17 +315,9 @@ export class CheckoutComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Atualizado para usar o mesmo formato e serviço do Perfil
-  // Atualizado para enviar o formato de RELAÇÃO que o Prisma exige
   private salvarUsuarioNoBanco(): Promise<any> {
     const formValue = this.checkoutForm.getRawValue();
-
-    // 1. Verifique se o usuário já tem um endereço cadastrado. 
-    // Precisamos do ID desse endereço para o Prisma atualizar.
     const idEnderecoAtual = this.user?.id_endereco_atual || this.user?.enderecos?.[0]?.id_endereco;
-
-    // 2. Se houver um ID, montamos o objeto no padrão "update" do Prisma.
-    // Se NÃO houver um ID, o usuário é novo e precisa do padrão "create".
     let enderecosPayload: any = {};
 
     if (idEnderecoAtual) {
@@ -259,41 +325,32 @@ export class CheckoutComponent implements OnInit {
         update: {
           where: { id_endereco: idEnderecoAtual },
           data: {
-            cep: formValue.cep,
-            logradouro: formValue.rua,
-            numero: formValue.numero,
-            complemento: formValue.complemento,
-            bairro: formValue.bairro,
-            cidade: formValue.cidade, // <--- CORRIGIDO
-            estado: formValue.estado  // <--- CORRIGIDO
+            cep: formValue.cep, logradouro: formValue.rua, numero: formValue.numero,
+            complemento: formValue.complemento, bairro: formValue.bairro,
+            cidade: formValue.cidade, estado: formValue.estado
           }
         }
       };
     } else {
       enderecosPayload = {
         create: {
-          cep: formValue.cep,
-          logradouro: formValue.rua,
-          numero: formValue.numero,
-          complemento: formValue.complemento,
-          cidade: formValue.cidade, // <--- CORRIGIDO
-          estado: formValue.estado  // <--- CORRIGIDO
+          cep: formValue.cep, logradouro: formValue.rua, numero: formValue.numero,
+          complemento: formValue.complemento, cidade: formValue.cidade, estado: formValue.estado
         }
       };
     }
 
-    // 3. Monta o payload final
+    // Os dados agora seguem perfeitamente o formato da interface UsuarioCheckout
     const dadosParaAtualizar = {
       nome: formValue.nome,
       telefone: formValue.telefone,
       cpf: formValue.cpf,
-      // Passa o objeto estruturado em vez do Array plano
       enderecos: enderecosPayload
     };
 
-    // 4. Retorna a Promise
     return new Promise((resolve, reject) => {
-      this.userService.updateProfile(dadosParaAtualizar).subscribe({
+      // 👇 AQUI ESTÁ A MUDANÇA: Passou a usar o CheckoutService de forma segura 👇
+      this.checkoutService.autoSalvarUsuario(dadosParaAtualizar).subscribe({
         next: (res) => resolve(res),
         error: (err) => reject(err)
       });
@@ -307,34 +364,22 @@ export class CheckoutComponent implements OnInit {
     this.cupomMensagem = '';
     this.cupomErro = false;
 
-    const produtos = this.cartItems.map(i => ({
-      id_produto: i.product.id_produto,
-      quantidade: i.quantity
-    }));
+    // 🛡️ SEGURANÇA 2 (environment): Uso dinâmico da URL segura.
+    const urlSegura = `${environment.apiUrl}/cupons/validar`;
 
-    this.http.post<any>(`${environment.apiUrl}/pedidos`, {
-      produtos,
-      metodo_pagamento: this.checkoutForm.get('metodo_pagamento')?.value || 'pix',
-      codigo_cupom: this.codigoCupom.toUpperCase().trim(),
-      apenas_validar: true
-    }).subscribe({
+    this.http.post<any>(urlSegura, { codigo: this.codigoCupom.toUpperCase().trim() }).subscribe({
       next: (res) => {
-        this.desconto = 0;
+        this.desconto = res.valor_desconto || 0;
         this.cupomAplicado = true;
-        this.cupomMensagem = `Cupom "${this.codigoCupom.toUpperCase()}" aplicado!`;
-        this.cupomErro = false;
+        this.cupomMensagem = `Cupom "${this.codigoCupom.toUpperCase()}" aplicado com sucesso!`;
         this.validandoCupom = false;
       },
       error: (err) => {
-        const msg = err.error?.mensagem || '';
-        if (msg.includes('Cupom') || msg.includes('cupom')) {
-          this.cupomErro = true;
-          this.cupomMensagem = msg;
-        } else {
-          this.cupomAplicado = true;
-          this.cupomMensagem = `Cupom "${this.codigoCupom.toUpperCase()}" será aplicado no pedido!`;
-        }
+        this.cupomErro = true;
+        this.cupomMensagem = err.error?.mensagem || 'Cupom inválido ou expirado.';
         this.validandoCupom = false;
+        this.cupomAplicado = false;
+        this.desconto = 0;
       }
     });
   }
@@ -352,35 +397,37 @@ export class CheckoutComponent implements OnInit {
       this.checkoutForm.markAllAsTouched();
       return;
     }
-
     if (this.cartItems.length === 0) {
-      this.errorMessage = 'Seu carrinho está vazio.';
+      this.errorMessage = 'Seu carrinho está vazio. Adicione produtos para prosseguir.';
       return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
 
+    // 🛡️ SEGURANÇA 3 (CheckoutService): Sanitarização de Dados Confidenciais
+    const dadosFormularioSeguro = this.checkoutService.sanitizePaymentData(this.checkoutForm.value);
+
     const produtos = this.cartItems.map(i => ({
       id_produto: i.product.id_produto,
       quantidade: i.quantity
     }));
 
-    const metodo = this.checkoutForm.get('metodo_pagamento')?.value;
+    const metodo = dadosFormularioSeguro.metodo_pagamento;
 
     this.orderService.createOrder(
       produtos,
       metodo,
       this.cupomAplicado ? this.codigoCupom.toUpperCase().trim() : undefined
     ).subscribe({
-      next: (resposta) => {
+      next: () => {
         this.isLoading = false;
         this.cartService.clearCart();
         this.router.navigate(['/perfil'], { queryParams: { tab: 'pedidos' } });
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.mensagem || 'Erro ao finalizar o pedido. Tente novamente.';
+        this.errorMessage = err.error?.mensagem || 'Falha de segurança ou erro na comunicação. Tente novamente.';
       }
     });
   }

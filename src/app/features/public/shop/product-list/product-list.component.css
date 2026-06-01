@@ -16,10 +16,8 @@
 }
 
 .loading-state {
-    text-align: center;
+    justify-self: center;
     padding: 40px;
-    color: var(--t-color-7);
-    font-weight: 500;
 }
 
 /* --- BARRA DE FILTROS --- */
@@ -99,6 +97,10 @@
     aspect-ratio: 1 / 1;
     width: 100%;
     padding: 1rem;
+}
+
+.card-image-link:hover::after {
+    width: 0;
 }
 
 /* Imagem desfocada ao fundo */
@@ -253,18 +255,10 @@
 .add-cart-btn {
     flex-grow: 2;
     /* Tenta ocupar a maior parte do espaço restante */
-    background: var(--color-1, #e9228f);
-    color: var(--white-color, #ffffff);
-    border: none;
-    border-radius: 999px;
+    background: var(--color-1);
+    color: var(--white-color);
     padding: 0 10px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    cursor: pointer;
     transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 6px;
     height: 32px;
     min-width: 32px;

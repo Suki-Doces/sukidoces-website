@@ -1,5 +1,5 @@
-<main class="detail-container animate-fade" *ngIf="!isLoading && product">
-    <a routerLink="/produtos" class="btn btn-outline btn-glass back-link">
+<main class="detail-container animate-fade">
+    <button routerLink="/produtos" class="btn btn-glass btn-secondary back-link" aria-label="Voltar para o catálogo">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -8,14 +8,16 @@
                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
             </g>
         </svg>
-        <p>
             Voltar para o catálogo
-        </p>
-    </a>
+    </button>
 
-    <div class="glass-container product-detail-wrapper">
+    <div *ngIf="isLoading" style="padding: 40px; justify-self: center;">
+        <div class="loader-circle"></div>
+    </div>
+
+    <div class="glass-container product-detail-wrapper animate-fade" *ngIf="!isLoading && product">
         <div class="flex-center detail-image">
-            <img class="img-blur-bg" [src]="getProductImage(product.imagem)" aria-hidden="true">
+            <img class="img-blur-bg" [src]="getProductImage(product.imagem)" aria-hidden="true" fetchpriority="high">
 
             <img class="img-main" [src]="getProductImage(product.imagem)" [alt]="'Imagem de ' + product.nome">
         </div>
@@ -73,7 +75,3 @@
         </div>
     </div>
 </main>
-
-<div *ngIf="isLoading" style="text-align: center; padding: 50px;">
-    A carregar detalhes do produto...
-</div>

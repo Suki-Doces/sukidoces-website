@@ -146,8 +146,7 @@
 
                     <div style="margin-top: 24px; text-align: right;">
                         <button type="submit" class="btn btn-glass btn-primary "
-                            [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar
-                            Alterações' }}
+                            [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar Alterações' }}
                         </button>
                     </div>
                 </form>
@@ -173,8 +172,7 @@
                     Ao excluir sua conta, você perderá acesso ao seu histórico de pedidos e seus dados serão removidos
                     do nosso sistema. Essa ação é irreversível.
                 </p>
-                <button type="button" class="btn btn-glass btn-danger" (click)="deleteAccount()">Excluir minha conta
-                    permanentemente
+                <button type="button" class="btn btn-glass btn-danger" style="white-space: wrap;" (click)="deleteAccount()">Excluir minha conta permanentemente
                 </button>
             </div>
         </div>
@@ -220,7 +218,7 @@
 
                     <div class="order-footer">
                         <p>Total: <strong>{{ pedido.valor_total | currency:'BRL':'symbol' }}</strong></p>
-                        <button class="btn-outline" (click)="viewOrderDetails(pedido)">
+                        <button class="btn btn-glass btn-secondary" (click)="viewOrderDetails(pedido)" aria-label="Ver detalhes do pedido">
                             Ver Detalhes
                         </button>
                     </div>
@@ -269,7 +267,7 @@
                     <h2>Pedido #{{ selectedOrder.id_pedido }}</h2>
                     <p>Realizado em {{ selectedOrder.data_pedido | date:'dd/MM/yyyy HH:mm' }}</p>
                 </div>
-                <button class="btn-outline" (click)="activeTab = 'pedidos'">
+                <button class="btn btn-glass btn-secondary" (click)="activeTab = 'pedidos'">
                     ← Voltar
                 </button>
             </div>

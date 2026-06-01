@@ -255,22 +255,6 @@
     margin-left: 5px;
 }
 
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--color-1);
-    color: var(--color-1);
-    padding: 8px 20px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-outline:hover {
-    background: var(--color-1);
-    color: var(--white-color);
-}
-
 /* Mensagem de Estado Vazio */
 .empty-state {
     text-align: center;

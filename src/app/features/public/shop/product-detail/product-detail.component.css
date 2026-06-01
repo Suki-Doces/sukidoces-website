@@ -1,19 +1,17 @@
+:host {
+    display: block;
+    overflow-y: hidden;
+}
+
 .detail-container {
     padding: 40px 20px;
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 70vh;
-    overflow: auto;
+    min-height: 100vh;
 }
 
 .back-link {
     margin-bottom: 20px;
-    color: var(--t-color-7);
-}
-
-.back-link:hover {
-    color: var(--color-1);
-    stroke: var(--color-1);
 }
 
 .product-detail-wrapper {
