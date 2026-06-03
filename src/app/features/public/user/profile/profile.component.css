@@ -187,14 +187,26 @@
     color: #856404;
 }
 
+.order-status.pago {
+    color: #155724;
+    border: 1px solid #155724;
+}
+
+.order-status.enviado {
+    background-color: #bce5ff;
+    color: #015c91;
+}
+
 .order-status.entregue {
     background-color: #d4edda;
     color: #155724;
+    border: 1px solid #155724;
 }
 
 .order-status.cancelado {
     background-color: #f8d7da;
     color: #721c24;
+    border: 1px solid #721c24;
 }
 
 /* Itens do Pedido */
@@ -253,22 +265,6 @@
     color: var(--color-1);
     font-size: 1.3rem;
     margin-left: 5px;
-}
-
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--color-1);
-    color: var(--color-1);
-    padding: 8px 20px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-outline:hover {
-    background: var(--color-1);
-    color: var(--white-color);
 }
 
 /* Mensagem de Estado Vazio */

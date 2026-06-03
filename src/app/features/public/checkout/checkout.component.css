@@ -1,131 +1,453 @@
-.checkout-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 2.5rem 1rem;
-}
-
-.checkout-card {
-  width: 100%;
+/* --- CONTAINER PRINCIPAL (Mesmo visual do Cart) --- */
+.checkout-container {
+  background-color: var(--color-5);
+  padding: 2rem 1.5rem;
+  margin: 2rem 1rem;
+  min-height: 60vh;
   max-width: 1200px;
-  background-color: var(--color-5); /* Fundo sutil */
-  padding: 2.5rem;
 }
 
 .checkout-header {
-    margin-bottom: 2rem;
-    border-bottom: 2px solid var(--color-4);
-    padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--color-4);
+  padding-bottom: 1rem;
 }
 
-.main-title {
+.checkout-title {
   color: var(--t-color-3);
-  font-weight: 700;
+  margin: 0;
 }
 
-/* --- Títulos e Divisórias --- */
-.section-header {
-  margin-top: 1.5rem;
+/* --- LAYOUT GRID DE 2 COLUNAS --- */
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* --- LADO ESQUERDO: Formulários --- */
+.checkout-items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.checkout-step-box {
+  background: var(--white-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.step-header {
   margin-bottom: 1.5rem;
 }
 
-.section-title {
-  color: var(--color-1);
-  font-size: 1.1rem;
-  font-weight: 600;
+.step-header h2 {
+  color: var(--t-color-3);
+  font-size: 1.4rem;
   margin-bottom: 0.5rem;
 }
 
-.dashed-divider {
-  border: 0;
-  border-bottom: 1px dashed var(--t-color-1);
-  margin: 0;
-  opacity: 0.8;
+.step-header p {
+  color: var(--t-color-7);
+  font-size: 0.95rem;
 }
 
-/* --- Estrutura do Formulário --- */
-.checkout-form {
+.header-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.delivery-info {
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--t-color-5);
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  align-items: flex-end;
+  gap: 4px;
 }
 
-.form-row-full {
-  display: grid;
-  grid-template-columns: 1fr;
+.link-alterar {
+  color: var(--color-1);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
 }
 
-.form-row-half {
+/* --- FORMULÁRIO GERAL --- */
+.card-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+.full-width {
+  grid-column: span 2;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 6px;
 }
 
 .form-group label {
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-1);
 }
 
-/* --- Inputs --- */
 .form-input {
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: var(--white-color);
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--color-5);
   color: var(--t-color-5);
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
   border-color: var(--color-1);
+  background: var(--white-color);
+  box-shadow: 0 0 0 3px rgba(233, 34, 144, 0.1);
 }
 
-.form-input::placeholder {
-  color: var(--t-color-7);
-}
-
-input:disabled, input[readonly] {
+.readonly-input {
   background: var(--white-opacity-50);
-  color: var(--t-color-7);
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
-/* --- Ações e Indicadores --- */
-.checkout-actions {
+/* --- MÉTODOS DE PAGAMENTO --- */
+.payment-options {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.auto-save-indicator {
-  text-align: right;
+.payment-method {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-5);
+  transition: all 0.3s ease;
+}
+
+.payment-method.active {
+  border-color: var(--color-1);
+  background: var(--white-color);
+  box-shadow: 0 4px 12px rgba(233, 34, 144, 0.08);
+}
+
+.method-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  gap: 12px;
+}
+
+.method-header input {
+  accent-color: var(--color-1);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* .method-header label {
+  font-weight: 600;
+  color: var(--t-color-3);
+  cursor: pointer;
+  font-size: 1rem;
+} */
+
+.method-label {
+  font-weight: 600;
+  color: var(--t-color-3);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.method-label svg {
+  width: 24px;
+  height: 24px;
+}
+
+.method-body {
+  padding: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--white-color);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- CUPOM SECTION --- */
+.coupon-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.coupon-label {
+  display: block;
+  font-size: 0.95rem;
   color: var(--color-1);
   font-weight: 600;
-  animation: pulse 1.5s infinite;
-  margin-top: -0.5rem;
+  margin-bottom: 8px;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.4; }
-  50% { opacity: 1; }
-  100% { opacity: 0.4; }
+.coupon-input-group {
+  display: flex;
+  gap: 10px;
 }
 
-/* --- Responsividade --- */
+.coupon-input-group .form-input {
+  flex: 1;
+}
+
+/* =========================================
+   EFEITO COMPROVANTE (RECIBO FISCAL)
+========================================= */
+
+.checkout-summary-section {
+  position: relative;
+}
+
+.summary-card {
+  background-color: var(--white-color);
+  border-radius: 16px 16px 0 0;
+  /* Topo arredondado, base plana para o picote */
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  /* Mais espaço na base para respirar */
+  position: sticky;
+  top: 110px;
+  border: none;
+
+  /* O SEGREDO: drop-shadow contorna o formato do papel rasgado, box-shadow não! */
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+}
+
+/* Dentes do Comprovante (Picote do papel) */
+.summary-card::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  /* Puxa os dentes para fora da div */
+  left: 0;
+  right: 0;
+  height: 12px;
+  background-size: 24px 24px;
+  /* Largura e altura de cada dente */
+  background-image:
+    linear-gradient(135deg, var(--white-color) 50%, transparent 50%),
+    linear-gradient(225deg, var(--white-color) 50%, transparent 50%);
+  background-position: 0 0, 12px 0;
+  /* Desloca o 2º gradiente para formar a ponta do triângulo */
+}
+
+/* Título estilo Cupom */
+.summary-title {
+  color: var(--t-color-3);
+  font-size: 1.2rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px dashed rgba(0, 0, 0, 0.15);
+}
+
+/* Lista de Itens */
+.summary-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-bottom: 1.5rem;
+}
+
+/* Linhas conectando texto e preço (Estilo Nota Fiscal Clássica) */
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--t-color-5);
+}
+
+/* A magia dos pontinhos de fundo */
+.summary-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
+  z-index: 0;
+}
+
+.item-name {
+  background: var(--white-color);
+  /* Cobre os pontinhos onde há texto */
+  padding-right: 8px;
+  z-index: 1;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.item-price {
+  background: var(--white-color);
+  /* Cobre os pontinhos onde há preço */
+  padding-left: 8px;
+  z-index: 1;
+  font-family: 'Courier New', Courier, monospace;
+  /* Fonte de máquina registradora */
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Divisórias (Sempre tracejadas para remeter ao cupom impresso) */
+.summary-divider {
+  border: none;
+  border-top: 2px dashed rgba(0, 0, 0, 0.15);
+  margin: 1.2rem 0;
+}
+
+/* Subtotais e Frete */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.90rem;
+  color: var(--t-color-5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-row span:last-child {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* Total Final */
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.summary-total span:last-child {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.6rem;
+}
+
+.summary-actions {
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Ajustes dos botões dentro do comprovante */
+.summary-card .full-width-btn {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  padding: 14px;
+}
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-4);
+  color: var(--white-color);
+}
+
+/* --- FEEDBACK VISUAL DE ERROS --- */
+.form-input.ng-invalid.ng-touched {
+  border-color: var(--gls-danger-btn, red);
+  background-color: rgba(255, 0, 0, 0.03);
+}
+
+/* Tira o vermelho se o campo voltar a ficar em foco para o utilizador corrigir */
+.form-input.ng-invalid.ng-touched:focus {
+  border-color: var(--gls-danger-btn, red);
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+}
+
+/* --- RESPONSIVO --- */
 @media (max-width: 650px) {
-  .checkout-card {
-    padding: 1.5rem;
-  }
-  .form-row-half {
+  .card-form {
     grid-template-columns: 1fr;
-    gap: 1.2rem;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+  .item-name {
+    white-space: normal;
+  }
+
+  .header-inline {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .delivery-info {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+@media (min-width: 1050px) {
+  .checkout-container {
+    margin: 2.5rem auto;
+    padding: 2.5rem;
+    max-width: 1200px;
+    border-radius: 1.5rem;
+  }
+
+  .checkout-content {
+    display: grid;
+    /* A MÁGICA: A coluna da esquerda fica flexível (1fr) e o comprovante fica fixo em 380px */
+    grid-template-columns: 1fr 380px;
+    gap: 2.5rem;
+    align-items: start;
+    /* Impede que o aside estique na vertical */
   }
 }

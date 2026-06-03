@@ -44,7 +44,8 @@
                     </div>
 
                     <button class="flex-center btn-remove-icon" (click)="removeItem(item.id)" title="Remover item">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                            fill="none">
                             <g stroke-width="0" />
                             <g stroke-linecap="round" stroke-linejoin="round" />
                             <path
@@ -56,48 +57,77 @@
             </div>
         </div>
 
-        <aside class="cart-summary-section">
-            <div class="glass-container summary-card">
-                <h2>Resumo do Pedido</h2>
+        <aside class="checkout-summary-section animate-fade">
+            <div class="summary-card">
+                <h2 class="summary-title">Resumo do Pedido</h2>
+
+                <div class="summary-items-list">
+                    <div *ngFor="let item of cartItems" class="summary-item">
+                        <span class="item-name">{{ item.quantity }}x {{ item.product.nome }}</span>
+                        <span class="item-price">{{ (item.product.preco * item.quantity) |
+                            currency:'BRL':'symbol':'1.2-2' }}</span>
+                    </div>
+                </div>
+
                 <hr class="summary-divider">
 
-                <div class="flex-between summary-row">
-                    <span>Subtotal ({{ cartItems.length }} itens)</span>
+                <div class="summary-row">
+                    <span>Subtotal</span>
                     <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
                 </div>
 
-                <div class="flex-between summary-row total-row">
-                    <span>Total</span>
-                    <span class="total-price">{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+                <div class="summary-row">
+                    <span>Frete</span>
+                    <span
+                        style="font-size: 0.85rem; color: var(--t-color-7); font-family: 'Inter', sans-serif;">Calculado
+                        no Checkout</span>
+                </div>
+
+                <hr class="summary-divider">
+
+                <div class="summary-total">
+                    <span>Total Parcial</span>
+                    <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
                 </div>
 
                 <div class="flex-col summary-actions">
-                    <button (click)="goToCheckout()" class="btn btn-glass btn-primary full-width">
-                        Continuar para o Checkout
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <button type="button" class="btn btn-glass btn-primary full-width-btn" routerLink="/checkout">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g stroke-width="0" />
                             <g stroke-linecap="round" stroke-linejoin="round" />
                             <path
                                 d="M10.5 11H17M7 11h.5M7 7.5h.5m-.5 7h.5m9.5 0h-1m-5.5 0h3m3.5-7h-3m-3.5 0h1M21 7v-.63c0-1.193 0-1.79-.158-2.27a3.05 3.05 0 0 0-1.881-1.937C18.493 2 17.914 2 16.755 2h-9.51c-1.159 0-1.738 0-2.206.163a3.05 3.05 0 0 0-1.881 1.936C3 4.581 3 5.177 3 6.37V15m18-4v9.374c0 .858-.985 1.314-1.608.744a.946.946 0 0 0-1.284 0l-.483.442a1.657 1.657 0 0 1-2.25 0 1.657 1.657 0 0 0-2.25 0 1.657 1.657 0 0 1-2.25 0 1.657 1.657 0 0 0-2.25 0 1.657 1.657 0 0 1-2.25 0l-.483-.442a.946.946 0 0 0-1.284 0c-.623.57-1.608.114-1.608-.744V19"
                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
+                        Continuar para o Checkout
                     </button>
-                    <button routerLink="/produtos" class="btn btn-glass full-width">
-                        Continuar Comprando
+
+                    <button routerLink="/produtos" class="btn btn-glass btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g stroke-width="0" />
+                            <g stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="m4.5 12 5-5m-5 5 5 5m-5-5H11m3.5 0c1.667 0 5 1 5 5" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Continuar a comprar
                     </button>
                 </div>
+
             </div>
         </aside>
-
     </div>
 
     <ng-template #emptyCart>
         <div class="flex-col-center empty-state-container">
-            <svg class="empty-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
-                fill="none" stroke="var(--t-color-7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            <svg class="empty-svg" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                    <path
+                        d="m11.5 12.5 3-3m0 3-3-3M2 3l.261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7"
+                        stroke-linecap="round" />
+                </g>
             </svg>
             <h2 class="empty-title">O seu carrinho está vazio!</h2>
             <p class="empty-text">Que tal dar uma olhada nos nossos doces e encher esse carrinho?</p>

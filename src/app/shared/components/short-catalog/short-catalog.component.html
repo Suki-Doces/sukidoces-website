@@ -1,5 +1,5 @@
 <section class="short-catalog-section glass-container">
-  <h1>Recomendação de compra</h1>
+  <h1>Fazer uma compra rápida</h1>
 
   <div class="sc-nav">
     <button class="btn" [ngClass]="activeTab === 'mais-vendidos' ? 'btn-glass btn-primary' : 'btn-glass'"
@@ -18,38 +18,52 @@
       <div *ngIf="isLoadingBest" style="padding: 20px;">Carregando produtos...</div>
 
       <ng-container *ngIf="!isLoadingBest && bestSellers.length > 0; else noProductsBest">
-        <a *ngFor="let prod of bestSellers" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
 
-          <div class="ci-square-label">
-            <img [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
-          </div>
+        <div *ngFor="let prod of bestSellers" class="product-card">
 
-          <div class="ci-product-info">
-            <h3 class="card-i-h3">{{ prod.nome }}</h3>
-            <h2 class="price">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
+          <a [routerLink]="['/produtos', prod.id_produto]" class="card-image-link"
+            [attr.aria-label]="'Ver detalhes de ' + prod.nome">
+            <img class="card-img-blur" [src]="getProductImage(prod.imagem)" aria-hidden="true" />
+            <img class="card-img" [src]="getProductImage(prod.imagem)" [alt]="'Imagem de ' + prod.nome"
+              (error)="onImageError($event)" loading="lazy" decoding="async" />
+          </a>
+
+          <div class="card-info">
+
+            <a [routerLink]="['/produtos', prod.id_produto]" class="card-title-link">
+              <h2 class="card-i-h3">{{ prod.nome }}</h2>
+            </a>
+
+            <p class="price" style="margin-top: 8px; margin-bottom: 0;">
+              {{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}
+            </p>
 
             <div class="card-actions">
-              <div class="quantity-selector" (click)="$event.stopPropagation()">
-                <button type="button" class="qty-btn" (click)="decreaseQuantity(prod.id_produto, $event)"
+              <div class="quantity-selector" (click)="$event.stopPropagation(); $event.preventDefault()">
+                <button type="button" class="qty-btn" aria-label="Diminuir quantidade"
+                  (click)="$event.stopPropagation(); $event.preventDefault(); decreaseQuantity(prod.id_produto, $event)"
                   [disabled]="getQuantidade(prod.id_produto) <= 1">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
                   </svg>
                 </button>
                 <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
-                <button type="button" class="qty-btn" (click)="increaseQuantity(prod.id_produto, $event)">
+                <button type="button" class="qty-btn" aria-label="Aumentar quantidade"
+                  (click)="$event.stopPropagation(); $event.preventDefault(); increaseQuantity(prod.id_produto, prod.quantidade, $event)"
+                  [disabled]="getQuantidade(prod.id_produto) >= prod.quantidade">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                   </svg>
                 </button>
               </div>
-              <button class="add-cart-btn" (click)="addToCart($event, prod)">
+              <button class="btn btn-glass btn-primary add-cart-btn"
+                (click)="$event.stopPropagation(); $event.preventDefault(); addToCart($event, prod)">
                 Comprar
               </button>
             </div>
 
           </div>
-        </a>
+        </div>
       </ng-container>
       <ng-template #noProductsBest>
         <p *ngIf="!isLoadingBest" style="padding: 20px; color: var(--t-color-7);">Nenhum produto em destaque.</p>
@@ -60,43 +74,54 @@
       <div *ngIf="isLoadingNew" style="padding: 20px;">Carregando lançamentos...</div>
 
       <ng-container *ngIf="!isLoadingNew && newArrivals.length > 0; else noProductsNew">
-        <a *ngFor="let prod of newArrivals" class="product-card" [routerLink]="['/produtos', prod.id_produto]">
 
-          <div class="ci-square-label">
-            <img [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
-          </div>
+        <div *ngFor="let prod of newArrivals" class="product-card">
 
-          <div class="ci-product-info">
-            <h3 class="card-i-h3">{{ prod.nome }}</h3>
+          <div [routerLink]="['/produtos', prod.id_produto]" class="card-image-link"
+            [attr.aria-label]="'Ver detalhes de ' + prod.nome">
+            <img class="card-img-blur" [src]="getProductImage(prod.imagem)" aria-hidden="true" />
+            <img class="card-img" [src]="getProductImage(prod.imagem)" [alt]="'Imagem de ' + prod.nome"
+              (error)="onImageError($event)" loading="lazy" decoding="async" />
+          </div>          
+
+          <div class="card-info">
+
+            <a [routerLink]="['/produtos', prod.id_produto]" class="card-title-link">
+              <h3 class="card-title">{{ prod.nome }}</h3>
+            </a>
+
             <div
-              style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom: 4px;">
-              <h2 class="price" style="margin: 0;">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</h2>
-              <span
-                style="font-size: 0.65rem; background-color: var(--gls-success); color: #155724; padding: 3px 6px; border-radius: 6px; font-weight: bold;">NOVO</span>
+              style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top: 8px; margin-bottom: 0;">
+              <p class="price" style="margin: 0;">{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+              <span *ngIf="isRecente(prod.data_criacao)"
+                style="font-size: 0.65rem; background-color: var(--gls-success, #d4edda); color: #155724; padding: 3px 6px; border-radius: 6px; font-weight: bold;">NOVO</span>
             </div>
 
             <div class="card-actions">
-              <div class="quantity-selector" (click)="$event.stopPropagation()">
-                <button type="button" class="qty-btn" (click)="decreaseQuantity(prod.id_produto, $event)"
+              <div class="quantity-selector" (click)="$event.stopPropagation(); $event.preventDefault()">
+                <button type="button" class="qty-btn" aria-label="Diminuir quantidade"
+                  (click)="$event.stopPropagation(); $event.preventDefault(); decreaseQuantity(prod.id_produto, $event)"
                   [disabled]="getQuantidade(prod.id_produto) <= 1">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
                   </svg>
                 </button>
                 <span class="qty-value">{{ getQuantidade(prod.id_produto) }}</span>
-                <button type="button" class="qty-btn" (click)="increaseQuantity(prod.id_produto, $event)">
+                <button type="button" class="qty-btn" aria-label="Aumentar quantidade"
+                  (click)="$event.stopPropagation(); $event.preventDefault(); increaseQuantity(prod.id_produto, prod.quantidade, $event)">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                   </svg>
                 </button>
               </div>
-              <button class="add-cart-btn" (click)="addToCart($event, prod)">
+              <button class="btn btn-glass btn-primary add-cart-btn"
+                (click)="$event.stopPropagation(); $event.preventDefault(); addToCart($event, prod)">
                 Comprar
               </button>
             </div>
 
           </div>
-        </a>
+        </div>
       </ng-container>
       <ng-template #noProductsNew>
         <p *ngIf="!isLoadingNew" style="padding: 20px; color: var(--t-color-7);">Nenhum lançamento no momento.</p>

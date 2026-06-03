@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Necessário para os links dos produtos
 
 // Importação dos serviços e environment
@@ -8,21 +8,22 @@ import { ProductService, Product } from 'src/app/core/services/product.service';
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule, RouterModule], // Adicionado RouterModule
+  imports: [CommonModule, RouterModule, NgOptimizedImage], // Adicionado RouterModule e NgOptimizedImage
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   products: Product[] = []; // Alterado de string[] para Product[]
-  
+
   currentIndex = 0;
-  offset = 18; 
+  offset = 18;
   slideInterval: any;
+  isLoading: boolean = true;
 
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
   // Injetando o serviço de produtos
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   ngOnInit() {
     this.loadSmartBanners();
@@ -33,6 +34,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   loadSmartBanners() {
+    this.isLoading = true;
     // Busca os mais vendidos para gerar os banners dinamicamente
     this.productService.getProducts().subscribe({
       next: (data) => {
@@ -40,10 +42,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
         this.products = data.slice(0, 5);
         if (this.products.length > 0) {
           this.resetInterval();
+          this.isLoading = false;
         }
       },
       error: (err) => {
         console.error('Erro ao carregar banners do carrossel:', err);
+        this.isLoading = false;
       }
     });
   }

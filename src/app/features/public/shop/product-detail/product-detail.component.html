@@ -1,24 +1,24 @@
-<main class="detail-container animate-fade" *ngIf="!isLoading && product">
-    <a routerLink="/produtos" class="btn btn-outline btn-glass back-link">
+<main class="detail-container animate-fade">
+    <button routerLink="/produtos" class="btn btn-glass btn-secondary back-link" aria-label="Voltar para o catálogo">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
-                <path d="M4.5 12L9.5 7M4.5 12L9.5 17M4.5 12L11 12M14.5 12C16.1667 12 19.5 13 19.5 17" stroke="currentColor"
-                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5 12L9.5 7M4.5 12L9.5 17M4.5 12L11 12M14.5 12C16.1667 12 19.5 13 19.5 17"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
             </g>
         </svg>
-        <p>
-            Voltar para o catálogo
-        </p>
-    </a>
+        Voltar para o catálogo
+    </button>
 
-    <div class="glass-container product-detail-wrapper">
+    <div *ngIf="isLoading" style="padding: 40px; justify-self: center;">
+        <div class="loader-circle"></div>
+    </div>
+
+    <div class="glass-container product-detail-wrapper animate-fade" *ngIf="!isLoading && product">
         <div class="flex-center detail-image">
-            <!-- Imagem de fundo com blur -->
-            <img class="img-blur-bg" [src]="getProductImage(product.imagem)" aria-hidden="true">
+            <img class="img-blur-bg" [src]="getProductImage(product.imagem)" aria-hidden="true" fetchpriority="high">
 
-            <!-- Imagem principal -->
             <img class="img-main" [src]="getProductImage(product.imagem)" [alt]="'Imagem de ' + product.nome">
         </div>
 
@@ -35,15 +35,40 @@
             </div>
 
             <div class="purchase-actions">
-                <div class="qty-selector">
-                    <button type="button" (click)="decrement()">-</button>
-                    <input type="number" [value]="quantity" (input)="onQuantityChange($event)" min="1"
-                        [max]="product.quantidade">
-                    <button type="button" (click)="increment()">+</button>
+
+                <div class="quantity-selector">
+                    <button type="button" class="qty-btn" (click)="decrement()" [disabled]="quantity <= 1">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                        </svg>
+                    </button>
+
+                    <input type="number" class="qty-value-input" [value]="quantity" (input)="onQuantityChange($event)"
+                        min="1" [max]="product.quantidade">
+
+                    <button type="button" class="qty-btn" (click)="increment()"
+                        [disabled]="quantity >= product.quantidade">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </button>
                 </div>
 
                 <button type="button" class="btn btn-glass btn-primary btn-add-cart" (click)="addToCart()"
                     [disabled]="product.quantidade === 0">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke-width="0" />
+                        <g stroke-linecap="round" stroke-linejoin="round" />
+                        <g stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M7.5 18a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                            <path
+                                d="M13 13v-2m0 0V9m0 2h2m-2 0h-2M2 3l.261.092c1.302.457 1.953.686 2.325 1.231s.372 1.268.372 2.715V9.76c0 2.942.063 3.912.93 4.826.866.914 2.26.914 5.05.914H12m4.24 0c1.561 0 2.342 0 2.894-.45.551-.45.709-1.214 1.024-2.743l.5-2.424c.347-1.74.52-2.609.076-3.186-.443-.577-1.96-.577-3.645-.577h-6.065m-6.066 0H7"
+                                stroke-linecap="round" />
+                        </g>
+                    </svg>
                     <h3>
                         Adicionar ao Carrinho
                     </h3>
@@ -61,7 +86,3 @@
         </div>
     </div>
 </main>
-
-<div *ngIf="isLoading" style="text-align: center; padding: 50px;">
-    A carregar detalhes do produto...
-</div>

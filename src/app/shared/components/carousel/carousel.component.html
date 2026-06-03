@@ -1,4 +1,14 @@
-<div class="carousel-container" *ngIf="products.length > 0">
+<div class="carousel-container" *ngIf="isLoading">
+  <div class="carousel-wrapper">
+    <div class="flex-align-center carousel-slide skeleton-slide">
+      <div class="carousel-item skeleton-item active">
+        <div class="loader-circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="carousel-container carousel-fade-in" *ngIf="products.length > 0 && !isLoading">
   <div class="carousel-wrapper">
     <div class="flex-align-center carousel-slide" [style.transform]="'translateX(' + offset + '%)'">
 
@@ -6,10 +16,11 @@
         class="flex-center carousel-item" [class.active]="i === currentIndex">
 
         <!-- Imagem de fundo desfocada -->
-        <img [src]="getProductImage(prod.imagem)" class="bg-blur" aria-hidden="true" fetchpriority="high">
+        <img [ngSrc]="getProductImage(prod.imagem)" class="bg-blur" width="800" height="400" aria-hidden="true" priority>
 
         <!-- Imagem principal do produto -->
-        <img [src]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" class="main-img" (error)="onImageError($event)">
+        <img [ngSrc]="getProductImage(prod.imagem)" [alt]="'Comprar ' + prod.nome" class="main-img"  width="800" height="400" priority
+          (error)="onImageError($event)">
 
         <div class="carousel-overlay">
           <div class="flex-col overlay-content">
@@ -29,14 +40,12 @@
 
     <button id="prevBtn" class="nav-btn" (click)="prevSlide()" aria-label="Slide anterior">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="m15 19-6-7 1.5-1.75M15 5l-2 2.333" stroke-width="1.5" stroke-linecap="round"
-          stroke-linejoin="round" />
+        <path d="m15 19-6-7 1.5-1.75M15 5l-2 2.333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </button>
     <button id="nextBtn" class="nav-btn" (click)="nextSlide()" aria-label="Próximo slide">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="m9 5 2 2.333M9 19l6-7-1.5-1.75" stroke-width="1.5" stroke-linecap="round"
-          stroke-linejoin="round" />
+        <path d="m9 5 2 2.333M9 19l6-7-1.5-1.75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </button>
 

@@ -67,40 +67,37 @@ html {
     --t-color-7: #828282;
 }
 
-/* Largura do scrollbar */
+/* =========================================
+   SCROLLBAR
+========================================= */
 ::-webkit-scrollbar {
     width: 10px;
 }
 
-/* Track (fundo da barra) - Usando a cor de fundo do seu design */
 ::-webkit-scrollbar-track {
     background: var(--color-5);
     border-radius: 5px;
 }
 
-/* Thumb (a barra que desliza) - Usando o "Rosa da Suki" */
 ::-webkit-scrollbar-thumb {
     background: #f178b6;
-    /* Rosa da Suki */
     border-radius: 5px;
     border: 2px solid var(--color-5);
-    /* Cria um efeito de respiro */
     transition: background 0.3s ease;
 }
 
-/* Efeito ao passar o mouse */
 ::-webkit-scrollbar-thumb:hover {
     background: #d664a0;
-    /* Um tom um pouco mais escuro para hover */
 }
 
-/* Suporte para Firefox */
 html {
     scrollbar-width: thin;
     scrollbar-color: #f178b6 var(--color-5);
 }
 
-/* TIPOGRAPHY MOBILE */
+/* =========================================
+   TIPOGRAPHY MOBILE
+========================================= */
 h1 {
     font-size: 20px;
     font-weight: 700;
@@ -121,27 +118,66 @@ p {
     font-weight: 400;
 }
 
+/* LINKS REAGRUPADOS E EVOLUÍDOS */
 a {
     font-size: 14px;
     font-weight: 600;
+    color: var(--t-color-1);
     text-decoration: none;
-    transition: color 0.2s ease;
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
+    /* Suaviza a fonte para evitar que o texto trema durante a animação */
+    -webkit-font-smoothing: antialiased;
 }
 
+/* Linha animada com altura 100% blindada */
+a::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 0;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-1);
+    transition: width 0.25s ease-out;
+}
+
+/* Efeito de Hover (Mouse Passando) */
 a:hover {
-    color: var(--color-4);
+    color: var(--color-1);
 }
 
-/* TIPOGRAPHY DESKTOP */
+/* Ao passar o mouse, a linha atinge o tamanho fixo desejado */
+a:hover::after {
+    width: 75%;
+}
+
+/* Acessibilidade: Quando o link recebe foco via teclado (Tab) */
+a:focus-visible {
+    outline: 2px dashed var(--color-1);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* Mantém links que abraçam botões intactos */
+a:has(.btn)::after {
+    display: none;
+}
+
+/* =========================================
+   TIPOGRAPHY DESKTOP
+========================================= */
 @media (min-width: 1050px) {
     h1 {
-        font-size: 30px;
-        font-weight: bold;
+        font-size: 32px;
+        font-weight: 700;
     }
 
     h2 {
         font-size: 24px;
-        font-weight: bold;
+        font-weight: 700;
     }
 
     h3 {
@@ -151,16 +187,23 @@ a:hover {
 
     p {
         font-size: 18px;
-        font-weight: normal;
+        font-weight: 400;
     }
 
     a {
         font-size: 18px;
         font-weight: 600;
     }
+
+    .btn {
+        font-size: 16px;
+        /* Botões um pouco maiores no desktop */
+    }
 }
 
-/* FADE ANIMATE */
+/* =========================================
+   ANIMATIONS & TRANSITIONS
+========================================= */
 .animate-fade {
     animation: fadeIn 0.4s ease-in-out;
 }
@@ -177,7 +220,57 @@ a:hover {
     }
 }
 
-/* FLEXBOX */
+::view-transition-old(root) {
+    animation: fade-out 0.4s ease-in-out forwards;
+}
+
+::view-transition-new(root) {
+    animation: fade-in 0.4s ease-in-out forwards;
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ====== LOADER ====== */
+/* HTML: <div class="loader-circle"></div> */
+.loader-circle {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(farthest-side, var(--color-1) 94%, #0000) top/8px 8px no-repeat,
+        conic-gradient(#0000 30%, var(--color-1));
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+    animation: l13 1s infinite linear;
+}
+
+@keyframes l13 {
+    100% {
+        transform: rotate(1turn)
+    }
+}
+
+
+/* =========================================
+   FLEXBOX UTILS
+========================================= */
 .flex-center {
     display: flex;
     align-items: center;
@@ -207,46 +300,9 @@ a:hover {
     justify-content: center;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-/*Transitions*/
-/* Seleciona a página que está saindo */
-::view-transition-old(root) {
-    animation: fade-out 0.4s ease-in-out forwards;
-}
-
-/* Seleciona a página que está entrando */
-::view-transition-new(root) {
-    animation: fade-in 0.4s ease-in-out forwards;
-}
-
-/* Criando as animações de opacidade */
-@keyframes fade-out {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-/*Transitions END */
-
-/*Templates*/
-
+/* =========================================
+   TEMPLATES & CONTAINERS
+========================================= */
 .glass-container {
     position: relative;
     z-index: 1;
@@ -267,140 +323,11 @@ html {
     width: 100%;
     height: 100%;
     border-radius: inherit;
-    background-image: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.5) 0%,
-            rgba(255, 255, 255, 0) 30%,
-            rgba(255, 255, 255, 0) 100%,
-        );
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 100%);
     pointer-events: none;
     z-index: -1;
 }
 
-/* Estilo Base (.btn) */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    /* Espaço entre o texto e o ícone */
-    padding: 12px 28px;
-    border-radius: 18px;
-    border: 1px solid transparent;
-    /* Borda base para evitar saltos de layout nas versões outline */
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.btn svg {
-    width: 1.5rem;
-    height: auto;
-    margin: -0.5rem;
-    aspect-ratio: 1/1;
-}
-
-/* Efeitos de Interação Base */
-.btn:hover {
-    transform: translateY(-3px);
-}
-
-.btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* --- AJUSTE DA LUPA NA BARRA DE PESQUISA --- */
-.input-group img {
-    width: 20px;
-    /* Define a largura ideal para a lupa */
-    height: 20px;
-    /* Define a altura ideal */
-    object-fit: contain;
-    /* Garante que a imagem não distorça */
-    opacity: 0.6;
-    /* Deixa ela cinzinha, mais discreta */
-    transition: all 0.3s ease;
-    /* Efeito suave se quiser colocar hover depois */
-}
-
-/* Efeito Glassmorphism (.btn-glass) */
-.btn-glass {
-    position: relative;
-    z-index: 1;
-    /* Para ficar acima das bolhas de fundo */
-    background: var(--white-opacity-25);
-    backdrop-filter: blur(5px) saturate(180%);
-    -webkit-backdrop-filter: blur(5px) saturate(180%);
-    /* Suporte para Safari */
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    color: var(--gls-color-1);
-    /* Rosa mais escuro para garantir legibilidade */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-    white-space: nowrap;
-}
-
-.btn-glass::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    background-image: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.5) 0%,
-            rgba(255, 255, 255, 0) 30%,
-            rgba(255, 255, 255, 0) 100%,
-        );
-    pointer-events: none;
-    z-index: -1;
-}
-
-.btn-glass:hover {
-    background: var(--white-opacity-50);
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    color: var(--gls-color-1);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
-    stroke: var(--gls-color-1);
-}
-
-.btn-primary {
-    background-color: var(--gls-color-1);
-    color: var(--color-5);
-    stroke: var(--gls-color-5);
-}
-
-.btn-primary:hover {
-    border: 1px solid var(--gls-color-1);
-}
-
-.btn-primary:focus {
-    background-color: var(--gls-color-1);
-    color: var(--color-5);
-    stroke: var(--gls-color-5);
-}
-
-.btn-danger {
-    background: var(--gls-danger-btn);
-    color: var(--color-5);
-}
-
-.btn-danger:hover {
-    color: var(--gls-danger-btn);
-}
-
-.marketing-section>img {
-    width: 24px;
-    height: 24px;
-    aspect-ratio: 1/1;
-}
-
-/*CONTOURED CONTAINER*/
-/*CONTOURED CONTAINER GLOBAL*/
 .contoured-container {
     display: flex;
     margin: 20px;
@@ -424,16 +351,157 @@ html {
     text-align: center;
 }
 
-/*ICE CREAM SECTION*/
-.ics-highlight-txt {
-    color: var(--color-1);
-}
-
 @media (min-width: 1050px) {
-
-    /*GLOBAL*/
     .contoured-container {
         margin: 20px 15rem;
         padding: 10px 5rem;
     }
+}
+
+/* =========================================
+   BOTÕES GLOBAIS E SVGs
+========================================= */
+
+/* Estilo Base (.btn) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* Ajustado para ícones menores */
+    padding: 12px 28px;
+    border-radius: 18px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--t-color-5);
+}
+
+/* SVGs dentro de Botões */
+.btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    aspect-ratio: 1/1;
+    transition: transform 0.3s ease;
+    /* Puxa a cor do texto do botão atual! */
+    stroke: currentColor;
+    fill: none;
+}
+
+/* Efeitos de Interação Base */
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Animação do SVG no Hover (Dá vida ao botão) */
+.btn:hover svg {
+    transform: scale(1.15);
+}
+
+/* Efeito Glassmorphism (.btn-glass) */
+.btn-glass {
+    position: relative;
+    z-index: 1;
+    background: var(--white-opacity-25);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: var(--gls-color-1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.btn-glass::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.btn-glass:hover {
+    background: var(--white-opacity-50);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    color: var(--gls-color-1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+}
+
+/* Botão Principal */
+.btn-primary {
+    background-color: var(--gls-color-1);
+    color: var(--color-5);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-1);
+    color: var(--white-color);
+    border: 1px solid var(--color-2);
+    box-shadow: 0 8px 20px rgba(233, 34, 144, 0.25);
+}
+
+.btn-primary:focus {
+    background-color: var(--color-1);
+    color: var(--white-color);
+}
+
+/* Botão Secundário */
+.btn-secondary {
+    color: var(--color-2);
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    color: var(--color-1);
+    border-color: var(--color-1);
+}
+
+/* Botão de Perigo / Excluir */
+.btn-danger {
+    background: var(--gls-danger-btn);
+    color: var(--color-5);
+}
+
+.btn-danger:hover {
+    background-color: #ff2020;
+    color: var(--white-color);
+    box-shadow: 0 8px 20px rgba(255, 58, 58, 0.25);
+}
+
+/* =========================================
+   ELEMENTOS ESPECÍFICOS
+========================================= */
+
+/* Lupa na barra de pesquisa */
+.input-group img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+/* Imagem da Marketing Section */
+.marketing-section>img {
+    width: 24px;
+    height: 24px;
+    aspect-ratio: 1/1;
+}
+
+/* Destaque Ice Cream */
+.ics-highlight-txt {
+    color: var(--color-1);
 }

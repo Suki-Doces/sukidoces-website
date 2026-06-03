@@ -18,20 +18,26 @@
 :host::before {
     content: "";
     position: absolute;
-    inset: 0; /* Substitui top/left/right/bottom: 0 */
-    border-radius: 0 0 19px 19px; /* Mantém as bordas do pai, se houver */
+    inset: 0;
+    /* Substitui top/left/right/bottom: 0 */
+    border-radius: 0 0 19px 19px;
+    /* Mantém as bordas do pai, se houver */
     background: var(--gls-color-1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-bottom: 1px solid rgba(255, 194, 227, 0.4);
-    z-index: -1; 
+    z-index: -1;
 }
 
 
-.header-logo, .header-logo svg{
+.header-logo,
+.header-logo svg {
+    background: transparent;
+    border: none;
     width: auto;
     height: 100%;
     aspect-ratio: 329 / 202;
+    cursor: pointer;
 }
 
 :host>nav {
@@ -39,17 +45,18 @@
     gap: 3rem;
 }
 
+/* --- LINKS STYLE --- */
 .header-link {
-    color: var(--color-5);
+    color: var(--white-color);
 }
 
-.header-link:hover {
-    color: var(--gls-color-5);
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.696);
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+.header-link::after {
+    background: var(--white-opacity-75);
 }
 
-.hdr-desktop-view, :host > nav {
+/* --- VIEWS STYLE --- */
+.hdr-desktop-view,
+:host>nav {
     display: none;
     align-items: center;
     justify-content: center;
@@ -80,10 +87,7 @@
 }
 
 .header-search-form>button {
-    background: var(--color-3);
-    border: none;
     border-radius: 10px;
-    color: var(--white-color);
     width: 32px;
     height: 32px;
     padding: 0.25rem;
@@ -91,29 +95,6 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s;
-}
-
-.header-search-form>button:hover {
-    background: var(--color-1);
-}
-
-/* --- HEADER BUTTON STYLE --- */
-.header-btn {
-    background-color: transparent;
-    min-width: 6rem;
-    max-width: 12rem;
-    width: auto;
-    height: 50px;
-
-    border: 0;
-    position: relative;
-}
-
-.header-btn>svg {
-    width: 25px;
-    height: 25px;
-    flex-shrink: 0;
 }
 
 /* Para telas com LARGURA MÍNIMA de 768px (tablets e desktops) */
@@ -123,13 +104,15 @@
         top: 10px;
         border-radius: 30px;
     }
-    
-    :host::before {
-    border-radius: calc(30px - 1px); /* Mantém as bordas do pai, se houver */
-    border: 1px solid rgba(255, 194, 227, 0.4);
-}
 
-    .hdr-desktop-view, :host > nav {
+    :host::before {
+        border-radius: calc(30px - 1px);
+        /* Mantém as bordas do pai, se houver */
+        border: 1px solid rgba(255, 194, 227, 0.4);
+    }
+
+    .hdr-desktop-view,
+    :host>nav {
         display: flex;
     }
 }
@@ -138,14 +121,25 @@
 
 .hdr-user-btn {
     gap: 4px;
-    height: 100%;
+    min-width: 6rem;
+    max-width: 12rem;
+    width: auto;
+    height: 50px;
     padding: 0 15px;
     background-color: transparent;
     border: 1px solid var(--gls-color-5);
     cursor: pointer;
     border-radius: 15px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* CORREÇÃO 1: Trocado 'all' por propriedades específicas para evitar que o navegador recalcule fontes duramente */
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
     color: var(--color-5);
+    position: relative;
+    /* CORREÇÃO 2: Força o navegador a usar aceleração de GPU e suavizar fontes em animações */
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
 }
 
 .hdr-user-btn>svg {
@@ -154,7 +148,7 @@
     transition: transform 0.3s ease;
 }
 
-.hdr-user-btn p{
+.hdr-user-btn p {
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -166,25 +160,27 @@
 .hdr-user-btn.active {
     background: rgba(255, 255, 255, 0.4);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    transform: scale(1.05);
+    /* CORREÇÃO 3: translateY(-3px) elimina o bug do texto e segue o padrão global de botões */
+    transform: translateY(-3px);
 }
 
 .hdr-user-btn:hover svg,
 .hdr-user-btn.active svg {
-    transform: scale(1.05);
+    /* O ícone SVG isolado pode escalar sem causar distorção no texto ao lado! */
+    transform: scale(1.15);
 }
 
 /* --- MENUS SUSPENSOS (ACCORDIONS/DROPDOWNS) --- */
 .hdr-user-dropdown {
     position: absolute;
-    top: calc(0% + 70px);
+    top: calc(0% + 75px);
     /* Distância do menu principal */
     right: 0;
     transform: translateX(0%) translateY(20px);
     /* Começa um pouco abaixo para animar subindo */
     width: max-content;
     min-width: 180px;
-    
+
     /* Glassmorphism no Dropdown */
     background-color: var(--gls-color-4);
     backdrop-filter: blur(5px);

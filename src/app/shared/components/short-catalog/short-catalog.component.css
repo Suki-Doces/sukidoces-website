@@ -1,16 +1,13 @@
 /* Estilos para o Switch de Categorias */
 .tab-content {
     display: none;
-    /* Esconde as listas por padrão */
 }
 
-/* A lista ativa retoma o display grid original do .sc-scroll */
 .tab-content.active {
     display: grid;
     animation: fadeIn 0.5s ease;
 }
 
-/* Animação suave na troca */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -23,95 +20,118 @@
     }
 }
 
-/* CATALOG ITEM CARD */
+/* ==========================================================================
+   ESTILO DO CARD (Sincronizado perfeitamente com Product-List)
+   ========================================================================== */
 .product-card {
     display: flex;
-    width: 171px;
-    height: 310px;
-    /* Aumentado ligeiramente de 300px para 310px para acomodar perfeitamente os botões no mobile */
-    padding: 0;
     flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box;
-
-    background: white;
-    border-radius: 15px;
-
-    border: 1px solid #eee;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-decoration: none;
+    background: var(--white-color, #ffffff);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     position: relative;
-    /* Garante contexto de empilhamento */
-    z-index: 1;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+
+    /* Largura fixa necessária para a rolagem horizontal do short-catalog */
+    width: 185px;
+    box-sizing: border-box;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(233, 34, 143, 0.15);
-    z-index: 1;
-    /* Traz para frente ao passar o mouse */
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(233, 34, 143, 0.12);
+    /* Sombra var(--color-1) da Suki */
 }
 
-.ci-square-label {
+/* --- IMAGEM COM EFEITO BLUR E ZOOM --- */
+.card-image-link {
+    position: relative;
     display: flex;
-    width: 100%;
-    border-radius: 15px 15px 0 0;
-    background: #f9f9f9;
-    justify-content: center;
     align-items: center;
-    aspect-ratio: 1/1;
+    justify-content: center;
     overflow: hidden;
-    /* Mantém a imagem dentro da área arredondada */
+    background: var(--white-color, #ffffff);
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
-.ci-square-label>img {
+.card-image-link:hover::after {
+    width: 0;
+}
+
+.card-img-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    filter: blur(20px);
+    transform: scale(1.15);
+    opacity: 0.6;
+    z-index: 1;
 }
 
-.ci-product-info {
+.card-img {
+    position: relative;
+    width: calc(100% + 2rem);
+    height: calc(100% + 2rem);
+    margin: -1rem;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+    z-index: 2;
+}
+
+.product-card:hover .card-img {
+    transform: scale(1.08);
+}
+
+/* --- INFORMAÇÕES E TIPOGRAFIA --- */
+.card-info {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 8px;
+    padding: 1rem;
     flex-grow: 1;
-    justify-content: space-between;
+    box-sizing: border-box;
 }
 
-/* TÍTULO DO PRODUTO (Adaptação para 2 linhas) */
-.ci-product-info>.card-i-h3 {
-    font-size: 0.95rem;
+.card-title-link {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+.card-title-link:hover .card-i-h2 {
+    color: var(--color-1, #e9228f);
+}
+
+.card-i-h3 {
+    font-size: 1.1rem;
     color: var(--t-color-5, #222);
-    margin: 0;
+    margin: 0 0 4px 0;
     font-weight: 600;
     line-height: 1.3;
-    /* Espaçamento entre linhas */
-
-    /* Lógica para limitar a 2 linhas com ... */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
-    /* Número máximo de linhas */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    /* Define uma altura fixa mínima para alinhar os cards mesmo se tiver 1 linha só */
     min-height: 2.6em;
 }
 
 .price {
     color: var(--color-1, #e9228f);
-    margin: 0;
-    font-size: 1.1rem;
     font-weight: 700;
+    font-size: 1.15rem;
+    margin: 0;
 }
 
-/* ==========================================================================
-   NOVOS ESTILOS: SELETOR DE QUANTIDADE INTEGRADO LADO A LADO
-   ========================================================================== */
+/* --- ÁREA DE AÇÕES (Seletor + Botão) --- */
 .card-actions {
     display: flex;
     align-items: center;
@@ -119,85 +139,80 @@
     gap: 6px;
     width: 100%;
     margin-top: auto;
-    /* Força os botões a ficarem colados na base inferior */
+    /* Empurra para baixo se o título for curto */
+    padding-top: 12px;
 }
 
-/* Cápsula do Seletor */
 .quantity-selector {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #f1f2f6;
+    background-color: var(--gls-color-5, #f1f2f6);
     border-radius: 999px;
-    padding: 2px;
-    min-width: 68px;
-    /* Dimensão perfeita para caber nos 171px do mobile */
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    padding: 4px;
+    min-width: 74px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Mini botões + e - */
 .qty-btn {
-    background: white;
+    background: var(--white-color, #ffffff);
     border: none;
-    color: var(--t-color-5, #222);
-    width: 20px;
-    height: 20px;
+    color: var(--t-color-3, #333);
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
     padding: 0;
 }
 
 .qty-btn:hover:not(:disabled) {
     background: var(--color-1, #e9228f);
-    color: white;
+    color: var(--white-color, #ffffff);
 }
 
 .qty-btn:disabled {
-    opacity: 0.3;
+    opacity: 0.4;
     cursor: not-allowed;
     box-shadow: none;
 }
 
-/* Valor numérico */
 .qty-value {
     font-weight: 700;
     font-size: 0.85rem;
-    color: var(--t-color-5, #222);
-    width: 16px;
+    color: var(--t-color-3, #333);
+    width: 18px;
     text-align: center;
 }
 
-/* Botão Comprar Adaptado */
 .add-cart-btn {
     flex-grow: 1;
-    background: var(--color-1, #e9228f);
-    color: white;
-    border: none;
-    border-radius: 999px;
+    background: var(--color-1);
+    color: var(--white-color);
+    padding: 0 10px;
     font-weight: 600;
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 26px;
-    /* Alinha com a altura do seletor */
+    height: 32px;
 }
 
 .add-cart-btn:hover {
-    filter: brightness(1.05);
-    transform: scale(1.02);
+    filter: brightness(1.1);
+    transform: scale(1.03);
 }
 
-/* Fim_Templates */
+.add-cart-btn:active {
+    transform: scale(0.97);
+}
 
-/* Container da Seção */
+/* ==========================================================================
+   CONTAINER E ROLAGEM HORIZONTAL DO SHORT-CATALOG
+   ========================================================================== */
 .short-catalog-section {
     display: flex;
     box-sizing: border-box;
@@ -206,9 +221,15 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-
     border-radius: 20px;
     background: #FFE3EA;
+}
+
+.short-catalog-section h1 {
+    color: var(--t-color-3);
+    margin-bottom: 5px;
+    font-size: 24px;
+    margin-top: 0;
 }
 
 .sc-nav {
@@ -219,7 +240,6 @@
     align-self: stretch;
 }
 
-/* Ajuste do cursor nos botões */
 .sc-nav button {
     cursor: pointer;
 }
@@ -232,124 +252,78 @@
     align-self: stretch;
     overflow-x: auto;
     border-radius: 10px;
-    /* Padding inferior aumentado para a sombra do card não ser cortada */
     padding-bottom: 10px;
 }
 
 .sc-scroll {
     grid-auto-flow: column;
     grid-template-rows: repeat(2, auto);
-    gap: 10px;
-    /* Aumentado um pouco o gap */
+    gap: 15px;
     direction: ltr;
-    /* Padding aumentado para garantir que o hover effect não corte nas bordas */
-    padding: 5px;
+    padding: 10px;
 }
 
-/* =========================================
-   Estilo Suki Doces para a Barra de Rolagem
-   ========================================= */
-
-/* 1. Suporte para Firefox */
+/* Barra de rolagem estilizada Suki Doces */
 .sc-items {
     scrollbar-width: thin;
-    /* Deixa a barra mais fina e elegante */
     scrollbar-color: #f178b6 transparent;
-    /* Cor da barrinha (thumb) e do fundo (track) */
 }
 
-/* 2. Suporte para Chrome, Edge e Safari (WebKit) */
 .sc-items::-webkit-scrollbar {
     height: 10px;
-    /* Define a grossura da barra horizontal */
 }
 
-/* O "trilho" (fundo) da barra de rolagem */
 .sc-items::-webkit-scrollbar-track {
     background: transparent;
-    /* Deixando transparente para mesclar com o fundo rosa que você já tem */
     border-radius: 10px;
 }
 
-/* A "barrinha" (thumb) que você arrasta */
 .sc-items::-webkit-scrollbar-thumb {
     background-color: #f178b6;
-    /* O Rosa principal da Suki */
     border-radius: 10px;
-    /* Cantos arredondados */
     border: 3px solid #fae6ea;
-    /* Cria um espaço (respiro) ao redor da barrinha para não ficar grudada nas bordas */
 }
 
-/* Efeito ao passar o mouse por cima da barrinha */
 .sc-items::-webkit-scrollbar-thumb:hover {
     background-color: #d95b96;
-    /* Um rosa levemente mais escuro para o hover */
 }
 
 /* ==========================================
    MEDIA QUERY: AJUSTES PARA DESKTOP
    ========================================== */
 @media (min-width: 1050px) {
-
-    /* CATALOG ITEM CARD DESKTOP */
     .product-card {
         width: 231px;
-        height: 410px;
-        /* Escalado proporcionalmente para os novos elementos */
     }
 
-    .ci-square-label {
-        display: flex;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1/1;
-    }
-
-    .ci-product-info {
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .ci-product-info>.card-i-h3 {
-        font-size: 1.1rem;
-        min-height: 2.8em;
-        /* Ajuste fino da altura do texto no desktop */
-    }
-
-    /* Redimensionamento do Seletor no Desktop para melhor ergonomia visual */
+    /* Redimensionamento dos elementos para aproveitar o tamanho extra */
     .quantity-selector {
         min-width: 85px;
-        padding: 3px;
+        padding: 4px;
     }
 
     .qty-btn {
-        width: 24px;
-        height: 24px;
+        width: 26px;
+        height: 26px;
     }
 
     .qty-value {
         font-size: 0.95rem;
-        width: 20px;
+        width: 22px;
     }
 
     .add-cart-btn {
-        height: 32px;
-        font-size: 0.9rem;
+        height: 36px;
+        font-size: 0.85rem;
+        padding: 0 12px;
     }
 
-    .btn-see-more {
-        padding: 10px;
-    }
-
-    /* SHORT CATALOG SECTION */
     .short-catalog-section {
         margin: 20px 15rem;
     }
 
     .sc-scroll {
-        gap: 15px;
-        /* Aumentado o gap no desktop */
-        padding: 10px;
+        gap: 20px;
+        padding: 15px;
     }
 }

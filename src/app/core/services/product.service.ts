@@ -11,6 +11,7 @@ export interface Product {
   nome_categoria: string;
   descricao: string;
   quantidade: number;
+  data_criacao?: string;
 }
 
 @Injectable({ providedIn: 'root' })

@@ -34,6 +34,7 @@
 
 .f-txt-w {
     color: var(--white-color);
+    width: fit-content;
 }
 
 .footer-about {
