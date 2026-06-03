@@ -43,15 +43,11 @@
 
 .clear-search-link {
     display: block;
+    width: fit-content;
+    justify-self: center;
     text-align: center;
     margin-bottom: 1.5rem;
     color: var(--t-color-7);
-    font-size: 0.9rem;
-    text-decoration: underline;
-}
-
-.clear-search-link:hover {
-    color: var(--color-1);
 }
 
 /* --- GRID LAYOUT (MOBILE FIRST) --- */

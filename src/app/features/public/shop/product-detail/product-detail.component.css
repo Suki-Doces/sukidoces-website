@@ -160,6 +160,12 @@
     flex-grow: 1;
 }
 
+.btn-add-cart svg {
+    aspect-ratio: 1/1;
+    width: auto;
+    height: 36px;
+}
+
 .stock-info {
     font-size: 0.9rem;
 }
@@ -215,5 +221,10 @@
         width: 100%;
         min-height: 50px;
         /* Garante que o botão fique alto e fácil de tocar */
+    }
+
+    .btn-add-cart svg {
+        width: auto;
+        height: 24px;
     }
 }

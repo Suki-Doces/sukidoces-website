@@ -197,23 +197,16 @@
 }
 
 .hnv-search-form button {
-    background: var(--color-3);
-    border: none;
     border-radius: 17px;
     margin: 2px;
-    color: white;
     width: 40px;
-    height: auto;
+    height: 40px;
     display: flex;
+    padding: 0;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s;
     aspect-ratio: 1/1;
-}
-
-.hnv-search-form button:hover {
-    background: var(--color-1);
 }
 
 /* O grupo do botão + chat */

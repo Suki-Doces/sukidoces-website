@@ -87,10 +87,7 @@
 }
 
 .header-search-form>button {
-    background: var(--color-3);
-    border: none;
     border-radius: 10px;
-    color: var(--white-color);
     width: 32px;
     height: 32px;
     padding: 0.25rem;
@@ -98,11 +95,6 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s;
-}
-
-.header-search-form>button:hover {
-    background: var(--color-1);
 }
 
 /* Para telas com LARGURA MÍNIMA de 768px (tablets e desktops) */
