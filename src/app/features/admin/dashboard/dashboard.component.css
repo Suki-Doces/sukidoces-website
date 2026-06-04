@@ -448,6 +448,18 @@
     color: #721c24;
     border: 1px solid #f87171;
   }
+
+  .status.enviado {
+    background: #cce5ff;
+    color: #004085;
+    border: 1px solid #3b82f6; 
+  }
+
+  .status.entregue {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #86efac;
+  }
   
   /* ==========================================================================
      5. RESPONSIVIDADE
