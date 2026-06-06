@@ -8,8 +8,8 @@
 }
 
 /* Cabeçalho */
-#content-settings { margin-bottom: 24px; 
-border-bottom: 2px solid #ecf0f1; padding-bottom: 20px; }
+#content-settings { margin-bottom: 12px; 
+border-bottom: 2px solid #ecf0f1; padding-bottom: 12px; }
 #content-settings h1 { font-size: 2rem; color: #0f172a; font-weight: 800; margin-bottom: 6px; }
 .page-subtitle { color: #64748b; font-size: 0.95rem; }
 
@@ -17,7 +17,7 @@ border-bottom: 2px solid #ecf0f1; padding-bottom: 20px; }
 .settings-container {
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 30px;
+  padding: 20px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
   border: 1px solid #cbd5e1;
 }

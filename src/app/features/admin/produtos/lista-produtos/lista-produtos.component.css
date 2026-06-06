@@ -1,7 +1,7 @@
 /* Cabeçalho */
    #content-dashboard {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
     border-bottom: 2px solid #ecf0f1;
   }
   
@@ -31,7 +31,7 @@
   color: #fff;
   display: block; 
   width: fit-content;
-  margin: 0 auto 30px auto;
+  margin: 0 auto 15px auto;
   padding: 8px 16px;
   text-decoration: none;
   border-radius: 6px;
@@ -48,14 +48,14 @@
 .admin-product-form-container form {
   max-width: 500px; /* Reduzido de 600px para ficar mais compacto */
   margin: 0 auto;
-  padding: 30px;
+  padding: 20px;
   border-radius: 12px;
   background: #ffffff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
   border: 1px solid #f0f0f0;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Espaço entre os campos */
+  gap: 12px; /* Espaço entre os campos */
 }
 
 .admin-product-form-container form h3 {
