@@ -17,7 +17,8 @@ export class PainelConfiguracoesComponent implements OnInit {
   mensagemErro: string = '';
   
   // URL da foto padrão (pode vir do banco de dados no futuro)
-  fotoPerfil: string = 'assets/admin/default-avatar.png'; 
+  fotoPerfil: string = 'assets/admin/default-avatar.png';
+  fotoArquivo: File | null = null;
 
   // Injetando o HttpClient para conectar com o Node.js
   private http = inject(HttpClient);
@@ -63,37 +64,73 @@ export class PainelConfiguracoesComponent implements OnInit {
   }
 
   onFotoSelecionada(event: any) {
-    const file = event.target.files[0];
+  const file = event.target.files[0];
+
     if (file) {
+      // Guarda o arquivo real para envio
+      this.fotoArquivo = file;
+
+      // Preview da imagem
       this.fotoPerfil = URL.createObjectURL(file);
     }
   }
 
-  onSubmit() {
-    this.mensagemSucesso = '';
-    this.mensagemErro = '';
+onSubmit() {
+  this.mensagemSucesso = '';
+  this.mensagemErro = '';
 
-    if (this.configForm.invalid) {
-      this.mensagemErro = 'Por favor, preencha todos os campos corretamente.';
-      return;
-    }
-
-    const dadosAtualizados = this.configForm.value;
-
-    // CORRIGIDO: Rota de PUT exata onde o seu server.js está apontando
-    this.http.put(`${environment.apiUrl}/admin/configuracoes`, dadosAtualizados).subscribe({
-      next: () => {
-        this.mensagemSucesso = 'Alterações salvas com sucesso!';
-        this.configForm.patchValue({
-          senhaAtual: '',
-          novaSenha: '',
-          confirmaSenha: ''
-        });
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar perfil:', err);
-        this.mensagemErro = err.error?.mensagem || 'Erro ao salvar as configurações. Verifique sua senha atual.';
-      }
-    });
+  if (this.configForm.invalid) {
+    this.mensagemErro = 'Por favor, preencha todos os campos corretamente.';
+    return;
   }
-}
+
+  const formData = new FormData();
+
+  formData.append(
+    'nome',
+    this.configForm.get('nome')?.value || ''
+  );
+
+  formData.append(
+    'email',
+    this.configForm.get('email')?.value || ''
+  );
+
+  formData.append(
+    'senhaAtual',
+    this.configForm.get('senhaAtual')?.value || ''
+  );
+
+  formData.append(
+    'novaSenha',
+    this.configForm.get('novaSenha')?.value || ''
+  );
+
+  // Anexa a foto se existir
+  if (this.fotoArquivo) {
+    formData.append('foto_perfil', this.fotoArquivo);
+  }
+
+  // Envia os dados para o backend
+  this.http.put(
+    `${environment.apiUrl}/admin/configuracoes`,
+    formData
+  ).subscribe({
+    next: () => {
+      this.mensagemSucesso = 'Alterações salvas com sucesso!';
+
+      this.configForm.patchValue({
+        senhaAtual: '',
+        novaSenha: '',
+        confirmaSenha: ''
+      });
+    },
+    error: (err) => {
+      console.error('Erro ao atualizar perfil:', err);
+
+      this.mensagemErro =
+        err.error?.mensagem ||
+        'Erro ao salvar as configurações. Verifique sua senha atual.';
+    }
+  });
+}};
