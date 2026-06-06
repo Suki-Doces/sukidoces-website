@@ -30,6 +30,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   produtosDestaque: any[] = [];
   transacoes: any[] = [];
+  // Paginação das transações
+  paginaAtual = 1;
+  itensPorPagina = 5;
 
   isLoading = true;
   lastId = 0;
@@ -37,9 +40,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient) { }
 
+    get transacoesPaginadas(): any[] {
+      const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+      const fim = inicio + this.itensPorPagina;
+
+      return this.transacoes.slice(inicio, fim);
+    }
+
+    get totalPaginas(): number {
+      return Math.ceil(this.transacoes.length / this.itensPorPagina);
+    }
+
+    proximaPagina(): void {
+      if (this.paginaAtual < this.totalPaginas) {
+        this.paginaAtual++;
+      }
+    }
+
+    paginaAnterior(): void {
+      if (this.paginaAtual > 1) {
+        this.paginaAtual--;
+      }
+    }
+
   ngOnInit() {
     // Carrega dados reais na inicialização
-    this.carregarDashboard();
+    this.carregarDashboard()
 
     // Polling a cada 30 segundos para novos pedidos
     this.pollingSub = interval(30000).subscribe(() => {
@@ -83,7 +109,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.http.get<any>(this.API_URL).subscribe({
       next: (dados) => {
         this.resumo = dados.resumo;
-        this.produtosDestaque = dados.produtosDestaque;
+        this.produtosDestaque = [...dados.produtosDestaque]
+        .sort((a, b) => b.vendas - a.vendas)
+        .slice(0, 4);
         this.transacoes = dados.transacoes;
 
         // Atualiza o lastId para o polling saber de onde continuar
@@ -111,6 +139,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
           // Adiciona no topo da lista
           this.transacoes = [...novas, ...this.transacoes];
           this.lastId = Math.max(...novas.map(t => t.id_pedido));
+
+          if (this.paginaAtual > this.totalPaginas) {
+            this.paginaAtual = this.totalPaginas;
+          }
 
           // Atualiza contadores também
           this.resumo = dados.resumo;

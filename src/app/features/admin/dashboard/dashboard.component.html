@@ -156,7 +156,7 @@
           </tr>
         </thead>
         <tbody id="transactions-tbody">
-          <tr *ngFor="let tx of transacoes">
+          <tr *ngFor="let tx of transacoesPaginadas">
             <td>{{ tx.id_pedido }}</td>
             <td>{{ tx.cliente_nome }}</td>
             <td>{{ tx.data_pedido }}</td>
@@ -165,5 +165,22 @@
           </tr>
         </tbody>
       </table>
-    </section>
-  </footer>
+  <div class="pagination">
+  <button
+    (click)="paginaAnterior()"
+    [disabled]="paginaAtual === 1">
+    Anterior
+  </button>
+
+  <span>
+    Página {{ paginaAtual }} de {{ totalPaginas }}
+  </span>
+
+  <button
+    (click)="proximaPagina()"
+    [disabled]="paginaAtual === totalPaginas">
+    Próxima
+    </button>
+</div>
+</section>
+</footer>
