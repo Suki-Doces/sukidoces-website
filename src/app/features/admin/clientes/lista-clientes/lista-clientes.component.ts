@@ -31,7 +31,7 @@ export class ListaClientesComponent implements OnInit {
 
   // Paginação
   paginaAtual = 1;
-  limite = 10;
+  limite = 5;
   totalPaginas = 1;
 
   // Controles do Modal
