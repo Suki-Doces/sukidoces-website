@@ -125,3 +125,80 @@
 .btn-cancelar:hover { background: #bdc3c7; }
 .btn-salvar { background: #21c45d; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .btn-salvar:hover { background: #1da34e; }
+
+/* --- PAGINAÇÃO --- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.page-btn {
+  padding: 8px 16px;
+  background-color: #21c45d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: #1da34e;
+  transform: translateY(-2px);
+}
+
+.page-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-number {
+  padding: 8px 12px;
+  border: 2px solid #21c45d;
+  background-color: white;
+  color: #21c45d;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.page-number:hover {
+  background-color: #f0ffe7;
+  transform: translateY(-2px);
+}
+
+.page-number.active {
+  background-color: #21c45d;
+  color: white;
+  box-shadow: 0 4px 8px rgba(33, 196, 93, 0.3);
+}
+
+@media (max-width: 600px) {
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .page-btn {
+    width: 100%;
+  }
+
+  .page-numbers {
+    width: 100%;
+  }
+}

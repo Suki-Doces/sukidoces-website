@@ -4,6 +4,16 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
 
+interface PaginacaoClientes {
+  clientes: any[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 @Component({
   selector: 'app-lista-clientes',
   standalone: true,
@@ -19,6 +29,11 @@ export class ListaClientesComponent implements OnInit {
   totalClientes: number = 0;
   novosClientes: number = 0;
 
+  // Paginação
+  paginaAtual = 1;
+  limite = 10;
+  totalPaginas = 1;
+
   // Controles do Modal
   isModalOpen = false;
   isEditMode = false;
@@ -33,19 +48,34 @@ export class ListaClientesComponent implements OnInit {
   }
 
   carregarClientes() {
-    this.http.get<any[]>(this.apiUrl).subscribe({
+    this.http.get<PaginacaoClientes>(`${this.apiUrl}?page=${this.paginaAtual}&limit=${this.limite}`).subscribe({
       next: (dados) => {
-        this.clientes = dados;
+        this.clientes = dados.clientes;
+        this.totalClientes = dados.pagination.total;
+        this.totalPaginas = dados.pagination.totalPages;
         this.calcularEstatisticas();
       },
       error: (erro) => console.error('Erro ao buscar clientes:', erro)
     });
   }
 
+  mudarPagina(novaPagina: number) {
+    if (novaPagina > 0 && novaPagina <= this.totalPaginas) {
+      this.paginaAtual = novaPagina;
+      this.carregarClientes();
+    }
+  }
+
+  obterPaginasArray(): number[] {
+    const paginas: number[] = [];
+    for (let i = 1; i <= this.totalPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
+  }
+
   // O Angular calcula as estatísticas em milissegundos sem precisar de mais consultas SQL!
   calcularEstatisticas() {
-    this.totalClientes = this.clientes.length;
-    
     const seteDiasAtras = new Date();
     seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
     

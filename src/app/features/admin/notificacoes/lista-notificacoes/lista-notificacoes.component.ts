@@ -12,6 +12,17 @@ interface Notificacao {
   lida: boolean;
 }
 
+interface PaginacaoResponse {
+  notifications: any[];
+  unreadCount: number;
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 @Component({
   selector: 'app-lista-notificacoes',
   standalone: true,
@@ -23,6 +34,10 @@ export class ListaNotificacoesComponent implements OnInit {
   private http = inject(HttpClient);
   
   notificacoes: Notificacao[] = [];
+  paginaAtual = 1;
+  limite = 4;
+  totalPaginas = 1;
+  totalNotificacoes = 0;
 
   private apiUrl = `${environment.apiUrl}/admin/notificacoes`;
 
@@ -31,7 +46,7 @@ export class ListaNotificacoesComponent implements OnInit {
   }
 
   carregarNotificacoes() {
-    this.http.get<any>(this.apiUrl).subscribe({
+    this.http.get<PaginacaoResponse>(`${this.apiUrl}?page=${this.paginaAtual}&limit=${this.limite}`).subscribe({
       next: (dados) => {
         this.notificacoes = dados.notifications.map((n: any) => {
           return {
@@ -42,6 +57,10 @@ export class ListaNotificacoesComponent implements OnInit {
             lida: n.lido
           };
         });
+        
+        // Atualiza informações de paginação
+        this.totalNotificacoes = dados.pagination.total;
+        this.totalPaginas = dados.pagination.totalPages;
       },
       error: (erro) => {
         console.log('API de notificações não encontrada, usando dados de teste.', erro);
@@ -52,8 +71,25 @@ export class ListaNotificacoesComponent implements OnInit {
           { id: 3, mensagem: 'Acabou o estoque do produto Minalba 250ml', tempo: '1h ago', icone: 'assets/images/icons/Storage - Icon.svg', lida: true },
           { id: 4, mensagem: 'Novo cadastro! Larissa Almeida criou uma conta.', tempo: '2h ago', icone: 'assets/images/icons/User - Icon.svg', lida: true }
         ];
+        this.totalPaginas = 1;
+        this.totalNotificacoes = 4;
       }
     });
+  }
+
+  mudarPagina(novaPagina: number) {
+    if (novaPagina > 0 && novaPagina <= this.totalPaginas) {
+      this.paginaAtual = novaPagina;
+      this.carregarNotificacoes();
+    }
+  }
+
+  obterPaginasArray(): number[] {
+    const paginas: number[] = [];
+    for (let i = 1; i <= this.totalPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 
   // Função auxiliar para escolher o ícone com os caminhos corretos da pasta

@@ -5,6 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
+interface PaginacaoProdutos {
+  produtos: any[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 @Component({
   selector: 'app-controle-estoque',
   standalone: true,
@@ -21,6 +31,12 @@ export class ControleEstoqueComponent implements OnInit {
   isEditModalOpen = false;
   produtoEditado: any = {};
   novaFotoSelecionada: File | null = null;
+
+  // Paginação
+  paginaAtual = 1;
+  limite = 10;
+  totalPaginas = 1;
+  totalProdutos = 0;
 
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
@@ -55,12 +71,29 @@ export class ControleEstoqueComponent implements OnInit {
   }
 
   carregarProdutos() {
-    this.http.get<any[]>(`${environment.apiUrl}/produtos`).subscribe({
+    this.http.get<PaginacaoProdutos>(`${environment.apiUrl}/produtos?page=${this.paginaAtual}&limit=${this.limite}&isAdmin=true`).subscribe({
       next: (dados) => {
-        this.produtos = dados;
+        this.produtos = dados.produtos;
+        this.totalProdutos = dados.pagination.total;
+        this.totalPaginas = dados.pagination.totalPages;
       },
       error: (erro) => console.error('Erro ao buscar produtos do estoque:', erro)
     });
+  }
+
+  mudarPagina(novaPagina: number) {
+    if (novaPagina > 0 && novaPagina <= this.totalPaginas) {
+      this.paginaAtual = novaPagina;
+      this.carregarProdutos();
+    }
+  }
+
+  obterPaginasArray(): number[] {
+    const paginas: number[] = [];
+    for (let i = 1; i <= this.totalPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 
   getProductImage(imageURL: string | null): string {

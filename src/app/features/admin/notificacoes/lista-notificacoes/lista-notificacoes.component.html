@@ -25,5 +25,32 @@
       <button class="close-btn" (click)="fecharNotificacao(notificacao.id)">&times;</button>
     </div>
 
+    <!-- PAGINAÇÃO -->
+    <div class="pagination" *ngIf="totalPaginas > 1">
+      <button 
+        class="page-btn prev" 
+        (click)="mudarPagina(paginaAtual - 1)"
+        [disabled]="paginaAtual === 1">
+        ← Anterior
+      </button>
+
+      <div class="page-numbers">
+        <button 
+          *ngFor="let pagina of obterPaginasArray()"
+          class="page-number"
+          [class.active]="pagina === paginaAtual"
+          (click)="mudarPagina(pagina)">
+          {{ pagina }}
+        </button>
+      </div>
+
+      <button 
+        class="page-btn next" 
+        (click)="mudarPagina(paginaAtual + 1)"
+        [disabled]="paginaAtual === totalPaginas">
+        Próxima →
+      </button>
+    </div>
+
   </div>
 </div>
