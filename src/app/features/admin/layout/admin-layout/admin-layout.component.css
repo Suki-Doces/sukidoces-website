@@ -5,22 +5,38 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  flex-shrink: 0; /* Garante que a sidebar NUNCA mude de largura ou encolha */
+}
+
+.sidebar.collapsed {
+  width: 85px;
+}
+
 .main-content {
   flex: 1;
+  min-width: 0; /* Impede que o conteúdo da direita empurre ou deforme a sidebar */
   padding: 32px;
-  position: relative; /* Define o container como ponto de referência absoluto */
+  position: relative;
   overflow-y: auto;
 }
 
-/* Força o elemento do perfil a se posicionar no canto superior direito do main-content */
+/* Elemento do perfil posicionado no canto superior direito */
 .topbar-right {
   position: absolute;
-  top: 32px; /* Alinha verticalmente com a mesma altura do padding do seu H1 */
+  top: 32px;
   right: 32px;
   display: flex;
   align-items: center;
   gap: 12px;
-  z-index: 99; /* Garante que fique acima dos elementos da página */
+  z-index: 99;
 }
 
 .admin-nome {
@@ -38,7 +54,7 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  object-fit: cover; /* Recorta proporcionalmente fotos retangulares */
+  object-fit: cover;
   border: 2px solid #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -47,21 +63,6 @@
 .avatar-admin:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-}
-
-/* Sidebar e outros estilos existentes mantidos para integridade */
-.sidebar {
-  width: 260px;
-  background-color: #ffffff;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.sidebar.collapsed {
-  width: 85px;
 }
 
 .sidebar-header {
