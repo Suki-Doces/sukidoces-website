@@ -1,5 +1,3 @@
-
-
 /* Substituímos o 'body' pelo container principal para não afetar a loja pública */
 .admin-body {
     min-height: 100vh;
@@ -10,15 +8,13 @@
 
 .main-content {
     flex: 1 1 0%;
-    /* Aqui foi onde você mudou o último valor para 300px */
-    margin: 16px 16px 16px 300px; 
+    margin: 16px 16px 16px 300px;
     transition: margin 0.4s ease;
     width: 100%;
 }
 
 .sidebar.collapsed + .main-content {
-    /* E aqui foi onde você mudou para 140px */
-    margin-left: 140px; 
+    margin-left: 140px;
 }
 
 .content {
@@ -111,7 +107,7 @@
     transform: translateY(65px);
 }
 
-.sidebar-nav .nav-link  {
+.sidebar-nav .nav-link {
     color: #fff;
     display: flex;
     align-items: center;
@@ -142,6 +138,69 @@
     bottom: 30px;
     width: 100%;
 }
+
+
+/* ============================================
+   NOVO: Barra superior com foto do admin
+   Aparece em todas as páginas do painel
+   ============================================ */
+
+.admin-topbar {
+    width: 100%;
+    height: 68px;
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* foto fica sempre à direita */
+    padding: 0 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Nome do admin — exibido ao lado da foto */
+.admin-nome {
+    font-size: 14px;
+    font-weight: 500;
+    color: #151a2d;
+    white-space: nowrap;
+}
+
+/* Link que envolve a foto — vai para Configurações ao clicar */
+.avatar-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+/* Foto circular — igual à da tela de Configurações */
+.avatar-admin {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;          /* transforma em círculo */
+    object-fit: cover;           /* preenche sem distorcer */
+    border: 2px solid #e2e8f0;   /* borda cinza suave */
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+/* Efeito ao passar o mouse — sutil e profissional */
+.avatar-admin:hover {
+    border-color: #D4537E;       /* rosa da marca */
+    transform: scale(1.05);      /* leve zoom */
+}
+
+
+/* ============================================
+   RESPONSIVO: mobile e tablet
+   ============================================ */
 
 @media (max-width: 1024px) {
     .sidebar {
@@ -185,5 +244,21 @@
         gap: 10px;
         padding: 10px;
         font-size: 0.94rem;
+    }
+
+    /* Em mobile, esconde o nome e mantém só a foto */
+    .admin-nome {
+        display: none;
+    }
+
+    .admin-topbar {
+        height: 56px;
+        margin-bottom: 14px;
+        padding: 0 14px;
+    }
+
+    .avatar-admin {
+        width: 38px;
+        height: 38px;
     }
 }

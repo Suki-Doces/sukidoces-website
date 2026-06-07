@@ -86,6 +86,29 @@
   </aside>
 
   <main class="main-content">
+
+    <!-- NOVO: Barra superior com foto do admin -->
+    <!-- Aparece automaticamente em TODAS as páginas do painel -->
+    <header class="admin-topbar">
+      <div class="topbar-right">
+
+        <!-- Nome do admin — some quando o menu está recolhido em mobile -->
+        <span class="admin-nome">{{ nomeAdmin }}</span>
+
+        <!-- Foto circular — se não tiver foto salva, usa o ícone padrão -->
+        <a routerLink="/admin/configuracoes" class="avatar-link" title="Ir para Configurações">
+          <img
+            [src]="fotoAdminUrl || 'assets/images/icons/User - Icon.svg'"
+            alt="Foto do Administrador"
+            class="avatar-admin"
+          />
+        </a>
+
+      </div>
+    </header>
+    <!-- FIM da barra superior -->
+
     <router-outlet></router-outlet>
+
   </main>
 </div>
