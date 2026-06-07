@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../../core/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-layout',
@@ -15,42 +16,48 @@ import { environment } from 'src/environments/environment';
 export class AdminLayoutComponent implements OnInit {
   isCollapsed = false;
 
-  // NOVO: variáveis para a foto e o nome do admin
   fotoAdminUrl: string | null = null;
   nomeAdmin: string = 'Admin';
 
   private authService = inject(AuthService);
   private router = inject(Router);
-  private http = inject(HttpClient); // NOVO: injeta o HttpClient
+  private http = inject(HttpClient);
 
-  // NOVO: busca a foto assim que o layout carrega
   ngOnInit(): void {
-    // Escuta o usuário logado via AuthService
+    // Escuta o usuário logado inicialmente
     this.authService.currentUser$.subscribe(user => {
       if (!user?.id) return;
-
-      // Preenche o nome imediatamente com o que já está no token
       this.nomeAdmin = user.nome || 'Admin';
-
-      // Busca os dados completos do admin no backend (incluindo foto_perfil)
-      this.http.get<any>(`${environment.apiUrl}/admin/configuracoes/${user.id}`)
-        .subscribe({
-          next: (dados) => {
-            // Se o admin tiver foto salva, usa ela — senão mantém o ícone padrão
-            if (dados?.foto_perfil) {
-              this.fotoAdminUrl = dados.foto_perfil;
-            }
-            // Atualiza o nome com o que veio do banco (mais atualizado)
-            if (dados?.nome) {
-              this.nomeAdmin = dados.nome;
-            }
-          },
-          error: () => {
-            // Se a busca falhar (ex: backend offline), mantém a foto padrão
-            // O painel continua funcionando normalmente
-          }
-        });
+      this.carregarDadosAdmin();
     });
+
+    // Sempre que o administrador navegar entre as páginas, recarrega os dados
+    // Isso resolve o problema da foto não atualizar na hora após salvar as configurações!
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.carregarDadosAdmin();
+    });
+  }
+
+  carregarDadosAdmin(): void {
+    // URL Corrigida: Retirado o ID, pois o backend puxa o administrador direto pelo Token seguro
+    this.http.get<any>(`${environment.apiUrl}/admin/configuracoes`)
+      .subscribe({
+        next: (dados) => {
+          if (dados?.foto_perfil) {
+            this.fotoAdminUrl = dados.foto_perfil;
+          } else {
+            this.fotoAdminUrl = null;
+          }
+          if (dados?.nome) {
+            this.nomeAdmin = dados.nome;
+          }
+        },
+        error: (err) => {
+          console.error('Erro ao buscar dados atualizados do admin:', err);
+        }
+      });
   }
 
   toggleSidebar() {

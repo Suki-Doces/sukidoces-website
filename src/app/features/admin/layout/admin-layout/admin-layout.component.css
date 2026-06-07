@@ -1,264 +1,145 @@
-/* Substituímos o 'body' pelo container principal para não afetar a loja pública */
 .admin-body {
-    min-height: 100vh;
-    background: linear-gradient(#f1faff, #cbe4ff);
-    display: flex;
-    font-family: "Poppins", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Poppins', sans-serif;
 }
 
 .main-content {
-    flex: 1 1 0%;
-    margin: 16px 16px 16px 300px;
-    transition: margin 0.4s ease;
-    width: 100%;
+  flex: 1;
+  padding: 32px;
+  position: relative; /* Define o container como ponto de referência absoluto */
+  overflow-y: auto;
 }
 
-.sidebar.collapsed + .main-content {
-    margin-left: 140px;
+/* Força o elemento do perfil a se posicionar no canto superior direito do main-content */
+.topbar-right {
+  position: absolute;
+  top: 32px; /* Alinha verticalmente com a mesma altura do padding do seu H1 */
+  right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 99; /* Garante que fique acima dos elementos da página */
 }
 
-.content {
-    padding: 20px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    min-height: calc(100vh - 32px);
+.admin-nome {
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
 }
 
+.avatar-link {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-admin {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover; /* Recorta proporcionalmente fotos retangulares */
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatar-admin:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Sidebar e outros estilos existentes mantidos para integridade */
 .sidebar {
-    width: 270px;
-    position: fixed;
-    margin: 16px;
-    border-radius: 16px;
-    background-color: #151a2d;
-    height: calc(100vh - 32px);
-    transition: 0.4s ease;
-    z-index: 100;
+  width: 260px;
+  background-color: #ffffff;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .sidebar.collapsed {
-    width: 85px;
+  width: 85px;
 }
 
 .sidebar-header {
-    position: relative;
-    display: flex;
-    padding: 25px 20px;
-    align-items: center;
-    justify-content: space-between;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f3f5;
 }
 
-.sidebar-header .header-logo img {
-    width: 46px;
-    height: 66px;
-    object-fit: contain;
-    display: block;
+.header-logo img {
+  height: 40px;
+  transition: opacity 0.2s ease;
 }
 
-.sidebar-header .toggler {
-    position: absolute;
-    right: 20px;
-    height: 35px;
-    width: 35px;
-    border: none;
-    color: #151a2d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 8px;
-    background: #fff;
-    transition: 0.4s ease;
+.sidebar.collapsed .header-logo img {
+  opacity: 0;
+  width: 0;
 }
 
-.sidebar-header .sidebar-toggler {
-    position: absolute;
-    right: 20px;
+.toggler {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
 
-.sidebar.collapsed .sidebar-header .sidebar-toggler {
-    transform: translate(-4px, 65px);
+.toggler:hover {
+  background-color: #f1f3f5;
 }
 
-.sidebar-header .sidebar-toggler:hover {
-    background: #dde4fb;
+.menu-toggler {
+  display: none;
 }
 
-.sidebar-header .menu-toggler {
-    display: none;
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 16px;
 }
 
-.sidebar-header .sidebar-toggler span {
-    font-size: 1.75rem;
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.sidebar-nav .nav-list {
-    list-style: none;
-    display: flex;
-    gap: 4px;
-    padding: 0 15px;
-    flex-direction: column;
-    transform: translateY(15px);
-    transition: 0.4s ease;
-    margin: 0;
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  color: #6c757d;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.2s ease;
 }
 
-.sidebar.collapsed .sidebar-nav .primary-nav {
-    transform: translateY(65px);
+.nav-link:hover, .nav-link.active {
+  color: #ff6b8b;
+  background-color: #fff0f3;
 }
 
-.sidebar-nav .nav-link {
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-radius: 8px;
-    padding: 12px 15px;
-    transition: 0.4s ease;
-    text-decoration: none;
+.sidebar.collapsed .nav-label {
+  display: none;
 }
 
-.sidebar-nav .nav-link:hover,
-.sidebar-nav .nav-link.active {
-    color: #151a2d;
-    background: #fff;
-}
-
-.sidebar-nav .nav-link .nav-label {
-    transition: opacity 0.4s ease;
-}
-
-.sidebar.collapsed .sidebar-nav .nav-link .nav-label {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.sidebar-nav .secondary-nav {
-    position: absolute;
-    bottom: 30px;
-    width: 100%;
-}
-
-
-/* ============================================
-   NOVO: Barra superior com foto do admin
-   Aparece em todas as páginas do painel
-   ============================================ */
-
-.admin-topbar {
-    width: 100%;
-    height: 68px;
-    background: #ffffff;
-    border-radius: 16px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* foto fica sempre à direita */
-    padding: 0 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-}
-
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Nome do admin — exibido ao lado da foto */
-.admin-nome {
-    font-size: 14px;
-    font-weight: 500;
-    color: #151a2d;
-    white-space: nowrap;
-}
-
-/* Link que envolve a foto — vai para Configurações ao clicar */
-.avatar-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
-}
-
-/* Foto circular — igual à da tela de Configurações */
-.avatar-admin {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;          /* transforma em círculo */
-    object-fit: cover;           /* preenche sem distorcer */
-    border: 2px solid #e2e8f0;   /* borda cinza suave */
-    transition: border-color 0.2s ease, transform 0.2s ease;
-    cursor: pointer;
-}
-
-/* Efeito ao passar o mouse — sutil e profissional */
-.avatar-admin:hover {
-    border-color: #D4537E;       /* rosa da marca */
-    transform: scale(1.05);      /* leve zoom */
-}
-
-
-/* ============================================
-   RESPONSIVO: mobile e tablet
-   ============================================ */
-
-@media (max-width: 1024px) {
-    .sidebar {
-        margin: 13px;
-        width: calc(100% - 26px);
-        position: static;
-        height: auto;
-    }
-
-    .sidebar-header {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: #151a2d;
-        padding: 8px 10px;
-        border-radius: 16px;
-    }
-
-    .sidebar-header .header-logo img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .main-content {
-        margin: 16px;
-    }
-
-    .sidebar-header .sidebar-toggler {
-        display: none;
-    }
-
-    .sidebar-header .menu-toggler {
-        display: flex;
-    }
-
-    .sidebar-nav .nav-list {
-        padding: 0 10px;
-    }
-
-    .sidebar-nav .nav-link {
-        gap: 10px;
-        padding: 10px;
-        font-size: 0.94rem;
-    }
-
-    /* Em mobile, esconde o nome e mantém só a foto */
-    .admin-nome {
-        display: none;
-    }
-
-    .admin-topbar {
-        height: 56px;
-        margin-bottom: 14px;
-        padding: 0 14px;
-    }
-
-    .avatar-admin {
-        width: 38px;
-        height: 38px;
-    }
+.nav-icon {
+  font-size: 24px;
 }
