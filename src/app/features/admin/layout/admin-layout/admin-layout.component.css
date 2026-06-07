@@ -1,19 +1,22 @@
 .admin-body {
   display: flex;
-  min-height: 100vh;
+  height: 100vh; /* MUDANÇA CRUCIAL: Trava a altura para ser exatamente a da tela do monitor */
   background-color: #f4f6f9;
   font-family: 'Poppins', sans-serif;
+  overflow: hidden; /* Impede que a página inteira crie uma barra de rolagem */
 }
 
 .sidebar {
   width: 260px;
+  height: 100vh; /* A barra lateral fica fixa na altura do monitor */
   background-color: #ffffff;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  flex-shrink: 0; /* Garante que a sidebar NUNCA mude de largura ou encolha */
+  flex-shrink: 0; 
+  z-index: 100; /* Garante que fica acima do conteúdo */
 }
 
 .sidebar.collapsed {
@@ -22,13 +25,15 @@
 
 .main-content {
   flex: 1;
-  min-width: 0; /* Impede que o conteúdo da direita empurre ou deforme a sidebar */
+  height: 100vh; /* O conteúdo da direita ocupa a altura da tela... */
+  min-width: 0; 
   padding: 32px;
   position: relative;
-  overflow-y: auto;
+  overflow-y: auto; /* ...e SÓ ELE ganha barra de rolagem se os dados do banco forem grandes! */
+  overflow-x: hidden;
 }
 
-/* Elemento do perfil posicionado no canto superior direito */
+/* Elemento do perfil flutuante e fixo no conteúdo */
 .topbar-right {
   position: absolute;
   top: 32px;
