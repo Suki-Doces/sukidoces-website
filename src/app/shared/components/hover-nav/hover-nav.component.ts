@@ -15,6 +15,8 @@ import { CartService } from 'src/app/core/services/cart.service';
   styleUrl: './hover-nav.component.css'
 })
 export class HoverNavComponent implements OnInit {
+  user: any = null;
+
   isLoggedIn: boolean = false;
   isChatOpen: boolean = false;
   displayName: string = 'Perfil';
@@ -70,13 +72,18 @@ export class HoverNavComponent implements OnInit {
     // Lógica importada idêntica ao Header
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
+
       if (user) {
+        this.user = user; // <--- ADICIONE ESTA LINHA PARA GUARDAR O UTILIZADOR COM A FOTO
+
         const parts = user.nome.trim().split(' ');
         this.displayName = parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1]}` : parts[0];
       } else {
+        this.user = null; // <-- Limpa o utilizador se fizer logout
         this.displayName = 'Perfil';
       }
     });
+
     this.cartService.cart$.subscribe(items => {
       this.cartTotal = items.reduce((total, item) => total + (item.product.preco * item.quantity), 0);
     });
