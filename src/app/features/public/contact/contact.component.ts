@@ -2,94 +2,84 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { NgxMaskDirective } from 'ngx-mask';
-
-interface ContactMessage {
-  id_contato: number;
-  nome: string;
-  email: string;
-  telefone: string;
-  assunto: string;
-  mensagem: string;
-  respondido: boolean;
-  resposta: string | null;
-  data_criacao: string;
-  data_resposta: string | null;
-}
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
   contactForm!: FormGroup;
-  isSubmitting = false;
-  successMessage = false;
+  isLoading = false;
+  successMessage = '';
   errorMessage = '';
-  messages: ContactMessage[] = [];
-  loadingHistory = false;
-  historyError = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
+    // 1. Inicialização do formulário reativo com suas respectivas validações
     this.contactForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
+      nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      telefone: ['', [Validators.required]],
-      assunto: ['duvida', Validators.required],
-      mensagem: ['', [Validators.required, Validators.minLength(10)]]
+      cpf: [''],
+      assunto: ['', Validators.required],
+      mensagem: ['', Validators.required]
     });
 
-    this.carregarHistorico();
-  }
-
-  get f() { return this.contactForm.controls; }
-
-  private carregarHistorico(): void {
-    if (!localStorage.getItem('suki_token')) {
-      return;
-    }
-
-    this.loadingHistory = true;
-    this.historyError = '';
-
-    this.http.get<{ messages: ContactMessage[] }>(`${environment.apiUrl}/contatos/me`).subscribe({
-      next: (res) => {
-        this.messages = res.messages;
-        this.loadingHistory = false;
+    // 2. Busca automática dos dados de perfil do usuário logado para auto-preenchimento
+    this.userService.getProfile().subscribe({
+      next: (res: any) => {
+        const userData = res.user || res;
+        if (userData) {
+          this.contactForm.patchValue({
+            nome: userData.nome || '',
+            email: userData.email || '',
+            cpf: userData.cpf || ''
+          });
+        }
       },
       error: (err) => {
-        this.historyError = err.error?.message || 'Não foi possível carregar o histórico de mensagens.';
-        this.loadingHistory = false;
+        // Logado silenciosamente para permitir que usuários anônimos preencham o formulário manualmente
+        console.log('Visitante não autenticado ou erro ao recuperar perfil.');
       }
     });
   }
 
-  onSubmit(): void {
+  enviarMensagem(): void {
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
       return;
     }
 
-    this.isSubmitting = true;
+    this.isLoading = true;
+    this.successMessage = '';
     this.errorMessage = '';
 
-    this.http.post<{ message: string }>(`${environment.apiUrl}/contatos`, this.contactForm.value).subscribe({
+    // Lógica de envio do formulário para o backend de contatos
+    this.http.post('/api/contato', this.contactForm.value).subscribe({
       next: () => {
-        this.isSubmitting = false;
-        this.successMessage = true;
-        this.contactForm.reset({ assunto: 'duvida' });
-        this.carregarHistorico();
-        setTimeout(() => this.successMessage = false, 5000);
+        this.isLoading = false;
+        this.successMessage = 'Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.';
+        // Reseta o formulário mantendo as informações de quem está logado
+        const rawValues = this.contactForm.getRawValue();
+        this.contactForm.reset({
+          nome: rawValues.nome,
+          email: rawValues.email,
+          cpf: rawValues.cpf,
+          assunto: '',
+          mensagem: ''
+        });
       },
       error: (err) => {
-        this.isSubmitting = false;
-        this.errorMessage = err.error?.message || 'Erro ao enviar a mensagem. Tente novamente.';
+        this.isLoading = false;
+        this.errorMessage = err.error?.mensagem || 'Ocorreu um erro ao enviar sua mensagem. Tente novamente.';
       }
     });
   }
