@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 
-// Servicos
-import { CartService, CartItem } from 'src/app/core/services/cart.service';
+// Serviços
+import { CartService, CartItem, CartSummary } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
@@ -19,7 +19,10 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
-  cartTotal: number = 0;
+  
+  // 🪄 PROBLEMA 1 RESOLVIDO: O componente agora recebe os três valores calculados
+  cartSummary: CartSummary = { subtotal: 0, frete: 0, total: 0 };
+  
   readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
   constructor(
@@ -30,13 +33,18 @@ export class CartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Subscreve a lista de itens
     this.cartService.cart$.subscribe(items => {
       this.cartItems = items;
-      this.cartTotal = this.cartService.getTotal();
+    });
+
+    // 🪄 PROBLEMA 1 RESOLVIDO: Subscreve o resumo financeiro exato
+    this.cartService.cartSummary$.subscribe(summary => {
+      this.cartSummary = summary;
     });
   }
 
-  //Retorna a URL completa da imagem do produto ou a imagem padrão se não houver
+  // Retorna a URL completa da imagem do produto ou a imagem padrão se não houver
   getProductImage(imageURL: string | null): string {
     if (!imageURL) {
       return this.defaultImage;

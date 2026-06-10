@@ -12,6 +12,12 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface CartSummary {
+  subtotal: number;
+  frete: number;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,6 +27,10 @@ export class CartService {
 
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
+
+  // 🪄 PROBLEMA 1 RESOLVIDO: Estado global para os totais do carrinho incluindo frete
+  private cartSummarySubject = new BehaviorSubject<CartSummary>({ subtotal: 0, frete: 0, total: 0 });
+  cartSummary$ = this.cartSummarySubject.asObservable();
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.loadCart(); // Mudamos para uma função genérica de carregamento
@@ -38,7 +48,8 @@ export class CartService {
   }
 
   private loadCartFromServer(): void {
-    this.http.get<{ cartItems: any[], total: number }>(this.apiUrl).subscribe({
+    // 🪄 PROBLEMA 1 RESOLVIDO: Mapeia também os totais enviados pelo Node.js
+    this.http.get<{ cartItems: any[], subtotal: number, frete: number, total: number }>(this.apiUrl).subscribe({
       next: (response) => {
         const items: CartItem[] = response.cartItems.map(item => ({
           id: item.id,
@@ -46,6 +57,13 @@ export class CartService {
           quantity: item.quantidade
         }));
         this.cartSubject.next(items);
+
+        // Puxa o cálculo financeiro blindado que veio do Back-end
+        this.cartSummarySubject.next({
+          subtotal: response.subtotal || 0,
+          frete: response.frete || 0,
+          total: response.total || 0
+        });
       },
       error: (err) => console.error('Erro ao carregar carrinho:', err)
     });
@@ -55,11 +73,26 @@ export class CartService {
     const cartData = localStorage.getItem(this.guestCartKey);
     const items: CartItem[] = cartData ? JSON.parse(cartData) : [];
     this.cartSubject.next(items);
+    this.updateLocalSummary(items);
   }
 
   private saveCartToLocalStorage(items: CartItem[]): void {
     localStorage.setItem(this.guestCartKey, JSON.stringify(items));
     this.cartSubject.next(items); // Atualiza os componentes que estão escutando o carrinho em tempo real
+    this.updateLocalSummary(items);
+  }
+
+  // 🪄 PROBLEMA 1 RESOLVIDO: Espelha a regra de frete do Back-end para usuários deslogados
+  private updateLocalSummary(items: CartItem[]): void {
+    const subtotal = items.reduce((sum, item) => sum + (item.product.preco * item.quantity), 0);
+    let frete = 0;
+    
+    if (subtotal > 0 && subtotal < 50) {
+      frete = 8.90; // Regra de negócio (frete aplicado se menor que R$ 50)
+    }
+
+    const total = subtotal + frete;
+    this.cartSummarySubject.next({ subtotal, frete, total });
   }
 
   // ==========================================
@@ -120,7 +153,7 @@ export class CartService {
   }
 
   // ==========================================
-  // VALIDAÇÕES
+  // VALIDAÇÕES E TOTAIS
   // ==========================================
   getItemQuantity(productId: number): number {
     const items = this.cartSubject.value;
@@ -128,19 +161,24 @@ export class CartService {
     return item ? item.quantity : 0;
   }
 
+  // 🪄 PROBLEMA 1 RESOLVIDO: O front-end agora busca o total consolidado e exato
   getTotal(): number {
-    return this.cartSubject.value.reduce((total, item) => total + (item.product.preco * item.quantity), 0);
+    return this.cartSummarySubject.value.total;
   }
 
   clearCart() {
     if (this.authService.isLoggedIn()) {
       this.http.delete(this.apiUrl).subscribe({
-        next: () => this.cartSubject.next([]),
+        next: () => {
+          this.cartSubject.next([]);
+          this.cartSummarySubject.next({ subtotal: 0, frete: 0, total: 0 });
+        },
         error: (err) => console.error('Erro ao esvaziar:', err)
       });
     } else {
       localStorage.removeItem(this.guestCartKey);
       this.cartSubject.next([]);
+      this.cartSummarySubject.next({ subtotal: 0, frete: 0, total: 0 });
     }
   }
 
@@ -152,19 +190,14 @@ export class CartService {
     const items: CartItem[] = cartData ? JSON.parse(cartData) : [];
 
     if (items.length > 0) {
-
-      // 1. APAGA IMEDIATAMENTE: Assim garantimos que o storage fica limpo
-      // e o utilizador não duplica itens se recarregar a página sem querer.
-      localStorage.removeItem(this.guestCartKey);
-
       from(items).pipe(
         concatMap(item => {
           const body = { id_produto: item.product.id_produto, quantidade: item.quantity };
           return this.http.post(`${this.apiUrl}/add`, body);
         }),
         finalize(() => {
-          // 2. O 'finalize' é o nosso salva-vidas. Ele garante que a lista 
-          // oficial será recarregada, quer as requisições tenham tido sucesso ou erro.
+          // O 'finalize' é o nosso salva-vidas. Ele garante que a lista oficial 
+          // será recarregada, quer as requisições tenham tido sucesso ou erro.
           this.loadCartFromServer();
         })
       ).subscribe({
@@ -173,6 +206,11 @@ export class CartService {
         },
         error: (err) => {
           console.error('Aviso ao sincronizar um dos itens do carrinho:', err);
+        },
+        complete: () => {
+          // 🪄 PROBLEMA 3 RESOLVIDO: O carrinho do visitante SÓ é apagado 
+          // quando o servidor processou a lista toda e não houve quebra na internet.
+          localStorage.removeItem(this.guestCartKey);
         }
       });
 

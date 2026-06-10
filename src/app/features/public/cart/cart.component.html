@@ -73,25 +73,27 @@
 
                 <div class="summary-row">
                     <span>Subtotal</span>
-                    <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+                    <span>{{ cartSummary.subtotal | currency:'BRL':'symbol':'1.2-2' }}</span>
                 </div>
 
                 <div class="summary-row">
                     <span>Frete</span>
-                    <span
-                        style="font-size: 0.85rem; color: var(--t-color-7); font-family: 'Inter', sans-serif;">Calculado
-                        no Checkout</span>
+                    <span *ngIf="cartSummary.frete > 0">{{ cartSummary.frete | currency:'BRL':'symbol':'1.2-2' }}</span>
+                    <span *ngIf="cartSummary.frete === 0"
+                        style="font-size: 0.85rem; color: var(--color-1); font-family: 'Inter', sans-serif; font-weight: 600;">
+                        {{ cartSummary.subtotal >= 50 ? 'Grátis' : 'Calculado no Checkout' }}
+                    </span>
                 </div>
 
                 <hr class="summary-divider">
 
                 <div class="summary-total">
-                    <span>Total Parcial</span>
-                    <span>{{ cartTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+                    <span>Total Final</span>
+                    <span>{{ cartSummary.total | currency:'BRL':'symbol':'1.2-2' }}</span>
                 </div>
 
                 <div class="flex-col summary-actions">
-                    <button type="button" class="btn btn-glass btn-primary full-width-btn" routerLink="/checkout">
+                    <button type="button" class="btn btn-glass btn-primary full-width-btn" (click)="goToCheckout()">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g stroke-width="0" />
                             <g stroke-linecap="round" stroke-linejoin="round" />
