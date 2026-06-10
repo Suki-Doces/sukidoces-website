@@ -67,10 +67,17 @@
     color: var(--t-color-5);
 }
 
-.hnv-button svg {
+.hnv-button svg, .hnv-button img {
     width: 26px;
     height: 26px;
     transition: transform 0.3s ease;
+}
+
+/* Estilos exclusivos da imagem para mantê-la redonda e sem distorcer */
+.hnv-button img {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--black-opacity-50);
 }
 
 .hnv-button p {
@@ -87,7 +94,9 @@
 }
 
 .hnv-button:hover svg,
-.hnv-button.active svg {
+.hnv-button.active svg,
+.hnv-button:hover img,
+.hnv-button.active img {
     transform: scale(1.1);
 }
 
@@ -140,14 +149,15 @@
     bottom: calc(100% + 15px);
     right: calc(-200% - 5px);
     /* FIX: Mantém o translateX para evitar o deslize lateral bugado */
-    transform: translateX(0%) translateY(10px); 
-    
+    transform: translateX(0%) translateY(10px);
+
     width: 350px;
     display: flex;
-    flex-direction: row; /* Coloca pesquisa/chat ao lado do botão se desejar */
+    flex-direction: row;
+    /* Coloca pesquisa/chat ao lado do botão se desejar */
     align-items: flex-end;
     gap: 10px;
-    
+
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -168,7 +178,8 @@
 
 .hnv-search-container {
     width: 100%;
-    background-color: #f7b5ccb3; /* O seu rosa atual */
+    background-color: #f7b5ccb3;
+    /* O seu rosa atual */
     padding: 2px;
     border-radius: 20px;
 }

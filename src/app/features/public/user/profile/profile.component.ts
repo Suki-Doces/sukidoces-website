@@ -25,6 +25,9 @@ export class ProfileComponent implements OnInit {
   user: any;
   pedidos: any[] = [];
 
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
+
   // Estados de UI
   isLoading: boolean = false;
   message: { type: 'success' | 'error', text: string } | null = null;
@@ -86,6 +89,11 @@ export class ProfileComponent implements OnInit {
 
         if (databd) {
           this.user = databd;
+
+          if (databd.foto_perfil) {
+            this.imagePreview = databd.foto_perfil;
+          }
+
           this.loadOrders();
 
           let cep = '', rua = '', numero = '', complemento = '', bairro = '', cidade = '', estado = '';
@@ -142,6 +150,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  triggerFileInput(): void {
+    document.getElementById('fileInput')?.click();
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreview = reader.result as string;
+      reader.readAsDataURL(file);
+    }
+  }
+
   // ==========================================
   // ATUALIZAR PERFIL
   // ==========================================
@@ -155,64 +177,49 @@ export class ProfileComponent implements OnInit {
     this.message = null;
 
     const formValue = this.profileForm.getRawValue();
-
-    // 1. Tratamento seguro da Data de Nascimento (ISO 8601 para o Prisma)
     let dataNascimentoPrisma = null;
     if (formValue.data_nascimento && formValue.data_nascimento.trim() !== '') {
-      // Converte 'YYYY-MM-DD' para o formato Date que o Prisma aceita nativamente
       dataNascimentoPrisma = new Date(formValue.data_nascimento).toISOString();
     }
 
-    // Empacota o endereço num Array, EXATAMENTE como o Checkout espera
-    const cidadeEstadoFormatado = formValue.cidade && formValue.estado
-      ? `${formValue.cidade} - ${formValue.estado}`
-      : '';
+    // Usar FormData para permitir o envio da imagem
+    const formData = new FormData();
+    formData.append('nome', formValue.nome);
+    if (formValue.telefone) formData.append('telefone', formValue.telefone);
+    if (formValue.cpf) formData.append('cpf', formValue.cpf);
+    if (dataNascimentoPrisma) formData.append('data_nascimento', dataNascimentoPrisma);
 
-    const enderecoFormatado = [
-      formValue.cep,
-      formValue.rua,
-      formValue.numero,
-      formValue.complemento,
-      formValue.bairro,
-      cidadeEstadoFormatado
-    ];
-
-    // Monta o objeto padronizado do Utilizador
-    const dadosParaAtualizar = {
-      id_usuario: this.user.id_usuario || this.user.id,
-      nome: formValue.nome,
-      telefone: formValue.telefone,
-      cpf: formValue.cpf,
-      data_nascimento: dataNascimentoPrisma,
-      enderecos: {
-        update: {
-          where: {
-            // O Prisma agora saberá qual registro específico atualizar
-            id_endereco: this.user.id_endereco_atual
-          },
-          data: {
-            cep: formValue.cep,
-            logradouro: formValue.rua,
-            numero: formValue.numero,
-            complemento: formValue.complemento,
-            bairro: formValue.bairro,
-            cidade: formValue.cidade, // Ajuste para bater com o seu schema
-            estado: formValue.estado
-          }
+    const enderecosUpdate = {
+      update: {
+        where: { id_endereco: this.user.id_endereco_atual },
+        data: {
+          cep: formValue.cep,
+          logradouro: formValue.rua,
+          numero: formValue.numero,
+          complemento: formValue.complemento,
+          bairro: formValue.bairro,
+          cidade: formValue.cidade,
+          estado: formValue.estado
         }
       }
     };
+    // Transformar objeto complexo numa string JSON para o backend processar
+    formData.append('enderecos', JSON.stringify(enderecosUpdate));
 
-    this.userService.updateProfile(dadosParaAtualizar as any)
+    // Se o cliente selecionou uma nova foto
+    if (this.selectedFile) {
+      formData.append('foto_perfil', this.selectedFile);
+    }
+
+    this.userService.updateProfile(formData)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (res: any) => {
           this.message = { type: 'success', text: 'Dados e endereço guardados com sucesso!' };
 
-          // Atualiza o localStorage para o Checkout ler perfeitamente
           this.authService.updateUserInStorage({
             ...this.user,
-            ...dadosParaAtualizar,
+            ...res.user // Atualiza o utilizador local com os dados vindos do servidor (incluindo a nova foto)
           });
 
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -221,7 +228,7 @@ export class ProfileComponent implements OnInit {
           console.error('Erro ao atualizar:', err);
           this.message = {
             type: 'error',
-            text: err.error?.message || 'Ocorreu um erro ao atualizar os dados no servidor.'
+            text: err.error?.message || 'Ocorreu um erro ao atualizar os dados.'
           };
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }

@@ -25,7 +25,7 @@ export class UserService {
         return this.http.get<UserProfile>(`${this.API_URL}/perfil`);
     }
 
-    updateProfile(profileData: Partial<UserProfile>): Observable<any> {
+    updateProfile(profileData: Partial<UserProfile> | FormData): Observable<any> {
         return this.http.put(`${this.API_URL}/perfil`, profileData);
     }
     // Função para alterar a senha

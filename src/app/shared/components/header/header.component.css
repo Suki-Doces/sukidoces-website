@@ -1,6 +1,6 @@
 :host {
     position: sticky;
-    top: 0;
+    top: 10px;
     display: flex;
     height: 90px;
     align-items: center;
@@ -8,11 +8,12 @@
     padding: 20px;
 
     background-color: transparent;
-    border-radius: 0 0 20px 20px;
+    border-radius: 30px;
 
     box-shadow: var(--box-shadow) 0 4px 4px;
     box-sizing: border-box;
     z-index: 10;
+    margin: 10px;
 }
 
 :host::before {
@@ -20,12 +21,12 @@
     position: absolute;
     inset: 0;
     /* Substitui top/left/right/bottom: 0 */
-    border-radius: 0 0 19px 19px;
+    border-radius: 29px;
     /* Mantém as bordas do pai, se houver */
     background: var(--gls-color-1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    border-bottom: 1px solid rgba(255, 194, 227, 0.4);
+    border: 1px solid rgba(255, 194, 227, 0.4);
     z-index: -1;
 }
 
@@ -99,17 +100,6 @@
 
 /* Para telas com LARGURA MÍNIMA de 768px (tablets e desktops) */
 @media (min-width: 1050px) {
-    :host {
-        margin: 10px;
-        top: 10px;
-        border-radius: 30px;
-    }
-
-    :host::before {
-        border-radius: calc(30px - 1px);
-        /* Mantém as bordas do pai, se houver */
-        border: 1px solid rgba(255, 194, 227, 0.4);
-    }
 
     .hdr-desktop-view,
     :host>nav {
