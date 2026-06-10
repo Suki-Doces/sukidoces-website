@@ -22,5 +22,15 @@
   <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
   </script>
+  <script>
+        // Altera o título quando o usuário tenta sair da página
+        window.onblur = function() {
+          document.title = "Volte aqui! Estamos te esperando!";
+        };
+        // Restaura o título original quando o usuário volta para a página
+        window.onfocus = function() {
+          document.title = "Loja Suki Doces";
+        };
+    </script>
 </body>
 </html>
