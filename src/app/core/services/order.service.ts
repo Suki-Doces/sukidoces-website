@@ -47,6 +47,6 @@ export class OrderService {
 
   // 🪄 NOVO: Cliente: tenta pagar novamente um pedido pendente
   retryPayment(orderId: number): Observable<any> {
-    return this.http.post(`${this.API_URL}/usuario/pedidos/${orderId}/pagar`, {});
+    return this.http.post(`${this.API_URL}/pedidos/${orderId}/pagar`, {});
   }
 }
