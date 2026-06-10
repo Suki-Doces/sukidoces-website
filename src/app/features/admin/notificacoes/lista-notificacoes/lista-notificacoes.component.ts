@@ -94,13 +94,16 @@ export class ListaNotificacoesComponent implements OnInit {
 
   // Função auxiliar para escolher o ícone com os caminhos corretos da pasta
   getIconePorTipo(tipo: string): string {
-    switch(tipo) {
-      case 'usuario': return 'assets/images/icons/User - Icon.svg';
-      case 'pedido': return 'assets/images/icons/Payment - icon.svg';
-      case 'carrinho': return 'assets/images/icons/Storage - Icon.svg'; // Utilizando o ícone de Storage (Estoque) aqui
-      default: return 'assets/images/icons/Message - icon.svg'; // Utilizando o Message Icon como padrão para notificações
-    }
+  switch(tipo) {
+    case 'usuario': return 'assets/images/icons/User - Icon.svg';
+    case 'pedido': 
+    case 'venda': // 💡 Assim você abrange a palavra salva pelo Checkout inicial
+    case 'sistema': // 💡 Assim você abrange a atualização de status
+         return 'assets/images/icons/Payment - icon.svg';
+    case 'carrinho': return 'assets/images/icons/Storage - Icon.svg';
+    default: return 'assets/images/icons/Message - icon.svg';
   }
+}
 
   marcarTodasComoLidas() {
     this.http.put(`${this.apiUrl}/read-all`, {}).subscribe({

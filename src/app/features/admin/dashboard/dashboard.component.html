@@ -159,7 +159,7 @@
           <tr *ngFor="let tx of transacoesPaginadas">
             <td>{{ tx.id_pedido }}</td>
             <td>{{ tx.cliente_nome }}</td>
-            <td>{{ tx.data_pedido }}</td>
+            <td>{{ tx.data_pedido | date:'dd/MM HH:mm' }}</td>
             <td><span class="status" [ngClass]="tx.status.toLowerCase()">{{ tx.status | titlecase }}</span></td>
             <td><strong>{{ tx.valor_total | currency:'BRL':'symbol':'1.2-2' }}</strong></td>
           </tr>
