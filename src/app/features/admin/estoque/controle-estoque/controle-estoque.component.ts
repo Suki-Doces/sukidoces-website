@@ -71,7 +71,8 @@ export class ControleEstoqueComponent implements OnInit {
   }
 
   carregarProdutos() {
-    this.http.get<PaginacaoProdutos>(`${environment.apiUrl}/produtos?page=${this.paginaAtual}&limit=${this.limite}&isAdmin=true`).subscribe({
+    // 💡 Adicionado &filtro=novos para listar do mais recente para o mais antigo
+    this.http.get<PaginacaoProdutos>(`${environment.apiUrl}/produtos?page=${this.paginaAtual}&limit=${this.limite}&isAdmin=true&filtro=novos`).subscribe({
       next: (dados) => {
         this.produtos = dados.produtos;
         this.totalProdutos = dados.pagination.total;

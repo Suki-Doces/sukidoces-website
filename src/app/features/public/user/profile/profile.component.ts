@@ -352,4 +352,44 @@ export class ProfileComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  // ==========================================
+  // 🪄 NOVAS FUNÇÕES: GERENCIAMENTO DE COMPRAS
+  // ==========================================
+
+  pagarNovamente(pedido: any): void {
+    this.message = { type: 'success', text: `Iniciando pagamento do pedido #${pedido.id_pedido}...` };
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    this.orderService.retryPayment(pedido.id_pedido).subscribe({
+      next: () => {
+        this.message = { type: 'success', text: 'Processo de pagamento acionado com sucesso!' };
+        this.loadOrders(); // Recarrega a lista para atualizar o status
+        setTimeout(() => this.message = null, 4000);
+      },
+      error: () => {
+        this.message = { type: 'error', text: 'Erro ao tentar realizar o pagamento. Tente novamente.' };
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => this.message = null, 4000);
+      }
+    });
+  }
+
+  cancelarPedido(pedidoId: number): void {
+    if (confirm('Tem certeza que deseja cancelar este pedido?')) {
+      this.orderService.cancelOrder(pedidoId).subscribe({
+        next: () => {
+          this.message = { type: 'success', text: 'Pedido cancelado com sucesso.' };
+          this.loadOrders(); // Recarrega a lista
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => this.message = null, 4000);
+        },
+        error: (err) => {
+          console.error('Erro ao cancelar', err);
+          this.message = { type: 'error', text: 'Não foi possível cancelar o pedido.' };
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
+  }
 }

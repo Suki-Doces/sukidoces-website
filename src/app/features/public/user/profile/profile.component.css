@@ -246,11 +246,12 @@
     font-size: 0.9rem;
 }
 
-/* Rodapé do Card de Pedido */
+/* 🪄 ATUALIZADO: Rodapé do Card de Pedido para múltiplos botões */
 .order-footer {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Permite que os botões caiam para a linha de baixo se não couberem */
+    gap: 10px;
     margin-top: 20px;
     padding-top: 15px;
     border-top: 1px dashed rgba(0, 0, 0, 0.1);
@@ -259,6 +260,7 @@
 .order-footer p {
     margin: 0;
     color: var(--t-color-2);
+    flex-grow: 1; /* Empurra os botões para a extrema direita */
 }
 
 .order-footer strong {
@@ -297,7 +299,6 @@
     margin-top: 15px;
     margin-bottom: 5px;
     border-bottom: 1px dashed var(--gls-t-color-3);
-    /* var(--color-4) */
     padding-bottom: 8px;
 }
 
@@ -338,10 +339,25 @@
     margin-top: 0;
 }
 
+/* 🪄 ATUALIZADO: Responsividade para botões no Mobile */
 @media (max-width: 600px) {
 
     .full-width,
     .section-title {
         grid-column: span 1;
+    }
+
+    .order-footer {
+        flex-direction: column;
+        align-items: stretch; /* Estica os botões de ponta a ponta */
+        text-align: center;
+    }
+
+    .order-footer p {
+        margin-bottom: 10px;
+    }
+
+    .order-footer button {
+        width: 100%; /* Botões ocupam 100% da tela no celular */
     }
 }

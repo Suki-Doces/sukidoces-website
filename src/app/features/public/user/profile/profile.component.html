@@ -156,14 +156,13 @@
                         </div>
                     </div>
 
-                    <div *ngIf="message" class="alert" [ngClass]="message.type">
+                    <div *ngIf="message && activeTab === 'dados'" class="alert" [ngClass]="message.type">
                         {{ message.text }}
                     </div>
 
                     <div style="margin-top: 24px; text-align: right;">
                         <button type="submit" class="btn btn-glass btn-primary "
-                            [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar
-                            Alterações' }}
+                            [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar Alterações' }}
                         </button>
                     </div>
                 </form>
@@ -200,6 +199,10 @@
                 <h2>Meus Pedidos</h2>
             </div>
 
+            <div *ngIf="message && activeTab === 'pedidos'" class="alert" [ngClass]="message.type" style="margin-bottom: 20px;">
+                {{ message.text }}
+            </div>
+
             <div *ngIf="pedidos.length === 0" class="empty-state">
                 <p>Ainda não efetuou nenhum pedido.</p>
                 <button routerLink="/produtos" class="btn btn-glass btn-primary" style="margin-top: 15px;">Ir para a
@@ -234,8 +237,21 @@
                         </div>
                     </div>
 
-                    <div class="order-footer">
-                        <p>Total: <strong>{{ pedido.valor_total | currency:'BRL':'symbol' }}</strong></p>
+                    <div class="order-footer" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <p style="flex-grow: 1;">Total: <strong>{{ pedido.valor_total | currency:'BRL':'symbol' }}</strong></p>
+                        
+                        <button *ngIf="pedido.status === 'pendente'" 
+                                class="btn btn-glass btn-primary" 
+                                (click)="pagarNovamente(pedido)">
+                            Pagar Novamente
+                        </button>
+                        
+                        <button *ngIf="pedido.status === 'pendente' || pedido.status === 'pago'" 
+                                class="btn btn-glass btn-danger" 
+                                (click)="cancelarPedido(pedido.id_pedido)">
+                            Cancelar
+                        </button>
+
                         <button class="btn btn-glass btn-secondary" (click)="viewOrderDetails(pedido)"
                             aria-label="Ver detalhes do pedido">
                             Ver Detalhes
@@ -297,6 +313,10 @@
                 </button>
             </div>
 
+            <div *ngIf="message && activeTab === 'detalhes-pedido'" class="alert" [ngClass]="message.type" style="margin-bottom: 20px;">
+                {{ message.text }}
+            </div>
+
             <div class="order-card" style="margin-bottom: 20px;">
                 <div class="order-header">
                     <h3>Informações Gerais</h3>
@@ -332,9 +352,20 @@
                     </div>
                 </div>
 
-                <div class="order-footer">
-                    <p>Total pago:</p>
-                    <strong>{{ selectedOrder.valor_total | currency:'BRL' }}</strong>
+                <div class="order-footer" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <p style="flex-grow: 1;">Total pago: <strong>{{ selectedOrder.valor_total | currency:'BRL' }}</strong></p>
+                    
+                    <button *ngIf="selectedOrder.status === 'pendente'" 
+                            class="btn btn-glass btn-primary" 
+                            (click)="pagarNovamente(selectedOrder)">
+                        Pagar Novamente
+                    </button>
+                    
+                    <button *ngIf="selectedOrder.status === 'pendente' || selectedOrder.status === 'pago'" 
+                            class="btn btn-glass btn-danger" 
+                            (click)="cancelarPedido(selectedOrder.id_pedido)">
+                        Cancelar
+                    </button>
                 </div>
             </div>
 
