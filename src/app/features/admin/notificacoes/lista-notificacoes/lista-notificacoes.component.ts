@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
+// Define o formato esperado para exibir a notificação no front
 interface Notificacao {
   id: number;
   mensagem: string;
@@ -11,6 +12,7 @@ interface Notificacao {
   lida: boolean;
 }
 
+// Define o formato da resposta que vem da API (com paginação)
 interface PaginacaoResponse {
   notifications: any[];
   unreadCount: number;
@@ -32,6 +34,7 @@ interface PaginacaoResponse {
 export class ListaNotificacoesComponent implements OnInit {
   private http = inject(HttpClient);
   
+  // Estado inicial das notificações
   notificacoes: Notificacao[] = [];
   paginaAtual = 1;
   limite = 4;
@@ -44,20 +47,22 @@ export class ListaNotificacoesComponent implements OnInit {
     this.carregarNotificacoes();
   }
 
+  // Busca dados da API e transforma o formato do banco (n) para o formato do componente
   carregarNotificacoes() {
     this.http.get<PaginacaoResponse>(`${this.apiUrl}?page=${this.paginaAtual}&limit=${this.limite}`).subscribe({
       next: (dados) => {
+        // Mapeia os dados brutos da API para a interface Notificacao
         this.notificacoes = dados.notifications.map((n: any) => {
           return {
             id: n.id_notificacao,
             mensagem: n.mensagem,
             tempo: new Date(n.data_criacao).toLocaleDateString('pt-BR'),
-            // 💡 AQUI A MUDANÇA: passamos a mensagem para a função analisar
-            icone: this.getIconePorTipo(n.tipo, n.mensagem),
+            icone: this.getIconePorTipo(n.tipo, n.mensagem), // Passa tipo e mensagem para decidir o ícone
             lida: n.lido
           };
         });
         
+        // Atualiza controle de paginação
         this.totalNotificacoes = dados.pagination.total;
         this.totalPaginas = dados.pagination.totalPages;
       },
@@ -67,6 +72,7 @@ export class ListaNotificacoesComponent implements OnInit {
     });
   }
 
+  // Navegação entre páginas
   mudarPagina(novaPagina: number) {
     if (novaPagina > 0 && novaPagina <= this.totalPaginas) {
       this.paginaAtual = novaPagina;
@@ -74,30 +80,32 @@ export class ListaNotificacoesComponent implements OnInit {
     }
   }
 
+  // Cria um array de números para o loop de paginação no HTML (ex: [1, 2, 3])
   obterPaginasArray(): number[] {
     return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
   }
 
-  // 💡 LÓGICA ATUALIZADA: Agora analisa a mensagem e o tipo
+  // Lógica de prioridade para os ícones
+  // O código lê de cima para baixo: a regra mais específica deve vir primeiro
   getIconePorTipo(tipo: string, mensagem: string): string {
     const msg = mensagem.toLowerCase();
 
-    // 1. Prioridade: Cancelamento
+    // 1. Cancelamento tem prioridade máxima
     if (msg.includes('cancelado')) {
       return 'assets/images/icons/Pedido-cancelado.svg';
     }
 
-    // 2. Prioridade: Status Refresh (enviado, atualizado, status)
+    // 2. Mudança de status (refresh)
     if (msg.includes('enviado') || msg.includes('status') || msg.includes('atualizado')) {
       return 'assets/images/icons/status-refresh-icon.svg';
     }
 
-    // 3. Prioridade: Pedido novo (não pago)
+    // 3. Novo pedido (pendente) - apenas se for pedido E não for pago
     if (msg.includes('pedido') && !msg.includes('pago')) {
       return 'assets/images/icons/Pedido-de-Icon.svg';
     }
 
-    // 4. Fallback (Ícones por tipo)
+    // 4. Regras padrão para outros tipos caso não caia nas regras acima
     switch(tipo) {
       case 'usuario': return 'assets/images/icons/User - Icon.svg';
       case 'venda':   return 'assets/images/icons/Payment - icon.svg';
@@ -106,6 +114,7 @@ export class ListaNotificacoesComponent implements OnInit {
     }
   }
 
+  // Requisição para marcar todas as mensagens como lidas
   marcarTodasComoLidas() {
     this.http.put(`${this.apiUrl}/read-all`, {}).subscribe({
       next: () => {
@@ -115,9 +124,11 @@ export class ListaNotificacoesComponent implements OnInit {
     });
   }
 
+  // Deleta uma notificação específica
   fecharNotificacao(id: number) {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe({
       next: () => {
+        // Remove da lista local para atualizar a UI instantaneamente
         this.notificacoes = this.notificacoes.filter(n => n.id !== id);
       },
       error: (err) => console.error('Erro ao deletar notificação na API', err)
