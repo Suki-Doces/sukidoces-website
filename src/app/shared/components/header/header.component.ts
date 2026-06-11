@@ -14,6 +14,8 @@ import { CartService } from 'src/app/core/services/cart.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  user: any = null;
+
   viewProductsLink: boolean = false;
   viewHomeLink: boolean = false;
 
@@ -44,12 +46,15 @@ export class HeaderComponent implements OnInit {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
       if (user) {
+        this.user = user; // <--- ADICIONE ESTA LINHA PARA GUARDAR O UTILIZADOR COM A FOTO
+
         const parts = user.nome.trim().split(' ');
         this.displayName = parts.length > 1
           ? `${parts[0]} ${parts[parts.length - 1]}`
           : parts[0];
       } else {
-        this.displayName = 'Conta';
+        this.user = null; // <-- Limpa o utilizador se fizer logout
+        this.displayName = 'Perfil';
       }
     });
 
