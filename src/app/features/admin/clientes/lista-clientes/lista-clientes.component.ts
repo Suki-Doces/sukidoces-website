@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
 
+// 💡 ATUALIZAÇÃO: Adicionado o campo 'estatisticas' à interface
 interface PaginacaoClientes {
   clientes: any[];
   pagination: {
@@ -11,6 +12,9 @@ interface PaginacaoClientes {
     page: number;
     limit: number;
     totalPages: number;
+  };
+  estatisticas: {
+    novosClientesUltimos7Dias: number;
   };
 }
 
@@ -27,7 +31,7 @@ export class ListaClientesComponent implements OnInit {
 
   clientes: any[] = [];
   totalClientes: number = 0;
-  novosClientes: number = 0;
+  novosClientes: number = 0; // Este valor será recebido da API
 
   // Paginação
   paginaAtual = 1;
@@ -53,7 +57,9 @@ export class ListaClientesComponent implements OnInit {
         this.clientes = dados.clientes;
         this.totalClientes = dados.pagination.total;
         this.totalPaginas = dados.pagination.totalPages;
-        this.calcularEstatisticas();
+        
+        // 💡 CORREÇÃO: Lê o valor global vindo do banco de dados (não calcula mais localmente)
+        this.novosClientes = dados.estatisticas.novosClientesUltimos7Dias;
       },
       error: (erro) => console.error('Erro ao buscar clientes:', erro)
     });
@@ -74,22 +80,12 @@ export class ListaClientesComponent implements OnInit {
     return paginas;
   }
 
-  // O Angular calcula as estatísticas em milissegundos sem precisar de mais consultas SQL!
-  calcularEstatisticas() {
-    const seteDiasAtras = new Date();
-    seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
-    
-    this.novosClientes = this.clientes.filter(c => {
-      // Usa data_cadastro se existir, senão assume 0
-      if (!c.data_cadastro) return false;
-      return new Date(c.data_cadastro) >= seteDiasAtras;
-    }).length;
-  }
+  // 💡 O MÉTODO calcularEstatisticas() PODE SER APAGADO AGORA, 
+  // pois não é mais necessário.
 
   abrirModal(modo: 'adicionar' | 'editar', cliente?: any) {
     this.isEditMode = modo === 'editar';
     
-    // CORREÇÃO AQUI: Remoção do campo 'senha' no momento da edição
     if (this.isEditMode && cliente) {
       this.clienteForm = { 
         id_cliente: cliente.id_cliente,
@@ -98,7 +94,7 @@ export class ListaClientesComponent implements OnInit {
         status: cliente.status 
       }; 
     } else {
-      this.clienteForm = { nome: '', email: '', senha: '', status: 'ativo' }; // Form limpo
+      this.clienteForm = { nome: '', email: '', senha: '', status: 'ativo' };
     }
     
     this.isModalOpen = true;
@@ -109,7 +105,6 @@ export class ListaClientesComponent implements OnInit {
   }
 
   salvarCliente() {
-    // Se for edição, usamos o PUT e passamos o ID. Se for novo, usamos POST.
     if (this.isEditMode) {
       this.http.put(`${this.apiUrl}/${this.clienteForm.id_cliente}`, this.clienteForm).subscribe({
         next: () => {
@@ -124,7 +119,7 @@ export class ListaClientesComponent implements OnInit {
           this.carregarClientes();
           this.fecharModal();
         },
-        error: () => alert('Erro ao adicionar cliente. O e-mail pode já existir.')
+        error: () => alert('Erro ao adicionar cliente.')
       });
     }
   }

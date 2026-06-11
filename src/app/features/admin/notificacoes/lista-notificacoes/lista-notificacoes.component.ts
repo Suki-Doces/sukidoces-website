@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-// O "molde" de como uma notificação deve ser
+// Define o formato esperado para exibir a notificação no front
 interface Notificacao {
   id: number;
   mensagem: string;
@@ -12,6 +12,7 @@ interface Notificacao {
   lida: boolean;
 }
 
+// Define o formato da resposta que vem da API (com paginação)
 interface PaginacaoResponse {
   notifications: any[];
   unreadCount: number;
@@ -33,6 +34,7 @@ interface PaginacaoResponse {
 export class ListaNotificacoesComponent implements OnInit {
   private http = inject(HttpClient);
   
+  // Estado inicial das notificações
   notificacoes: Notificacao[] = [];
   paginaAtual = 1;
   limite = 4;
@@ -45,38 +47,32 @@ export class ListaNotificacoesComponent implements OnInit {
     this.carregarNotificacoes();
   }
 
+  // Busca dados da API e transforma o formato do banco (n) para o formato do componente
   carregarNotificacoes() {
     this.http.get<PaginacaoResponse>(`${this.apiUrl}?page=${this.paginaAtual}&limit=${this.limite}`).subscribe({
       next: (dados) => {
+        // Mapeia os dados brutos da API para a interface Notificacao
         this.notificacoes = dados.notifications.map((n: any) => {
           return {
             id: n.id_notificacao,
             mensagem: n.mensagem,
             tempo: new Date(n.data_criacao).toLocaleDateString('pt-BR'),
-            icone: this.getIconePorTipo(n.tipo),
+            icone: this.getIconePorTipo(n.tipo, n.mensagem), // Passa tipo e mensagem para decidir o ícone
             lida: n.lido
           };
         });
         
-        // Atualiza informações de paginação
+        // Atualiza controle de paginação
         this.totalNotificacoes = dados.pagination.total;
         this.totalPaginas = dados.pagination.totalPages;
       },
       error: (erro) => {
-        console.log('API de notificações não encontrada, usando dados de teste.', erro);
-        // PLANO B (Fallback) com caminhos corretos e capitalização exata
-        this.notificacoes = [
-          { id: 1, mensagem: 'O Cliente Ruben Amorin usou o cupom de 20% na sua compra.', tempo: '1m ago', icone: 'assets/images/icons/Cupom - icon.svg', lida: false },
-          { id: 2, mensagem: 'Nova compra realizada número do Pedido #00399', tempo: '5m ago', icone: 'assets/images/icons/Payment - icon.svg', lida: false },
-          { id: 3, mensagem: 'Acabou o estoque do produto Minalba 250ml', tempo: '1h ago', icone: 'assets/images/icons/Storage - Icon.svg', lida: true },
-          { id: 4, mensagem: 'Novo cadastro! Larissa Almeida criou uma conta.', tempo: '2h ago', icone: 'assets/images/icons/User - Icon.svg', lida: true }
-        ];
-        this.totalPaginas = 1;
-        this.totalNotificacoes = 4;
+        console.error('Erro ao carregar notificações:', erro);
       }
     });
   }
 
+  // Navegação entre páginas
   mudarPagina(novaPagina: number) {
     if (novaPagina > 0 && novaPagina <= this.totalPaginas) {
       this.paginaAtual = novaPagina;
@@ -84,27 +80,41 @@ export class ListaNotificacoesComponent implements OnInit {
     }
   }
 
+  // Cria um array de números para o loop de paginação no HTML (ex: [1, 2, 3])
   obterPaginasArray(): number[] {
-    const paginas: number[] = [];
-    for (let i = 1; i <= this.totalPaginas; i++) {
-      paginas.push(i);
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  // Lógica de prioridade para os ícones
+  // O código lê de cima para baixo: a regra mais específica deve vir primeiro
+  getIconePorTipo(tipo: string, mensagem: string): string {
+    const msg = mensagem.toLowerCase();
+
+    // 1. Cancelamento tem prioridade máxima
+    if (msg.includes('cancelado')) {
+      return 'assets/images/icons/Pedido-cancelado.svg';
     }
-    return paginas;
+
+    // 2. Mudança de status (refresh)
+    if (msg.includes('enviado') || msg.includes('status') || msg.includes('atualizado')) {
+      return 'assets/images/icons/status-refresh-icon.svg';
+    }
+
+    // 3. Novo pedido (pendente) - apenas se for pedido E não for pago
+    if (msg.includes('pedido') && !msg.includes('pago')) {
+      return 'assets/images/icons/Pedido-de-Icon.svg';
+    }
+
+    // 4. Regras padrão para outros tipos caso não caia nas regras acima
+    switch(tipo) {
+      case 'usuario': return 'assets/images/icons/User - Icon.svg';
+      case 'venda':   return 'assets/images/icons/Payment - icon.svg';
+      case 'carrinho': return 'assets/images/icons/Storage - Icon.svg';
+      default: return 'assets/images/icons/Message - icon.svg';
+    }
   }
 
-  // Função auxiliar para escolher o ícone com os caminhos corretos da pasta
-  getIconePorTipo(tipo: string): string {
-  switch(tipo) {
-    case 'usuario': return 'assets/images/icons/User - Icon.svg';
-    case 'pedido': 
-    case 'venda': // 💡 Assim você abrange a palavra salva pelo Checkout inicial
-    case 'sistema': // 💡 Assim você abrange a atualização de status
-         return 'assets/images/icons/Payment - icon.svg';
-    case 'carrinho': return 'assets/images/icons/Storage - Icon.svg';
-    default: return 'assets/images/icons/Message - icon.svg';
-  }
-}
-
+  // Requisição para marcar todas as mensagens como lidas
   marcarTodasComoLidas() {
     this.http.put(`${this.apiUrl}/read-all`, {}).subscribe({
       next: () => {
@@ -114,9 +124,11 @@ export class ListaNotificacoesComponent implements OnInit {
     });
   }
 
+  // Deleta uma notificação específica
   fecharNotificacao(id: number) {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe({
       next: () => {
+        // Remove da lista local para atualizar a UI instantaneamente
         this.notificacoes = this.notificacoes.filter(n => n.id !== id);
       },
       error: (err) => console.error('Erro ao deletar notificação na API', err)
