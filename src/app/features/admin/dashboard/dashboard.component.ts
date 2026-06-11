@@ -14,7 +14,6 @@ import { environment } from 'src/environments/environment';
 export class DashboardComponent implements OnInit, OnDestroy {
   private readonly API_URL = `${environment.apiUrl}/admin/dashboard`;
 
-  // CORRIGIDO: dados agora vêm da API, não são hardcoded
   resumo = {
     vendasSemana: 0,
     aumentoVendas: 0,
@@ -30,9 +29,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   produtosDestaque: any[] = [];
   transacoes: any[] = [];
-  // Paginação das transações
+
   paginaAtual = 1;
   itensPorPagina = 5;
+
+  // 1. Variável para guardar o resultado da pesquisa 
+  transacoesFiltradas: any[] = [];
 
   isLoading = true;
   lastId = 0;
@@ -40,34 +42,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient) { }
 
-    get transacoesPaginadas(): any[] {
-      const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
-      const fim = inicio + this.itensPorPagina;
+  // 2. CORRIGIDO AQUI: O get agora corta a lista FILTRADA, não a original!
+  get transacoesPaginadas(): any[] {
+    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    return this.transacoesFiltradas.slice(inicio, fim);
+  }
 
-      return this.transacoes.slice(inicio, fim);
-    }
+  // 3. CORRIGIDO AQUI: Calcula o total de páginas com base na lista FILTRADA
+  get totalPaginas(): number {
+    return Math.ceil(this.transacoesFiltradas.length / this.itensPorPagina) || 1;
+  }
 
-    get totalPaginas(): number {
-      return Math.ceil(this.transacoes.length / this.itensPorPagina);
+  proximaPagina(): void {
+    if (this.paginaAtual < this.totalPaginas) {
+      this.paginaAtual++;
     }
+  }
 
-    proximaPagina(): void {
-      if (this.paginaAtual < this.totalPaginas) {
-        this.paginaAtual++;
-      }
+  paginaAnterior(): void {
+    if (this.paginaAtual > 1) {
+      this.paginaAtual--;
     }
-
-    paginaAnterior(): void {
-      if (this.paginaAtual > 1) {
-        this.paginaAtual--;
-      }
-    }
+  }
 
   ngOnInit() {
-    // Carrega dados reais na inicialização
     this.carregarDashboard()
 
-    // Polling a cada 30 segundos para novos pedidos
     this.pollingSub = interval(30000).subscribe(() => {
       this.fetchNovasTransacoes();
     });
@@ -77,28 +78,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.pollingSub) this.pollingSub.unsubscribe();
   }
 
-  // Imagem padrão caso a imagem do produto não carregue
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
 
-  // Monta a URL da imagem do produto
   getProductImage(imageURL: string | null): string {
     if (!imageURL) return this.defaultImage;
-
-    // Se for um link externo (Cloudinary) ou imagem em base64, aceita direto
     if (imageURL.startsWith('http') || imageURL.startsWith('data:image')) {
       return imageURL;
     }
-
-    // Se já incluir o caminho 'assets', aceita direto
     if (imageURL.startsWith('assets/')) {
       return imageURL;
     }
-
-    // Se o backend enviar apenas o nome do ficheiro (ex: 'trufa.webp')
     return `assets/images/produtos/${imageURL}`;
   }
 
-  // Fallback quando a tag <img> der erro
   onImageError(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = this.defaultImage;
@@ -110,11 +102,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       next: (dados) => {
         this.resumo = dados.resumo;
         this.produtosDestaque = [...dados.produtosDestaque]
-        .sort((a, b) => b.vendas - a.vendas)
-        .slice(0, 4);
+          .sort((a, b) => b.vendas - a.vendas)
+          .slice(0, 4);
+
         this.transacoes = dados.transacoes;
 
-        // Atualiza o lastId para o polling saber de onde continuar
+        // 4. ADICIONADO AQUI: Assim que chegar da API, clonamos para a lista filtrada
+        this.transacoesFiltradas = [...this.transacoes];
+
         if (this.transacoes.length > 0) {
           this.lastId = Math.max(...this.transacoes.map((t: any) => t.id_pedido));
         }
@@ -129,22 +124,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchNovasTransacoes() {
-    // Busca apenas pedidos mais recentes que o último ID conhecido
     this.http.get<any>(this.API_URL).subscribe({
       next: (dados) => {
         const todasTransacoes: any[] = dados.transacoes;
         const novas = todasTransacoes.filter(t => t.id_pedido > this.lastId);
 
         if (novas.length > 0) {
-          // Adiciona no topo da lista
           this.transacoes = [...novas, ...this.transacoes];
+
+          // 5. ADICIONADO AQUI: Atualiza a lista filtrada quando chegam pedidos novos
+          this.transacoesFiltradas = [...this.transacoes];
+
           this.lastId = Math.max(...novas.map(t => t.id_pedido));
 
           if (this.paginaAtual > this.totalPaginas) {
             this.paginaAtual = this.totalPaginas;
           }
 
-          // Atualiza contadores também
           this.resumo = dados.resumo;
         }
       },
@@ -152,7 +148,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Formata o status para exibição
+  // 6. ADICIONADO AQUI: A função que faz a pesquisa funcionar!
+  filtrarTransacoes(event: Event) {
+    const termo = (event.target as HTMLInputElement).value.toLowerCase().trim();
+
+    if (!termo) {
+      // Se a caixa de pesquisa estiver vazia, restaura tudo
+      this.transacoesFiltradas = [...this.transacoes];
+    } else {
+      // Filtra por nome do cliente ou ID
+      this.transacoesFiltradas = this.transacoes.filter(tx =>
+        tx.cliente_nome.toLowerCase().includes(termo) ||
+        tx.id_pedido.toString().includes(termo)
+      );
+    }
+    // Volta sempre para a página 1 ao fazer uma nova pesquisa
+    this.paginaAtual = 1;
+  }
+
   getStatusClass(status: string): string {
     const classes: any = {
       pago: 'status-pago',
@@ -164,7 +177,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return classes[status] || '';
   }
 
-  // Formata data para exibição
   formatarData(data: string): string {
     return new Date(data).toLocaleDateString('pt-BR', {
       day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'
