@@ -11,7 +11,10 @@
 #content-settings { margin-bottom: 12px; 
 border-bottom: 2px solid #ecf0f1; padding-bottom: 12px; }
 #content-settings h1 { font-size: 2rem; color: #0f172a; font-weight: 800; margin-bottom: 6px; }
-.page-subtitle { color: #64748b; font-size: 0 }
+.page-subtitle {
+  font-size: 0.95rem !important;
+  color: #64748b;
+}
 
 /* Container Principal - Fundo Branco puro garantido */
 .settings-container {
