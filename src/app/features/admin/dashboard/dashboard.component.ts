@@ -166,7 +166,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.paginaAtual = 1;
   }
 
-  getStatusClass(status: string): string {
+    getStatusClass(status: string): string {
     const classes: any = {
       pago: 'status-pago',
       pendente: 'status-pendente',
@@ -178,8 +178,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   formatarData(data: string): string {
-    return new Date(data).toLocaleDateString('pt-BR', {
-      day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit'
-    });
-  }
+  return new Date(data).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+}
 }
