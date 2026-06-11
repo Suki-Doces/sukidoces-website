@@ -1,5 +1,16 @@
-<div class="toast-container" [ngClass]="{'show': isVisible}">
-  <span class="icon">🔔</span>
+<div class="toast-container" [ngClass]="{ 
+    'show': isVisible, 
+    'success': message?.type === 'success', 
+    'error': message?.type === 'error', 
+  }">
+
+  <div class="icon">
+    <span *ngIf="message?.type === 'success'" class="material-symbols-rounded">check_circle</span>
+
+    <span *ngIf="message?.type === 'error'" class="material-symbols-rounded">error</span>
+
+  </div>
+
   <div class="toast-content">
     <h3>{{ message?.title }}</h3>
     <p>{{ message?.text }}</p>

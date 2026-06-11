@@ -132,10 +132,17 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.hdr-user-btn>svg {
+.hdr-user-btn>svg, .hdr-user-btn img {
     width: 25px;
     height: 25px;
     transition: transform 0.3s ease;
+}
+
+/* Estilos exclusivos da imagem para mantê-la redonda e sem distorcer */
+.hdr-user-btn img {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--color-5);
 }
 
 .hdr-user-btn p {
@@ -155,7 +162,9 @@
 }
 
 .hdr-user-btn:hover svg,
-.hdr-user-btn.active svg {
+.hdr-user-btn.active svg,
+.hdr-user-btn:hover img,
+.hdr-user-btn.active img {
     /* O ícone SVG isolado pode escalar sem causar distorção no texto ao lado! */
     transform: scale(1.15);
 }

@@ -22,7 +22,11 @@
     margin-bottom: 20px;
 }
 
+/* Garante que o círculo e o overlay se comportem corretamente */
 .avatar-circle {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
     width: 80px;
     height: 80px;
     background: var(--color-1);
@@ -34,6 +38,46 @@
     font-size: 2rem;
     font-weight: bold;
     margin: 0 auto 15px;
+}
+
+/* Centraliza a imagem preenchendo o círculo */
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* O Segredo do Profissionalismo: Overlay que cobre 100% da foto */
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Escurece a foto suavemente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0;
+    /* Começa invisível! */
+    transition: opacity 0.3s ease;
+    /* Animação suave para aparecer */
+}
+
+/* Revela o overlay apenas quando o usuário passa o mouse */
+.avatar-circle:hover .avatar-overlay {
+    opacity: 1;
+}
+
+/* Estilo do texto 'Alterar' */
+.avatar-overlay span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
 }
 
 .profile-nav button {
@@ -250,7 +294,8 @@
 .order-footer {
     display: flex;
     align-items: center;
-    flex-wrap: wrap; /* Permite que os botões caiam para a linha de baixo se não couberem */
+    flex-wrap: wrap;
+    /* Permite que os botões caiam para a linha de baixo se não couberem */
     gap: 10px;
     margin-top: 20px;
     padding-top: 15px;
@@ -260,7 +305,8 @@
 .order-footer p {
     margin: 0;
     color: var(--t-color-2);
-    flex-grow: 1; /* Empurra os botões para a extrema direita */
+    flex-grow: 1;
+    /* Empurra os botões para a extrema direita */
 }
 
 .order-footer strong {
@@ -349,7 +395,8 @@
 
     .order-footer {
         flex-direction: column;
-        align-items: stretch; /* Estica os botões de ponta a ponta */
+        align-items: stretch;
+        /* Estica os botões de ponta a ponta */
         text-align: center;
     }
 
@@ -358,6 +405,7 @@
     }
 
     .order-footer button {
-        width: 100%; /* Botões ocupam 100% da tela no celular */
+        width: 100%;
+        /* Botões ocupam 100% da tela no celular */
     }
 }

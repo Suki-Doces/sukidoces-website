@@ -70,7 +70,8 @@
 
   <button class="flex-center hdr-user-btn hdr-toggle-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)"
     aria-label="Abrir menu do perfil">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <img *ngIf="user?.foto_perfil" [src]="user.foto_perfil" alt="Foto de perfil">
+    <svg *ngIf="!user?.foto_perfil" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g stroke-width="0" />
       <g stroke-linecap="round" stroke-linejoin="round" />
       <g stroke="var(--color-5)" stroke-width="1.5">
