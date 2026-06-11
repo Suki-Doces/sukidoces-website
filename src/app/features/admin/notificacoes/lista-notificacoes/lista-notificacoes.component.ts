@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-// O "molde" de como uma notificação deve ser
 interface Notificacao {
   id: number;
   mensagem: string;
@@ -53,26 +52,17 @@ export class ListaNotificacoesComponent implements OnInit {
             id: n.id_notificacao,
             mensagem: n.mensagem,
             tempo: new Date(n.data_criacao).toLocaleDateString('pt-BR'),
-            icone: this.getIconePorTipo(n.tipo),
+            // Passamos a mensagem para o seletor de ícone
+            icone: this.getIconePorTipo(n.tipo, n.mensagem),
             lida: n.lido
           };
         });
         
-        // Atualiza informações de paginação
         this.totalNotificacoes = dados.pagination.total;
         this.totalPaginas = dados.pagination.totalPages;
       },
       error: (erro) => {
-        console.log('API de notificações não encontrada, usando dados de teste.', erro);
-        // PLANO B (Fallback) com caminhos corretos e capitalização exata
-        this.notificacoes = [
-          { id: 1, mensagem: 'O Cliente Ruben Amorin usou o cupom de 20% na sua compra.', tempo: '1m ago', icone: 'assets/images/icons/Cupom - icon.svg', lida: false },
-          { id: 2, mensagem: 'Nova compra realizada número do Pedido #00399', tempo: '5m ago', icone: 'assets/images/icons/Payment - icon.svg', lida: false },
-          { id: 3, mensagem: 'Acabou o estoque do produto Minalba 250ml', tempo: '1h ago', icone: 'assets/images/icons/Storage - Icon.svg', lida: true },
-          { id: 4, mensagem: 'Novo cadastro! Larissa Almeida criou uma conta.', tempo: '2h ago', icone: 'assets/images/icons/User - Icon.svg', lida: true }
-        ];
-        this.totalPaginas = 1;
-        this.totalNotificacoes = 4;
+        console.error('Erro ao carregar notificações:', erro);
       }
     });
   }
@@ -85,32 +75,43 @@ export class ListaNotificacoesComponent implements OnInit {
   }
 
   obterPaginasArray(): number[] {
-    const paginas: number[] = [];
-    for (let i = 1; i <= this.totalPaginas; i++) {
-      paginas.push(i);
-    }
-    return paginas;
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
   }
 
-  // Função auxiliar para escolher o ícone com os caminhos corretos da pasta
-  getIconePorTipo(tipo: string): string {
-  switch(tipo) {
-    case 'usuario': return 'assets/images/icons/User - Icon.svg';
-    case 'pedido': 
-    case 'venda': // 💡 Assim você abrange a palavra salva pelo Checkout inicial
-    case 'sistema': // 💡 Assim você abrange a atualização de status
-         return 'assets/images/icons/Payment - icon.svg';
-    case 'carrinho': return 'assets/images/icons/Storage - Icon.svg';
-    default: return 'assets/images/icons/Message - icon.svg';
+  // 🪄 LOGICA ATUALIZADA: Mapeamento inteligente para os seus novos ícones
+  getIconePorTipo(tipo: string, mensagem: string): string {
+    const msg = mensagem.toLowerCase();
+
+    // 1. Pedido Cancelado
+    if (msg.includes('cancelado')) {
+      return 'assets/images/icons/Pedido-cancelado.svg';
+    }
+
+    // 2. Pedido feito mas ainda não pago (Pendente)
+    if (msg.includes('pendente') || (msg.includes('pedido') && !msg.includes('pago'))) {
+      return 'assets/images/icons/Pedido-de-Icon.svg';
+    }
+
+    // 3. Mudança de Status (Refresh)
+    if (msg.includes('status') || msg.includes('atualizado')) {
+      return 'assets/images/icons/status-refresh-icon.svg';
+    }
+
+    // Fallback para tipos padrão
+    switch(tipo) {
+      case 'usuario': return 'assets/images/icons/User - Icon.svg';
+      case 'venda': return 'assets/images/icons/Payment - icon.svg';
+      case 'carrinho': return 'assets/images/icons/Storage - Icon.svg';
+      default: return 'assets/images/icons/Message - icon.svg';
+    }
   }
-}
 
   marcarTodasComoLidas() {
     this.http.put(`${this.apiUrl}/read-all`, {}).subscribe({
       next: () => {
         this.notificacoes.forEach(n => n.lida = true);
       },
-      error: (err) => console.error('Erro ao marcar como lidas na API', err)
+      error: (err) => console.error('Erro ao marcar como lidas', err)
     });
   }
 
@@ -119,7 +120,7 @@ export class ListaNotificacoesComponent implements OnInit {
       next: () => {
         this.notificacoes = this.notificacoes.filter(n => n.id !== id);
       },
-      error: (err) => console.error('Erro ao deletar notificação na API', err)
+      error: (err) => console.error('Erro ao deletar notificação', err)
     });
   }
 }
