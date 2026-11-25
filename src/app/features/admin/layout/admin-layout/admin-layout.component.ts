@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -7,11 +7,10 @@ import { environment } from 'src/environments/environment';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-admin-layout',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.css'
+    selector: 'app-admin-layout',
+    imports: [RouterModule],
+    templateUrl: './admin-layout.component.html',
+    styleUrl: './admin-layout.component.css'
 })
 export class AdminLayoutComponent implements OnInit {
   isCollapsed = false;
