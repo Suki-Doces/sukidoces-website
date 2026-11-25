@@ -5,9 +5,13 @@
   }">
 
   <div class="icon">
-    <span *ngIf="message?.type === 'success'" class="material-symbols-rounded">check_circle</span>
+    @if (message?.type === 'success') {
+      <span class="material-symbols-rounded">check_circle</span>
+    }
 
-    <span *ngIf="message?.type === 'error'" class="material-symbols-rounded">error</span>
+    @if (message?.type === 'error') {
+      <span class="material-symbols-rounded">error</span>
+    }
 
   </div>
 
