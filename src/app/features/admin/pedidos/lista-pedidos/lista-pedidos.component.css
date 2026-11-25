@@ -191,3 +191,25 @@
     .table_body { overflow-x: auto; }
     table { min-width: 800px; }
   }
+
+/* Canal de venda (site x app) */
+.origem-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5a4b4b;
+  background: #f1eef0;
+  white-space: nowrap;
+}
+
+.origem-badge.origem-app {
+  color: #8a0f55;
+  background: #fde8f1;
+}
+
+.origem-badge.origem-site {
+  color: #1d5b3a;
+  background: #e3f5ea;
+}
