@@ -9,14 +9,13 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
-  selector: 'app-product-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
-  templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+    selector: 'app-product-list',
+    imports: [
+        CommonModule,
+        RouterModule
+    ],
+    templateUrl: './product-list.component.html',
+    styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
