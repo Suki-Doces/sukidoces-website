@@ -8,11 +8,10 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
-  selector: 'app-short-catalog',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './short-catalog.component.html',
-  styleUrl: './short-catalog.component.css'
+    selector: 'app-short-catalog',
+    imports: [CommonModule, RouterModule],
+    templateUrl: './short-catalog.component.html',
+    styleUrl: './short-catalog.component.css'
 })
 export class ShortCatalogComponent implements OnInit {
   activeTab: 'mais-vendidos' | 'novos' = 'mais-vendidos';
