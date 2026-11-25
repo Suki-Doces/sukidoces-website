@@ -3,7 +3,9 @@ const path = require('path');
 const successColor = '\x1b[32m%s\x1b[0m';
 const errorColor = '\x1b[1;31m\x1b[0m';
 const checkSign = '\u{2705}';
-const dotenv = require('dotenv').config({ path: 'src/.env', override: true });
+const dotenv = require('dotenv').config({ path: 'src/.env' });
+// Uma variavel API_URL ja definida no terminal tem prioridade sobre o src/.env
+// (ex.: API_URL=http://localhost:3000/suki-doces npm start para usar o NestJS local).
 
 const envConfigFile = `export const environment = {
     production: true,
