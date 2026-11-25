@@ -8,11 +8,10 @@ import { ChatService, ChatMessage } from '../../../core/services/gemini.service'
 import { LinkFormatPipe } from '../../pipes/link-format.pipe';
 
 @Component({
-  selector: 'app-ai-chat',
-  standalone: true,
-  imports: [CommonModule, FormsModule, LinkFormatPipe],
-  templateUrl: './ai-chat.component.html',
-  styleUrls: ['./ai-chat.component.css']
+    selector: 'app-ai-chat',
+    imports: [CommonModule, FormsModule, LinkFormatPipe],
+    templateUrl: './ai-chat.component.html',
+    styleUrls: ['./ai-chat.component.css']
 })
 export class AiChatComponent implements OnInit {
   @Output() closeChat = new EventEmitter<void>();
