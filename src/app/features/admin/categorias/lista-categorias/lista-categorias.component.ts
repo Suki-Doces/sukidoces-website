@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -12,11 +12,10 @@ interface Categoria {
 }
 
 @Component({
-  selector: 'app-lista-categorias',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './lista-categorias.component.html',
-  styleUrls: ['./lista-categorias.component.css']
+    selector: 'app-lista-categorias',
+    imports: [FormsModule, RouterModule],
+    templateUrl: './lista-categorias.component.html',
+    styleUrls: ['./lista-categorias.component.css']
 })
 export class ListaCategoriasComponent implements OnInit {
   // Injetamos o HttpClient para poder fazer requisições
