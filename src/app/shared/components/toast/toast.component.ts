@@ -4,11 +4,10 @@ import { Subscription } from 'rxjs';
 import { NotificationService, ToastMessage } from '../../../core/services/notification.service';
 
 @Component({
-  selector: 'app-toast',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.css']
+    selector: 'app-toast',
+    imports: [CommonModule],
+    templateUrl: './toast.component.html',
+    styleUrls: ['./toast.component.css']
 })
 export class ToastComponent implements OnInit, OnDestroy {
   message: ToastMessage | null = null;
