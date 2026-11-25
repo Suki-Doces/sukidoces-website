@@ -3,6 +3,7 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { apiResponseInterceptor } from './core/interceptors/api-response.interceptor';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { registerLocaleData } from '@angular/common';
@@ -26,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideEnvironmentNgxMask(),
     provideAnimationsAsync(),
     // Habilita o HTTP já com o seu Interceptor de autenticação tudo junto
-    provideHttpClient(withInterceptors([authInterceptor]))
+    // apiResponseInterceptor (externo) adapta o contrato do NestJS; authInterceptor injeta/renova o token
+    provideHttpClient(withInterceptors([apiResponseInterceptor, authInterceptor]))
   ]
 };
