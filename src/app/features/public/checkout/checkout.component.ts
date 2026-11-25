@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule ,Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { NgxMaskDirective } from 'ngx-mask';
 
@@ -15,11 +16,10 @@ import { OrderService } from 'src/app/core/services/order.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
-  selector: 'app-checkout',
-  standalone: true,
-  imports: [CommonModule, RouterModule,ReactiveFormsModule, NgxMaskDirective],
-  templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+    selector: 'app-checkout',
+    imports: [CommonModule, RouterModule, ReactiveFormsModule, NgxMaskDirective],
+    templateUrl: './checkout.component.html',
+    styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
   checkoutForm!: FormGroup;
@@ -34,8 +34,12 @@ export class CheckoutComponent implements OnInit {
   // Carrinho
   cartItems: any[] = [];
   subtotal = 0;
+  private checkoutIdempotencyKey: string | null = null;
   frete = 0;
   freteGratis = false;
+  /** true quando o servidor já respondeu o frete do destino atual. */
+  freteCalculado = false;
+  private freteSub?: Subscription;
 
   // Cupom
   codigoCupom = '';
@@ -182,61 +186,37 @@ export class CheckoutComponent implements OnInit {
     return Math.max(0, this.subtotal - this.desconto) + this.frete;
   }
 
+  /**
+   * O frete é calculado pelo servidor (POST /frete/calcular): ele é a única fonte da regra e é o mesmo
+   * valor que será gravado no pedido. Aqui só mostramos o resultado.
+   */
   calcularFrete(): void {
-    const estado = this.checkoutForm.get('estado')?.value?.toUpperCase();
+    const estado = (this.checkoutForm.get('estado')?.value || '').trim().toUpperCase();
+    const cidade = (this.checkoutForm.get('cidade')?.value || '').trim();
 
-    // Pega a cidade e remove os acentos para evitar erros de digitação (Ex: SÃO PAULO vs SAO PAULO)
-    const cidadeRaw = this.checkoutForm.get('cidade')?.value || '';
-    const cidade = cidadeRaw.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
-
-    // Começa com frete zero e assume que não é grátis
+    this.freteSub?.unsubscribe();
     this.frete = 0;
     this.freteGratis = false;
+    this.freteCalculado = false;
 
-    if (!estado) return; // Se não há estado preenchido, não calcula
+    // Sem estado (ou, em SP, sem cidade) não há como calcular.
+    if (!estado || (estado === 'SP' && !cidade)) return;
 
-    // --- LÓGICA DE FRETE REALISTA (ORIGEM: DIADEMA - SP) ---
-
-    if (estado === 'SP') {
-      // Região Metropolitana e ABC Paulista
-      const cidadesABC_SP = [
-        'SAO PAULO', 'SAO BERNARDO DO CAMPO', 'SANTO ANDRE',
-        'SAO CAETANO DO SUL', 'MAUA', 'RIBEIRAO PIRES', 'RIO GRANDE DA SERRA'
-      ];
-
-      if (cidade === 'DIADEMA') {
-        this.frete = 5.90; // Entrega super barata na mesma cidade
-        if (this.subtotal >= 50) this.freteGratis = true; // Frete Grátis acima de R$ 50 para Diadema
-      }
-      else if (cidadesABC_SP.includes(cidade)) {
-        this.frete = 9.90; // Região vizinha (ABC e Capital)
-        if (this.subtotal >= 100) this.freteGratis = true; // Frete Grátis acima de R$ 100
-      }
-      else {
-        this.frete = 16.90; // Interior e Litoral de SP
-        if (this.subtotal >= 150) this.freteGratis = true; // Frete Grátis acima de R$ 150
-      }
-
-    } else {
-      // Outros Estados do Brasil
-      const sulSudeste = ['RJ', 'MG', 'ES', 'PR', 'SC', 'RS'];
-
-      if (sulSudeste.includes(estado)) {
-        this.frete = 24.90; // Estados mais próximos
-      } else {
-        this.frete = 38.90; // Norte, Nordeste e Centro-Oeste
-      }
-
-      // Para fora de SP, o frete grátis só compensa em compras grandes
-      if (this.subtotal >= 250) {
-        this.freteGratis = true;
-      }
-    }
-
-    // Se atingiu a regra de frete grátis, o valor é zerado
-    if (this.freteGratis) {
-      this.frete = 0;
-    }
+    this.freteSub = this.http
+      .post<any>(`${environment.apiUrl}/frete/calcular`, { subtotal: this.subtotal, estado, cidade })
+      .subscribe({
+        next: (res) => {
+          this.frete = Number(res.frete) || 0;
+          this.freteGratis = !!res.frete_gratis;
+          this.freteCalculado = true;
+        },
+        error: () => {
+          this.frete = 0;
+          this.freteGratis = false;
+          this.freteCalculado = false;
+          this.errorMessage = 'Não foi possível calcular o frete agora. Tente novamente.';
+        }
+      });
   }
 
   buscarCep(): void {
@@ -367,7 +347,7 @@ export class CheckoutComponent implements OnInit {
     // 🛡️ SEGURANÇA 2 (environment): Uso dinâmico da URL segura.
     const urlSegura = `${environment.apiUrl}/cupons/validar`;
 
-    this.http.post<any>(urlSegura, { codigo: this.codigoCupom.toUpperCase().trim() }).subscribe({
+    this.http.post<any>(urlSegura, { codigo: this.codigoCupom.toUpperCase().trim(), subtotal: this.subtotal }).subscribe({
       next: (res) => {
         this.desconto = res.valor_desconto || 0;
         this.cupomAplicado = true;
@@ -415,12 +395,22 @@ export class CheckoutComponent implements OnInit {
 
     const metodo = dadosFormularioSeguro.metodo_pagamento;
 
+    // Reaproveita a chave enquanto o pedido nao for concluido: um novo clique apos erro de rede
+    // devolve o pedido ja criado em vez de duplicar a compra.
+    this.checkoutIdempotencyKey ??= OrderService.newIdempotencyKey();
+
     this.orderService.createOrder(
       produtos,
       metodo,
-      this.cupomAplicado ? this.codigoCupom.toUpperCase().trim() : undefined
+      this.cupomAplicado ? this.codigoCupom.toUpperCase().trim() : undefined,
+      this.checkoutIdempotencyKey,
+      {
+        estado: (this.checkoutForm.get('estado')?.value || '').trim().toUpperCase(),
+        cidade: (this.checkoutForm.get('cidade')?.value || '').trim()
+      }
     ).subscribe({
       next: () => {
+        this.checkoutIdempotencyKey = null;
         this.isLoading = false;
         this.cartService.clearCart();
         this.router.navigate(['/perfil'], { queryParams: { tab: 'pedidos' } });
