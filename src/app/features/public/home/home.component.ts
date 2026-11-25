@@ -1,4 +1,4 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 
 //Components
@@ -10,18 +10,17 @@ import { PromotionStoreComponent } from 'src/app/shared/components/promotion-sto
 import { ShortCatalogComponent } from 'src/app/shared/components/short-catalog/short-catalog.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    AdsFlavoursSectionComponent,
-    CarouselComponent,
-    MarketingIceCreamSectionComponent,
-    MarketingSectionComponent,
-    PromotionStoreComponent,
-    ShortCatalogComponent,
-],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+    selector: 'app-home',
+    imports: [
+        AdsFlavoursSectionComponent,
+        CarouselComponent,
+        MarketingIceCreamSectionComponent,
+        MarketingSectionComponent,
+        PromotionStoreComponent,
+        ShortCatalogComponent,
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent {
 
