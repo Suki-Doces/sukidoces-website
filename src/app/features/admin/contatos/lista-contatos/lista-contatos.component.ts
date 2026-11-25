@@ -5,11 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-lista-contatos',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './lista-contatos.component.html',
-  styleUrls: ['./lista-contatos.component.css']
+    selector: 'app-lista-contatos',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './lista-contatos.component.html',
+    styleUrls: ['./lista-contatos.component.css']
 })
 export class ListaContatosComponent implements OnInit {
   contatos: any[] = [];
@@ -36,91 +35,18 @@ export class ListaContatosComponent implements OnInit {
         // Extraindo o array que veio dentro da propriedade 'messages'
         const dados = resposta.messages;
 
-        // Se tiver dados reais, exibe. Se vier vazio, pode colocar [] ao invés dos mocks se quiser que fique limpo.
-        this.contatos = dados && dados.length > 0 ? dados : this.getMockContatos();
+        // Dados reais da API (inclui mensagens enviadas pelo app mobile).
+        this.contatos = dados ?? [];
         this.carregando = false;
       },
-      error: () => {
-        // Sem conexão ou erro na API? Usa os dados de exemplo mesmo
-        this.contatos = this.getMockContatos();
+      error: (err) => {
+        console.error('Erro ao carregar contatos:', err);
+        this.contatos = [];
         this.carregando = false;
       }
     });
   }
 
-  // ATENÇÃO!!! Criar rotas no back para funções de 'Marcar como lida' e 'Excluir'
-
-  // OS SEUS DADOS DE EXEMPLO (MOCK)
-  private getMockContatos(): any[] {
-    return [
-      {
-        id_contato: 1,
-        nome: 'Ana Paula Lima',
-        email: 'ana.lima@gmail.com',
-        assunto: 'Dúvida',
-        mensagem: 'Olá! Gostaria de saber se os doces podem ser feitos sem açúcar, pois tenho restrições alimentares. Também queria saber o prazo mínimo para encomendar.',
-        data_criacao: new Date('2025-05-17T14:32:00'),
-        respondido: false,
-        resposta: null,
-        data_resposta: null
-      },
-      {
-        id_contato: 2,
-        nome: 'Carlos Mendes',
-        email: 'carlos.m@outlook.com',
-        assunto: 'Reclamação',
-        mensagem: 'Recebi meu pedido hoje e alguns brigadeiros estavam amassados na embalagem. Fiquei desapontado porque era um presente de aniversário. Espero que possam resolver isso.',
-        data_criacao: new Date('2025-05-16T09:10:00'),
-        respondido: false,
-        resposta: null,
-        data_resposta: null
-      },
-      {
-        id_contato: 3,
-        nome: 'Fernanda Costa',
-        email: 'fecosta@gmail.com',
-        assunto: 'Sugestão',
-        mensagem: 'Amo os produtos de vocês! Seria incrível se tivessem uma opção de caixa mista para presente com sabores variados. Tenho certeza que venderia muito!',
-        data_criacao: new Date('2025-05-15T16:55:00'),
-        respondido: true,
-        resposta: 'Oi Fernanda! Que ótima ideia, já está nos nossos planos para o próximo mês. Obrigada pelo carinho!',
-        data_resposta: new Date('2025-05-15T18:00:00')
-      },
-      {
-        id_contato: 4,
-        nome: 'Roberto Alves',
-        email: 'roberto@empresa.com.br',
-        assunto: 'Parcerias',
-        mensagem: 'Tenho uma empresa de eventos corporativos e gostaria de conversar sobre fornecimento de doces para nossos eventos mensais. Temos demanda de aproximadamente 300 unidades por mês.',
-        data_criacao: new Date('2025-05-14T11:20:00'),
-        respondido: false,
-        resposta: null,
-        data_resposta: null
-      },
-      {
-        id_contato: 5,
-        nome: 'Juliana Ferreira',
-        email: 'ju.ferreira@hotmail.com',
-        assunto: 'Dúvida',
-        mensagem: 'Vocês entregam para o interior de SP? Moro em Campinas e adoraria pedir, mas não encontrei informação sobre a área de entrega no site.',
-        data_criacao: new Date('2025-05-13T20:05:00'),
-        respondido: true,
-        resposta: 'Oi Juliana! Por enquanto entregamos apenas na Grande São Paulo, mas estamos expandindo em breve. Te avisamos assim que Campinas estiver disponível!',
-        data_resposta: new Date('2025-05-14T09:30:00')
-      },
-      {
-        id_contato: 6,
-        nome: 'Marcos Souza',
-        email: 'marcos.souza@gmail.com',
-        assunto: 'Sugestão',
-        mensagem: 'Seria legal ter um programa de fidelidade! Já comprei várias vezes e adoraria acumular pontos para ganhar descontos. Tenho amigos que também comprariam mais com essa motivação.',
-        data_criacao: new Date('2025-05-12T08:44:00'),
-        respondido: false,
-        resposta: null,
-        data_resposta: null
-      }
-    ];
-  }
 
   get inboxCount(): number {
     return this.contatos.length;
@@ -172,8 +98,9 @@ export class ListaContatosComponent implements OnInit {
       next: () => {
         contato.respondido = true;
       },
-      error: () => {
-        contato.respondido = true;
+      error: (err) => {
+        console.error('Erro ao marcar contato:', err);
+        alert('Não foi possível marcar a mensagem como resolvida.');
       }
     });
   }
@@ -188,9 +115,7 @@ export class ListaContatosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao deletar contato:', err);
-        // Mesmo com erro, remove localmente para testar a interface caso não haja API
-        this.contatos = this.contatos.filter(c => c.id_contato !== contato.id_contato);
-        if (this.contatoSelecionado && this.contatoSelecionado.id_contato === contato.id_contato) this.fecharModal();
+        alert('Não foi possível excluir a mensagem.');
       }
     });
   }
@@ -213,8 +138,7 @@ export class ListaContatosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao enviar resposta:', err);
-        // Fallback: Atualiza a interface mesmo sem a API estar rodando perfeitamente
-        this.atualizarContatoLocal();
+        alert(err.error?.mensagem || 'Não foi possível enviar a resposta.');
       }
     });
   }
