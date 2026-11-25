@@ -31,7 +31,7 @@ export class LoginAdminComponent {
 
     // CORRIGIDO: usar loginAdmin() que aponta para /admin/login
     // A rota /admin/login aceita credenciais de administradores
-    this.authService.loginAdmin({ email: this.email, password: this.password }).subscribe({
+    this.authService.loginAdmin({ email: this.email, senha: this.password }).subscribe({
       next: () => {
         this.isLoading = false;
 
