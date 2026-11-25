@@ -6,11 +6,10 @@ import { RouterModule } from '@angular/router'; // Necessário para os links dos
 import { ProductService, Product } from 'src/app/core/services/product.service';
 
 @Component({
-  selector: 'app-carousel',
-  standalone: true,
-  imports: [CommonModule, RouterModule, NgOptimizedImage], // Adicionado RouterModule e NgOptimizedImage
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css']
+    selector: 'app-carousel',
+    imports: [CommonModule, RouterModule, NgOptimizedImage], // Adicionado RouterModule e NgOptimizedImage
+    templateUrl: './carousel.component.html',
+    styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent implements OnInit, OnDestroy {
   products: Product[] = []; // Alterado de string[] para Product[]
