@@ -9,14 +9,13 @@ import { Product, ProductService } from 'src/app/core/services/product.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
-  selector: 'app-product-detail',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
-  templateUrl: './product-detail.component.html',
-  styleUrl: './product-detail.component.css'
+    selector: 'app-product-detail',
+    imports: [
+        CommonModule,
+        RouterModule
+    ],
+    templateUrl: './product-detail.component.html',
+    styleUrl: './product-detail.component.css'
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
