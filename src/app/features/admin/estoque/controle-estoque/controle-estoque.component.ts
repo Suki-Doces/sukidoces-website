@@ -16,11 +16,10 @@ interface PaginacaoProdutos {
 }
 
 @Component({
-  selector: 'app-controle-estoque',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './controle-estoque.component.html',
-  styleUrls: ['./controle-estoque.component.css']
+    selector: 'app-controle-estoque',
+    imports: [CommonModule, FormsModule, RouterModule],
+    templateUrl: './controle-estoque.component.html',
+    styleUrls: ['./controle-estoque.component.css']
 })
 export class ControleEstoqueComponent implements OnInit {
   private http = inject(HttpClient);
