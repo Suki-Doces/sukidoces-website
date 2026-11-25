@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, inject } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -12,11 +12,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-painel-configuracoes',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './painel-configuracoes.component.html',
-  styleUrl: './painel-configuracoes.component.css'
+    selector: 'app-painel-configuracoes',
+    imports: [ReactiveFormsModule],
+    templateUrl: './painel-configuracoes.component.html',
+    styleUrl: './painel-configuracoes.component.css'
 })
 export class PainelConfiguracoesComponent implements OnInit {
   configForm!: FormGroup;
