@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd, ChildrenOutletContexts } from '@angular/router';
 import { glassRouteAnimation } from './route-animations';
-import { CommonModule } from '@angular/common'; // Importante para o *ngIf
+ // Importante para o *ngIf
 
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -10,12 +10,11 @@ import { ToastComponent } from './shared/components/toast/toast.component';
 import { AiChatComponent } from './shared/components/ai-chat/ai-chat.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent, HoverNavComponent, ToastComponent, AiChatComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  animations: [glassRouteAnimation]
+    selector: 'app-root',
+    imports: [RouterOutlet, HeaderComponent, FooterComponent, HoverNavComponent, ToastComponent, AiChatComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    animations: [glassRouteAnimation]
 })
 export class AppComponent implements OnInit {
   title = 'SukiDoces';
