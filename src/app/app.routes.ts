@@ -11,6 +11,7 @@ import { LoginComponent } from './features/public/auth/login/login.component';
 import { ContactComponent } from './features/public/contact/contact.component';
 import { ProfileComponent } from './features/public/user/profile/profile.component';
 import { CheckoutComponent } from './features/public/checkout/checkout.component';
+import { VerifyEmailComponent } from './features/public/auth/verify-email/verify-email.component';
 
 // Importações da Área Admin
 import { AdminLayoutComponent } from './features/admin/layout/admin-layout/admin-layout.component';
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: 'carrinho', component: CartComponent, data: { animation: 'carrinho' }, title: 'SukiDoces | Carrinho' },
   { path: 'perfil', component: ProfileComponent, data: { animation: 'perfil' }, canActivate: [authGuard], title: 'SukiDoces | Meu Perfil' }, // Rota protegida, só acessível com token válido
   { path: 'checkout', component: CheckoutComponent, data: { animation: 'checkout' }, canActivate: [authGuard], title: 'SukiDoces | Checkout' }, // Rota protegida, só acessível com token válido
+  { path: 'verificar-email', component: VerifyEmailComponent, title: 'SukiDoces | Confirmar e-mail' },
   { path: 'historia', component: HistoryComponent, data: { animation: 'historia' }, title: 'SukiDoces | Nossa História' },
   // ==========================================
   // ROTAS DO PAINEL ADMIN (Suki Doces Admin)
