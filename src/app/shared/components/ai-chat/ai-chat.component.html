@@ -1,5 +1,5 @@
 <div class="chat-container glass-container flex-col">
-  
+
   <div class="chat-header flex-between">
     <div class="flex-align-center">
       <span class="bot-avatar flex-center">
@@ -11,32 +11,38 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m14.5 9.5-5 5m0-5 5 5" stroke="var(--white-color)" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
   </div>
-  
+
   <div class="chat-body flex-col" #scrollMe>
-    <div *ngIf="historico.length === 0" class="msg-bot welcome-msg">
-      Olá! Sou a assistente inteligente da SukiDoces. Como posso te ajudar hoje?
-    </div>
-    
-    <div *ngFor="let msg of historico" 
-         [ngClass]="msg.role === 'user' ? 'msg-wrapper-user' : 'msg-wrapper-bot'">
-      <div [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'" 
-           [innerHTML]="msg.text | linkFormat">
+    @if (historico.length === 0) {
+      <div class="msg-bot welcome-msg">
+        Olá! Sou a assistente inteligente da SukiDoces. Como posso te ajudar hoje?
       </div>
-    </div>
-    
-    <div *ngIf="carregando" class="msg-wrapper-bot">
-      <div class="msg-bot loading">Só um minuto...</div>
-    </div>
+    }
+
+    @for (msg of historico; track msg) {
+      <div
+        [ngClass]="msg.role === 'user' ? 'msg-wrapper-user' : 'msg-wrapper-bot'">
+        <div [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'"
+          [innerHTML]="msg.text | linkFormat">
+        </div>
+      </div>
+    }
+
+    @if (carregando) {
+      <div class="msg-wrapper-bot">
+        <div class="msg-bot loading">Só um minuto...</div>
+      </div>
+    }
   </div>
 
   <div class="chat-footer flex-align-center">
-    <input 
-      type="text" 
-      [(ngModel)]="mensagemUsuario" 
-      (keyup.enter)="enviarMensagem()" 
+    <input
+      type="text"
+      [(ngModel)]="mensagemUsuario"
+      (keyup.enter)="enviarMensagem()"
       placeholder="Peça ao SukiBot..."
       [disabled]="carregando"
-    >
+      >
     <button class="btn btn-primary btn-glass btn-send" (click)="enviarMensagem()" [disabled]="carregando">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"/><g stroke-linecap="round" stroke-linejoin="round"/><path d="m14 16.597 7.007-3.125c1.324-.59 1.324-2.354 0-2.944L4.497 3.164c-1.495-.667-3.047.814-2.306 2.202l3.152 5.904c.245.459.245 1 0 1.458l-3.152 5.904c-.74 1.388.81 2.87 2.306 2.202l4.752-2.119" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
