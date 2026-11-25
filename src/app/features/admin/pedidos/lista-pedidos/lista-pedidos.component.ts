@@ -1,9 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ImageFormatPipe } from 'src/app/shared/pipes/image-format.pipe';
+import { Subscription, interval } from 'rxjs';
 import { environment } from 'src/environments/environment';
+
+/** Intervalo de atualização automática: pedidos feitos no app aparecem sem recarregar a página. */
+const POLLING_MS = 15000;
 
 interface Pedido {
   id_pedido: number;
@@ -13,6 +17,8 @@ interface Pedido {
   status: 'pendente' | 'pago' | 'enviado' | 'entregue' | 'cancelado';
   valor_total: number;
   metodo_pagamento: string;
+  /** Canal da compra: 'web' (site), 'mobile' (app) ou null (pedidos antigos). */
+  origem?: 'web' | 'mobile' | null;
   itens?: {
     nome: string;
     quantidade: number;
@@ -21,13 +27,12 @@ interface Pedido {
 }
 
 @Component({
-  selector: 'app-lista-pedidos',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ImageFormatPipe],
-  templateUrl: './lista-pedidos.component.html',
-  styleUrls: ['./lista-pedidos.component.css']
+    selector: 'app-lista-pedidos',
+    imports: [CommonModule, FormsModule, ImageFormatPipe],
+    templateUrl: './lista-pedidos.component.html',
+    styleUrls: ['./lista-pedidos.component.css']
 })
-export class ListaPedidosComponent implements OnInit {
+export class ListaPedidosComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   // Garante que o caminho base está correto para o padrão do seu server.js
   private apiUrl = `${environment.apiUrl}/pedidos`;
@@ -54,16 +59,30 @@ export class ListaPedidosComponent implements OnInit {
       .reduce((sum, p) => sum + Number(p.valor_total), 0);
   }
 
+  private pollingSub?: Subscription;
+
   ngOnInit() {
     this.carregarPedidos();
+    this.pollingSub = interval(POLLING_MS).subscribe(() => this.carregarPedidos(true));
   }
 
-  carregarPedidos() {
-    this.isLoading = true;
+  ngOnDestroy() {
+    this.pollingSub?.unsubscribe();
+  }
+
+  /** @param silencioso atualização em segundo plano: mantém filtros e página atuais. */
+  carregarPedidos(silencioso = false) {
+    if (!silencioso) this.isLoading = true;
     this.http.get<Pedido[]>(this.apiUrl).subscribe({
       next: (dados) => {
         this.pedidos = dados;
-        this.aplicarFiltros();
+        if (silencioso) {
+          const pagina = this.paginaAtual;
+          this.aplicarFiltros();
+          this.mudarPagina(Math.min(pagina, this.totalPaginas));
+        } else {
+          this.aplicarFiltros();
+        }
         this.isLoading = false;
       },
       error: (err) => {
@@ -141,6 +160,12 @@ export class ListaPedidosComponent implements OnInit {
     return new Date(data).toLocaleDateString('pt-BR', {
       day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
+  }
+
+  formatarOrigem(origem?: string | null): string {
+    if (origem === 'mobile') return 'App';
+    if (origem === 'web') return 'Site';
+    return '—';
   }
 
   formatarMetodo(metodo: string): string {
