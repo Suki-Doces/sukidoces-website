@@ -10,11 +10,10 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+    selector: 'app-profile',
+    imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
   activeTab: string = 'dados';
