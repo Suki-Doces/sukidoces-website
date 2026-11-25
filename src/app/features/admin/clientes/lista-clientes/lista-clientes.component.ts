@@ -19,11 +19,10 @@ interface PaginacaoClientes {
 }
 
 @Component({
-  selector: 'app-lista-clientes',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './lista-clientes.component.html',
-  styleUrls: ['./lista-clientes.component.css']
+    selector: 'app-lista-clientes',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './lista-clientes.component.html',
+    styleUrls: ['./lista-clientes.component.css']
 })
 export class ListaClientesComponent implements OnInit {
   private http = inject(HttpClient);
