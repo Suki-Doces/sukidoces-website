@@ -25,11 +25,10 @@ interface PaginacaoResponse {
 }
 
 @Component({
-  selector: 'app-lista-notificacoes',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './lista-notificacoes.component.html',
-  styleUrls: ['./lista-notificacoes.component.css']
+    selector: 'app-lista-notificacoes',
+    imports: [CommonModule],
+    templateUrl: './lista-notificacoes.component.html',
+    styleUrls: ['./lista-notificacoes.component.css']
 })
 export class ListaNotificacoesComponent implements OnInit {
   private http = inject(HttpClient);
