@@ -4,111 +4,123 @@
 </div>
 
 <div class="admin-dashboard-wrapper">
-  <div *ngIf="carregando" class="loading-state"><p>Carregando mensagens...</p></div>
-  <div *ngIf="erro" class="error-state"><p>{{ erro }}</p></div>
+  @if (carregando) {
+    <div class="loading-state"><p>Carregando mensagens...</p></div>
+  }
+  @if (erro) {
+    <div class="error-state"><p>{{ erro }}</p></div>
+  }
 
-  <div *ngIf="!carregando && !erro">
-
-    <!-- Abas -->
-    <div class="inbox-tabs">
-      <button class="inbox-tab" [class.active]="activeTab === 'inbox'" (click)="activeTab = 'inbox'">
-        Todas <span class="tab-count">{{ inboxCount }}</span>
-      </button>
-      <button class="inbox-tab" [class.active]="activeTab === 'awaiting'" (click)="activeTab = 'awaiting'">
-        Pendentes <span class="tab-count">{{ awaitingCount }}</span>
-      </button>
-      <button class="inbox-tab" [class.active]="activeTab === 'answered'" (click)="activeTab = 'answered'">
-        Respondidas <span class="tab-count">{{ answeredCount }}</span>
-      </button>
-    </div>
-
-    <!-- Cabeçalho das colunas -->
-    <div class="cl-header" *ngIf="filteredContatos.length > 0">
-      <span></span>
-      <span>Cliente</span>
-      <span>Assunto</span>
-      <span>Data</span>
-    </div>
-
-    <!-- Linhas -->
-    <div
-      class="contact-row"
-      [class.unread]="!contato.respondido"
-      *ngFor="let contato of filteredContatos"
-      (click)="abrirModal(contato)"
-    >
-      <!-- Avatar -->
-      <div class="cr-avatar">{{ contato.nome?.charAt(0)?.toUpperCase() }}</div>
-
-      <!-- Nome + e-mail -->
-      <div class="cr-name-col">
-        <span class="cr-name">{{ contato.nome }}</span>
-        <span class="cr-email">{{ contato.email }}</span>
+  @if (!carregando && !erro) {
+    <div>
+      <!-- Abas -->
+      <div class="inbox-tabs">
+        <button class="inbox-tab" [class.active]="activeTab === 'inbox'" (click)="activeTab = 'inbox'">
+          Todas <span class="tab-count">{{ inboxCount }}</span>
+        </button>
+        <button class="inbox-tab" [class.active]="activeTab === 'awaiting'" (click)="activeTab = 'awaiting'">
+          Pendentes <span class="tab-count">{{ awaitingCount }}</span>
+        </button>
+        <button class="inbox-tab" [class.active]="activeTab === 'answered'" (click)="activeTab = 'answered'">
+          Respondidas <span class="tab-count">{{ answeredCount }}</span>
+        </button>
       </div>
-
-      <!-- Badge de assunto -->
-      <div class="cr-subject-col">
-        <span class="subj-badge" [ngClass]="getSubjectClass(contato.assunto)">{{ contato.assunto | titlecase }}</span>
-      </div>
-
-      <!-- Data -->
-      <div class="cr-date">{{ contato.data_criacao | date:'dd/MM/yyyy HH:mm' }}</div>
-
-      <!-- Menu de ações (para propagação do clique) -->
-      <div class="cr-menu-wrap" (click)="$event.stopPropagation()">
-        <button class="cr-menu-btn" [attr.aria-label]="'Ações de ' + contato.nome">•••</button>
-        <div class="cr-dropdown">
-          <button
-            class="cr-dd-item"
-            *ngIf="!contato.respondido"
-            (click)="markAsRead(contato)"
-          >
-            <i class="ti ti-check" aria-hidden="true"></i> Marcar como lida
-          </button>
-          <button class="cr-dd-item danger" (click)="deletarContato(contato)">
-            <i class="ti ti-trash" aria-hidden="true"></i> Excluir
-          </button>
+      <!-- Cabeçalho das colunas -->
+      @if (filteredContatos.length > 0) {
+        <div class="cl-header">
+          <span></span>
+          <span>Cliente</span>
+          <span>Assunto</span>
+          <span>Data</span>
         </div>
-      </div>
+      }
+      <!-- Linhas -->
+      @for (contato of filteredContatos; track contato) {
+        <div
+          class="contact-row"
+          [class.unread]="!contato.respondido"
+          (click)="abrirModal(contato)"
+          >
+          <!-- Avatar -->
+          <div class="cr-avatar">{{ contato.nome?.charAt(0)?.toUpperCase() }}</div>
+          <!-- Nome + e-mail -->
+          <div class="cr-name-col">
+            <span class="cr-name">{{ contato.nome }}</span>
+            <span class="cr-email">{{ contato.email }}</span>
+          </div>
+          <!-- Badge de assunto -->
+          <div class="cr-subject-col">
+            <span class="subj-badge" [ngClass]="getSubjectClass(contato.assunto)">{{ contato.assunto | titlecase }}</span>
+          </div>
+          <!-- Data -->
+          <div class="cr-date">{{ contato.data_criacao | date:'dd/MM/yyyy HH:mm' }}</div>
+          <!-- Menu de ações (para propagação do clique) -->
+          <div class="cr-menu-wrap" (click)="$event.stopPropagation()">
+            <button class="cr-menu-btn" [attr.aria-label]="'Ações de ' + contato.nome">•••</button>
+            <div class="cr-dropdown">
+              @if (!contato.respondido) {
+                <button
+                  class="cr-dd-item"
+                  (click)="markAsRead(contato)"
+                  >
+                  <i class="ti ti-check" aria-hidden="true"></i> Marcar como lida
+                </button>
+              }
+              <button class="cr-dd-item danger" (click)="deletarContato(contato)">
+                <i class="ti ti-trash" aria-hidden="true"></i> Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+      @if (filteredContatos.length === 0) {
+        <div class="empty-state">
+          <p>Nenhuma mensagem encontrada.</p>
+        </div>
+      }
     </div>
-
-    <div class="empty-state" *ngIf="filteredContatos.length === 0">
-      <p>Nenhuma mensagem encontrada.</p>
-    </div>
-  </div>
+  }
 </div>
 
 <!-- Modal (sem alterações) -->
-<div class="modal-overlay" *ngIf="contatoSelecionado">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Mensagem de {{ contatoSelecionado.nome }}</h2>
-      <button class="close-btn" (click)="fecharModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="info-group">
-        <label>Assunto:</label>
-        <p class="highlight-text">{{ contatoSelecionado.assunto }}</p>
+@if (contatoSelecionado) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Mensagem de {{ contatoSelecionado.nome }}</h2>
+        <button class="close-btn" (click)="fecharModal()">×</button>
       </div>
-      <div class="info-group">
-        <label>Mensagem do Cliente:</label>
-        <div class="message-box client-msg">{{ contatoSelecionado.mensagem }}</div>
+      <div class="modal-body">
+        <div class="info-group">
+          <label>Assunto:</label>
+          <p class="highlight-text">{{ contatoSelecionado.assunto }}</p>
+        </div>
+        <div class="info-group">
+          <label>Mensagem do Cliente:</label>
+          <div class="message-box client-msg">{{ contatoSelecionado.mensagem }}</div>
+        </div>
+        <hr class="dashed-divider">
+        @if (contatoSelecionado.respondido) {
+          <div class="info-group">
+            <label>Sua Resposta (Enviada em {{ contatoSelecionado.data_resposta | date:'dd/MM/yyyy' }}):</label>
+            <div class="message-box admin-msg">{{ contatoSelecionado.resposta }}</div>
+          </div>
+        }
+        @if (!contatoSelecionado.respondido) {
+          <div class="info-group">
+            <label>Escrever Resposta:</label>
+            <textarea [(ngModel)]="respostaTexto" rows="5" class="form-input" placeholder="Digite sua resposta aqui..."></textarea>
+          </div>
+        }
       </div>
-      <hr class="dashed-divider">
-      <div *ngIf="contatoSelecionado.respondido" class="info-group">
-        <label>Sua Resposta (Enviada em {{ contatoSelecionado.data_resposta | date:'dd/MM/yyyy' }}):</label>
-        <div class="message-box admin-msg">{{ contatoSelecionado.resposta }}</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
+        @if (!contatoSelecionado.respondido) {
+          <button class="btn btn-primary" (click)="enviarResposta()" [disabled]="!respostaTexto.trim()">
+            Enviar Resposta
+          </button>
+        }
       </div>
-      <div *ngIf="!contatoSelecionado.respondido" class="info-group">
-        <label>Escrever Resposta:</label>
-        <textarea [(ngModel)]="respostaTexto" rows="5" class="form-input" placeholder="Digite sua resposta aqui..."></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
-      <button *ngIf="!contatoSelecionado.respondido" class="btn btn-primary" (click)="enviarResposta()" [disabled]="!respostaTexto.trim()">
-        Enviar Resposta
-      </button>
     </div>
   </div>
-</div>
+}
