@@ -20,11 +20,10 @@ interface ContactMessage {
 }
 
 @Component({
-  selector: 'app-contact',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+    selector: 'app-contact',
+    imports: [CommonModule, ReactiveFormsModule, NgxMaskDirective],
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
   contactForm!: FormGroup;
