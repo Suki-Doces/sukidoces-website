@@ -10,22 +10,22 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { CartService } from 'src/app/core/services/cart.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    NgxMaskDirective,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        NgxMaskDirective,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   isTransitioning = false;
   errorMessage = '';
+  infoMessage = '';
 
 
   formData = {
@@ -132,6 +132,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.errorMessage = '';
+    this.infoMessage = '';
 
     if (!this.isLoginMode && this.formData.senha !== this.formData.confirmar_senha) {
       this.errorMessage = 'As senhas não coincidem.';
@@ -170,8 +171,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       };
 
       this.authService.registro(novoUsuario).subscribe({
-        next: () => {
-          // Caso o registro também já deixe o usuário logado automaticamente, sincronizamos aqui também
+        next: (res) => {
+          // Com verificação de e-mail ativa na API, a conta só entra depois do link de confirmação.
+          if (res.user?.email_verificado === false) {
+            this.isLoading = false;
+            this.isLoginMode = true;
+            this.infoMessage = 'Conta criada! Enviamos um link de confirmação para o seu e-mail. Confirme e depois faça o login.';
+            return;
+          }
           if (this.authService.isLoggedIn()) {
             this.cartService.syncGuestCartToDatabase();
           }
