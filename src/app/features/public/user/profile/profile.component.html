@@ -1,394 +1,399 @@
 <section class="profile-container">
-    <nav class="glass-container profile-nav animate-fade">
-        <div class="user-info-brief">
-            <div class="avatar-circle" (click)="triggerFileInput()" title="Alterar foto de perfil">
+  <nav class="glass-container profile-nav animate-fade">
+    <div class="user-info-brief">
+      <div class="avatar-circle" (click)="triggerFileInput()" title="Alterar foto de perfil">
 
-                <img *ngIf="imagePreview" [src]="imagePreview" alt="Foto de perfil" class="avatar-img">
-                <span *ngIf="!imagePreview" class="avatar-initial">{{ user?.nome?.charAt(0) }}</span>
+        @if (imagePreview) {
+          <img [src]="imagePreview" alt="Foto de perfil" class="avatar-img">
+        }
+        @if (!imagePreview) {
+          <span class="avatar-initial">{{ user?.nome?.charAt(0) }}</span>
+        }
 
-                <div class="avatar-overlay">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g stroke-width="0" />
-                        <g stroke-linecap="round" stroke-linejoin="round" />
-                        <g stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="13" r="3" />
-                            <path
-                                d="M2 13.364c0-3.065 0-4.597.749-5.697a4.4 4.4 0 0 1 1.226-1.204c.72-.473 1.622-.642 3.003-.702.659 0 1.226-.49 1.355-1.125A2.064 2.064 0 0 1 10.366 3h3.268c.988 0 1.839.685 2.033 1.636.129.635.696 1.125 1.355 1.125 1.38.06 2.282.23 3.003.702.485.318.902.727 1.226 1.204.749 1.1.749 2.632.749 5.697s0 4.596-.749 5.697a4.4 4.4 0 0 1-1.226 1.204C18.904 21 17.343 21 14.222 21H9.778c-3.121 0-4.682 0-5.803-.735A4.4 4.4 0 0 1 2.75 19.06 3.4 3.4 0 0 1 2.277 18M19 10h-1"
-                                stroke-linecap="round" />
-                        </g>
-                    </svg>
-                    <span>Alterar</span>
-                </div>
-            </div>
-
-            <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-            <h3>Olá, {{ displayName }}</h3>
+        <div class="avatar-overlay">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke-width="0" />
+            <g stroke-linecap="round" stroke-linejoin="round" />
+            <g stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="13" r="3" />
+              <path
+                d="M2 13.364c0-3.065 0-4.597.749-5.697a4.4 4.4 0 0 1 1.226-1.204c.72-.473 1.622-.642 3.003-.702.659 0 1.226-.49 1.355-1.125A2.064 2.064 0 0 1 10.366 3h3.268c.988 0 1.839.685 2.033 1.636.129.635.696 1.125 1.355 1.125 1.38.06 2.282.23 3.003.702.485.318.902.727 1.226 1.204.749 1.1.749 2.632.749 5.697s0 4.596-.749 5.697a4.4 4.4 0 0 1-1.226 1.204C18.904 21 17.343 21 14.222 21H9.778c-3.121 0-4.682 0-5.803-.735A4.4 4.4 0 0 1 2.75 19.06 3.4 3.4 0 0 1 2.277 18M19 10h-1"
+                stroke-linecap="round" />
+            </g>
+          </svg>
+          <span>Alterar</span>
         </div>
-        <hr>
-        <button (click)="activeTab = 'dados'" [class.active]="activeTab === 'dados'">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g stroke-width="0" />
-                <g stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M3 14v-4c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172.654.653.943 1.528 1.07 2.828M21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172-.654-.653-.943-1.528-1.07-2.828M8 14h5m-5-4h1m7 0h-4"
-                    stroke="current-color" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-            Meus Dados
-        </button>
-        <button (click)="activeTab = 'pedidos'" [class.active]="activeTab === 'pedidos'">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g stroke-width="0" />
-                <g stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                    d="M21.984 10c-.037-1.311-.161-2.147-.581-2.86-.598-1.015-1.674-1.58-3.825-2.708l-2-1.05C13.822 2.461 12.944 2 12 2s-1.822.46-3.578 1.382l-2 1.05C4.271 5.56 3.195 6.125 2.597 7.14 2 8.154 2 9.417 2 11.942v.117c0 2.524 0 3.787.597 4.801.598 1.015 1.674 1.58 3.825 2.709l2 1.049C10.178 21.539 11.056 22 12 22s1.822-.46 3.578-1.382l2-1.05c2.151-1.129 3.227-1.693 3.825-2.708.42-.713.544-1.549.581-2.86M21 7.5l-4 2M12 12 3 7.5m9 4.5v9.5m0-9.5 4.5-2.25.5-.25m0 0V13m0-3.5-9.5-5"
-                    stroke="current-color" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-            Meus Pedidos
-        </button>
-        <button (click)="activeTab = 'senha'" [class.active]="activeTab === 'senha'">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g stroke-width="0" />
-                <g stroke-linecap="round" stroke-linejoin="round" />
-                <g stroke="current-color" stroke-width="1.5">
-                    <circle cx="12" cy="9" r="2" />
-                    <path d="M16 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z" />
-                    <path
-                        d="M3 10.417c0-3.198 0-4.797.378-5.335.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2s1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 2.505-.837 4.437-2 5.913M3.193 14c.857 4.298 4.383 6.513 6.706 7.527.721.315 1.082.473 2.101.473 1.02 0 1.38-.158 2.101-.473.579-.252 1.231-.58 1.899-.994"
-                        stroke-linecap="round" />
-                </g>
-            </svg>
-            Segurança
-        </button>
+      </div>
+
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+      <h3>Olá, {{ displayName }}</h3>
+    </div>
+    <hr>
+      <button (click)="activeTab = 'dados'" [class.active]="activeTab === 'dados'">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke-width="0" />
+          <g stroke-linecap="round" stroke-linejoin="round" />
+          <path
+            d="M3 14v-4c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172.654.653.943 1.528 1.07 2.828M21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172-.654-.653-.943-1.528-1.07-2.828M8 14h5m-5-4h1m7 0h-4"
+            stroke="current-color" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Meus Dados
+      </button>
+      <button (click)="activeTab = 'pedidos'" [class.active]="activeTab === 'pedidos'">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke-width="0" />
+          <g stroke-linecap="round" stroke-linejoin="round" />
+          <path
+            d="M21.984 10c-.037-1.311-.161-2.147-.581-2.86-.598-1.015-1.674-1.58-3.825-2.708l-2-1.05C13.822 2.461 12.944 2 12 2s-1.822.46-3.578 1.382l-2 1.05C4.271 5.56 3.195 6.125 2.597 7.14 2 8.154 2 9.417 2 11.942v.117c0 2.524 0 3.787.597 4.801.598 1.015 1.674 1.58 3.825 2.709l2 1.049C10.178 21.539 11.056 22 12 22s1.822-.46 3.578-1.382l2-1.05c2.151-1.129 3.227-1.693 3.825-2.708.42-.713.544-1.549.581-2.86M21 7.5l-4 2M12 12 3 7.5m9 4.5v9.5m0-9.5 4.5-2.25.5-.25m0 0V13m0-3.5-9.5-5"
+            stroke="current-color" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Meus Pedidos
+      </button>
+      <button (click)="activeTab = 'senha'" [class.active]="activeTab === 'senha'">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke-width="0" />
+          <g stroke-linecap="round" stroke-linejoin="round" />
+          <g stroke="current-color" stroke-width="1.5">
+            <circle cx="12" cy="9" r="2" />
+            <path d="M16 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z" />
+            <path
+              d="M3 10.417c0-3.198 0-4.797.378-5.335.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2s1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 2.505-.837 4.437-2 5.913M3.193 14c.857 4.298 4.383 6.513 6.706 7.527.721.315 1.082.473 2.101.473 1.02 0 1.38-.158 2.101-.473.579-.252 1.231-.58 1.899-.994"
+              stroke-linecap="round" />
+          </g>
+        </svg>
+        Segurança
+      </button>
     </nav>
 
     <div class="profile-content">
 
-        <div *ngIf="activeTab === 'dados'" class="animate-fade"
-            style="display: flex; flex-direction: column; gap: 30px;">
-            <div class="glass-container profile-card">
-                <div class="profile-title">
-                    <h2>Meus Dados</h2>
-                </div>
-
-                <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
-                    <div class="form-grid">
-                        <h3 class="section-title">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g stroke-width="0" />
-                                <g stroke-linecap="round" stroke-linejoin="round" />
-                                <g stroke="currentColor" stroke-width="1.5">
-                                    <circle cx="9" cy="9" r="2" />
-                                    <path d="M13 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z" />
-                                    <path
-                                        d="M22 12c0 3.771 0 5.657-1.172 6.828S17.771 20 14 20h-4c-3.771 0-5.657 0-6.828-1.172S2 15.771 2 12s0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172.47.47.751 1.054.92 1.828M19 12h-4m4-3h-5m5 6h-3"
-                                        stroke-linecap="round" />
-                                </g>
-                            </svg>
-                            Informações Básicas
-                        </h3>
-                        <div class="form-group full-width">
-                            <label>Nome Completo</label>
-                            <input type="text" formControlName="nome" placeholder="Seu nome completo">
-                        </div>
-                        <div class="form-group">
-                            <label>E-mail (Não alterável)</label>
-                            <input type="email" formControlName="email" readonly class="readonly-input">
-                        </div>
-                        <div class="form-group">
-                            <label>CPF</label>
-                            <input type="text" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
-                        </div>
-                        <div class="form-group">
-                            <label>Telefone / WhatsApp</label>
-                            <input type="text" formControlName="telefone" mask="(00) 0000-0000||(00) 0 0000-0000"
-                                placeholder="(00) 00000-0000">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Data de Nascimento</label>
-                            <input type="date" formControlName="data_nascimento">
-                        </div>
-
-                        <h3 class="section-title">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g stroke-width="0" />
-                                <g stroke-linecap="round" stroke-linejoin="round" />
-                                <g stroke="currentColor" stroke-width="1.5">
-                                    <path
-                                        d="M22 22H2m0-11 4.063-3.25M22 11l-8.126-6.5a3 3 0 0 0-3.748 0l-.782.625M15.5 5.5v-2A.5.5 0 0 1 16 3h2.5a.5.5 0 0 1 .5.5v5M4 22V9.5m16 0v4m0 8.5v-4.5"
-                                        stroke-linecap="round" />
-                                    <path
-                                        d="M15 22v-5c0-1.414 0-2.121-.44-2.56C14.122 14 13.415 14 12 14s-2.121 0-2.56.44M9 22v-5"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
-                                </g>
-                            </svg>
-                            Endereço de Entrega
-                        </h3>
-                        <div class="form-group">
-                            <label>CEP</label>
-                            <input type="text" formControlName="cep" mask="00000-000" placeholder="00000-000"
-                                (blur)="buscarCep()">
-                        </div>
-                        <div class="form-group">
-                            <label>Rua / Avenida</label>
-                            <input type="text" formControlName="rua" placeholder="Nome da rua">
-                        </div>
-                        <div class="form-group">
-                            <label>Número</label>
-                            <input type="text" formControlName="numero" placeholder="Ex: 123">
-                        </div>
-                        <div class="form-group">
-                            <label>Complemento</label>
-                            <input type="text" formControlName="complemento" placeholder="Apto, Bloco, Casa">
-                        </div>
-                        <div class="form-group">
-                            <label>Bairro</label>
-                            <input type="text" formControlName="bairro" placeholder="Seu bairro">
-                        </div>
-                        <div class="form-group">
-                            <label>Cidade</label>
-                            <input type="text" formControlName="cidade" placeholder="Cidade - UF">
-                        </div>
-                        <div class="form-group">
-                            <label>Estado (UF)</label>
-                            <input type="text" formControlName="estado" maxlength="2" placeholder="ex: SP">
-                        </div>
-                    </div>
-
-                    <div *ngIf="message && activeTab === 'dados'" class="alert" [ngClass]="message.type">
-                        {{ message.text }}
-                    </div>
-
-                    <div style="margin-top: 24px; text-align: right;">
-                        <button type="submit" class="btn btn-glass btn-primary "
-                            [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar
-                            Alterações' }}
-                        </button>
-                    </div>
-                </form>
+      @if (activeTab === 'dados') {
+        <div class="animate-fade"
+          style="display: flex; flex-direction: column; gap: 30px;">
+          <div class="glass-container profile-card">
+            <div class="profile-title">
+              <h2>Meus Dados</h2>
             </div>
+            <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+              <div class="form-grid">
+                <h3 class="section-title">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g stroke-width="0" />
+                    <g stroke-linecap="round" stroke-linejoin="round" />
+                    <g stroke="currentColor" stroke-width="1.5">
+                      <circle cx="9" cy="9" r="2" />
+                      <path d="M13 15c0 1.105 0 2-4 2s-4-.895-4-2 1.79-2 4-2 4 .895 4 2Z" />
+                      <path
+                        d="M22 12c0 3.771 0 5.657-1.172 6.828S17.771 20 14 20h-4c-3.771 0-5.657 0-6.828-1.172S2 15.771 2 12s0-5.657 1.172-6.828S6.229 4 10 4h4c3.771 0 5.657 0 6.828 1.172.47.47.751 1.054.92 1.828M19 12h-4m4-3h-5m5 6h-3"
+                        stroke-linecap="round" />
+                    </g>
+                  </svg>
+                  Informações Básicas
+                </h3>
+                <div class="form-group full-width">
+                  <label>Nome Completo</label>
+                  <input type="text" formControlName="nome" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                  <label>E-mail (Não alterável)</label>
+                  <input type="email" formControlName="email" readonly class="readonly-input">
+                </div>
+                <div class="form-group">
+                  <label>CPF</label>
+                  <input type="text" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
+                </div>
+                <div class="form-group">
+                  <label>Telefone / WhatsApp</label>
+                  <input type="text" formControlName="telefone" mask="(00) 0000-0000||(00) 0 0000-0000"
+                    placeholder="(00) 00000-0000">
+                </div>
+                <div class="form-group">
+                  <label>Data de Nascimento</label>
+                  <input type="date" formControlName="data_nascimento">
+                </div>
+                <h3 class="section-title">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g stroke-width="0" />
+                    <g stroke-linecap="round" stroke-linejoin="round" />
+                    <g stroke="currentColor" stroke-width="1.5">
+                      <path
+                        d="M22 22H2m0-11 4.063-3.25M22 11l-8.126-6.5a3 3 0 0 0-3.748 0l-.782.625M15.5 5.5v-2A.5.5 0 0 1 16 3h2.5a.5.5 0 0 1 .5.5v5M4 22V9.5m16 0v4m0 8.5v-4.5"
+                        stroke-linecap="round" />
+                      <path
+                        d="M15 22v-5c0-1.414 0-2.121-.44-2.56C14.122 14 13.415 14 12 14s-2.121 0-2.56.44M9 22v-5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                    </g>
+                  </svg>
+                  Endereço de Entrega
+                </h3>
+                <div class="form-group">
+                  <label>CEP</label>
+                  <input type="text" formControlName="cep" mask="00000-000" placeholder="00000-000"
+                    (blur)="buscarCep()">
+                </div>
+                <div class="form-group">
+                  <label>Rua / Avenida</label>
+                  <input type="text" formControlName="rua" placeholder="Nome da rua">
+                </div>
+                <div class="form-group">
+                  <label>Número</label>
+                  <input type="text" formControlName="numero" placeholder="Ex: 123">
+                </div>
+                <div class="form-group">
+                  <label>Complemento</label>
+                  <input type="text" formControlName="complemento" placeholder="Apto, Bloco, Casa">
+                </div>
+                <div class="form-group">
+                  <label>Bairro</label>
+                  <input type="text" formControlName="bairro" placeholder="Seu bairro">
+                </div>
+                <div class="form-group">
+                  <label>Cidade</label>
+                  <input type="text" formControlName="cidade" placeholder="Cidade - UF">
+                </div>
+                <div class="form-group">
+                  <label>Estado (UF)</label>
+                  <input type="text" formControlName="estado" maxlength="2" placeholder="ex: SP">
+                </div>
+              </div>
+              @if (message && activeTab === 'dados') {
+                <div class="alert" [ngClass]="message.type">
+                  {{ message.text }}
+                </div>
+              }
+              <div style="margin-top: 24px; text-align: right;">
+                <button type="submit" class="btn btn-glass btn-primary "
+                  [disabled]="profileForm.invalid || isLoading">{{ isLoading ? 'Salvando...' : 'Salvar
+                  Alterações' }}
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="glass-container profile-card danger-zone">
+            <h2 style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <g stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="6" r="4" />
+                  <path d="m19.95 16.05-3.9 3.9" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="3" />
+                  <path
+                    d="M13 20.96q-.49.04-1 .04c-3.866 0-7-1.79-7-4 0-.345.077-.68.22-1m9.28-2.737c-.776-.17-1.62-.263-2.5-.263-1.074 0-2.09.138-3 .385"
+                    stroke-linecap="round" />
+                </g>
+              </svg>
+              Excluir Conta
+            </h2>
+            <p style="margin-bottom: 20px; color: var(--t-default); font-size: 0.95rem; line-height: 1.5;">
+              Ao excluir sua conta, você perderá acesso ao seu histórico de pedidos e seus dados serão removidos
+              do nosso sistema. Essa ação é irreversível.
+            </p>
+            <button type="button" class="btn btn-glass btn-danger" style="white-space: wrap;"
+              (click)="deleteAccount()">Excluir minha conta permanentemente
+            </button>
+          </div>
+        </div>
+      }
 
-            <div class="glass-container profile-card danger-zone">
-                <h2 style="display: flex; align-items: center; gap: 0.5rem;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      @if (activeTab === 'pedidos') {
+        <div class="glass-container profile-card animate-fade">
+          <div class="profile-title">
+            <h2>Meus Pedidos</h2>
+          </div>
+          @if (message && activeTab === 'pedidos') {
+            <div class="alert" [ngClass]="message.type"
+              style="margin-bottom: 20px;">
+              {{ message.text }}
+            </div>
+          }
+          @if (pedidos.length === 0) {
+            <div class="empty-state">
+              <p>Ainda não efetuou nenhum pedido.</p>
+              <button routerLink="/produtos" class="btn btn-glass btn-primary" style="margin-top: 15px;">Ir para a
+              Loja</button>
+            </div>
+          }
+          @if (pedidos.length > 0) {
+            <div class="orders-list">
+              @for (pedido of pedidos; track pedido) {
+                <div class="order-card">
+                  <div class="order-header">
+                    <div>
+                      <h3>Pedido #{{ pedido.id_pedido }}</h3>
+                      <span class="order-date">{{ pedido.data_pedido | date:'dd/MM/yyyy HH:mm' }}</span>
+                    </div>
+                    <div class="order-status" [ngClass]="pedido.status.toLowerCase()">
+                      {{ pedido.status }}
+                    </div>
+                  </div>
+                  <div class="order-items">
+                    @for (item of pedido.itens_pedido; track item) {
+                      <div class="item">
+                        <img [src]="getProductImage(item.produtos.imagem)" (error)="onImageError($event)"
+                          [alt]="item.produtos.nome" class="item-img">
+                        <div class="item-details">
+                          <p class="item-name">{{ item.quantidade }}x {{ item.produtos.nome }}</p>
+                          <p class="item-price">{{ item.preco_unitario | currency:'BRL':'symbol' }}</p>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                  <div class="order-footer" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <p style="flex-grow: 1;">Total: <strong>{{ pedido.valor_total | currency:'BRL':'symbol'
+                    }}</strong></p>
+                    @if (pedido.status === 'pendente') {
+                      <button class="btn btn-glass btn-primary"
+                        (click)="pagarNovamente(pedido)">
+                        Pagar Novamente
+                      </button>
+                    }
+                    @if (pedido.status === 'pendente') {
+                      <button class="btn btn-glass btn-danger"
+                        (click)="cancelarPedido(pedido.id_pedido)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g stroke-width="0" />
+                          <g stroke-linecap="round" stroke-linejoin="round" />
+                          <path
+                            d="m14 8-4 4m0-4 4 4m-6.5 3.5H9m7.5 0H12M21 7v-.63c0-1.193 0-1.79-.158-2.27a3.05 3.05 0 0 0-1.881-1.937C18.493 2 17.914 2 16.755 2h-9.51c-1.159 0-1.738 0-2.206.163a3.05 3.05 0 0 0-1.881 1.936C3 4.581 3 5.177 3 6.37V15m18-4v9.374c0 .858-.985 1.314-1.608.744a.946.946 0 0 0-1.284 0l-.483.442a1.657 1.657 0 0 1-2.25 0 1.657 1.657 0 0 0-2.25 0 1.657 1.657 0 0 1-2.25 0 1.657 1.657 0 0 0-2.25 0 1.657 1.657 0 0 1-2.25 0l-.483-.442a.946.946 0 0 0-1.284 0c-.623.57-1.608.114-1.608-.744V19"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        Cancelar
+                      </button>
+                    }
+                    <button class="btn btn-glass btn-secondary" (click)="viewOrderDetails(pedido)"
+                      aria-label="Ver detalhes do pedido">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g stroke-width="0" />
                         <g stroke-linecap="round" stroke-linejoin="round" />
                         <g stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="6" r="4" />
-                            <path d="m19.95 16.05-3.9 3.9" stroke-linecap="round" />
-                            <circle cx="18" cy="18" r="3" />
-                            <path
-                                d="M13 20.96q-.49.04-1 .04c-3.866 0-7-1.79-7-4 0-.345.077-.68.22-1m9.28-2.737c-.776-.17-1.62-.263-2.5-.263-1.074 0-2.09.138-3 .385"
-                                stroke-linecap="round" />
+                          <path d="M5 14a2 2 0 1 0-2-2" stroke-linecap="round" />
+                          <circle cx="12" cy="12" r="2" />
+                          <path d="M21 12a2 2 0 1 1-2-2" stroke-linecap="round" />
                         </g>
-                    </svg>
-                    Excluir Conta
-                </h2>
-                <p style="margin-bottom: 20px; color: var(--t-default); font-size: 0.95rem; line-height: 1.5;">
-                    Ao excluir sua conta, você perderá acesso ao seu histórico de pedidos e seus dados serão removidos
-                    do nosso sistema. Essa ação é irreversível.
-                </p>
-                <button type="button" class="btn btn-glass btn-danger" style="white-space: wrap;"
-                    (click)="deleteAccount()">Excluir minha conta permanentemente
-                </button>
+                      </svg>
+                      Ver Detalhes
+                    </button>
+                  </div>
+                </div>
+              }
             </div>
+          }
         </div>
+      }
 
-        <div *ngIf="activeTab === 'pedidos'" class="glass-container profile-card animate-fade">
-            <div class="profile-title">
-                <h2>Meus Pedidos</h2>
+      @if (activeTab === 'senha') {
+        <div class="glass-container profile-card animate-fade">
+          <div class="profile-title">
+            <h2>Alterar Senha</h2>
+          </div>
+          <form (ngSubmit)="changePassword()" [formGroup]="passwordForm">
+            <div class="form-group">
+              <label>Senha Atual</label>
+              <input type="password" formControlName="currentPassword" placeholder="********">
             </div>
-
-            <div *ngIf="message && activeTab === 'pedidos'" class="alert" [ngClass]="message.type"
-                style="margin-bottom: 20px;">
+            <div class="form-group" style="margin-top: 15px;">
+              <label>Nova Senha</label>
+              <input type="password" formControlName="newPassword" placeholder="No mínimo 6 caracteres">
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+              <label>Confirmar Nova Senha</label>
+              <input type="password" formControlName="confirmPassword" placeholder="Repita a nova senha">
+            </div>
+            @if (message && activeTab === 'senha') {
+              <div class="alert" [ngClass]="message.type"
+                style="margin-top: 20px;">
                 {{ message.text }}
+              </div>
+            }
+            <div style="margin-top: 24px; text-align: right;">
+              <button type="submit" class="btn btn-glass btn-primary"
+                [disabled]="passwordForm.invalid || isLoading">
+                {{ isLoading ? 'Atualizando...' : 'Atualizar Senha' }}
+              </button>
             </div>
-
-            <div *ngIf="pedidos.length === 0" class="empty-state">
-                <p>Ainda não efetuou nenhum pedido.</p>
-                <button routerLink="/produtos" class="btn btn-glass btn-primary" style="margin-top: 15px;">Ir para a
-                    Loja</button>
-            </div>
-
-            <div class="orders-list" *ngIf="pedidos.length > 0">
-                <div class="order-card" *ngFor="let pedido of pedidos">
-
-                    <div class="order-header">
-                        <div>
-                            <h3>Pedido #{{ pedido.id_pedido }}</h3>
-                            <span class="order-date">{{ pedido.data_pedido | date:'dd/MM/yyyy HH:mm' }}</span>
-                        </div>
-                        <div class="order-status" [ngClass]="pedido.status.toLowerCase()">
-                            {{ pedido.status }}
-                        </div>
-                    </div>
-
-                    <div class="order-items">
-                        <div class="item" *ngFor="let item of pedido.itens_pedido">
-
-                            <img [src]="getProductImage(item.produtos.imagem)" (error)="onImageError($event)"
-                                [alt]="item.produtos.nome" class="item-img">
-
-                            <div class="item-details">
-                                <p class="item-name">{{ item.quantidade }}x {{ item.produtos.nome }}</p>
-
-                                <p class="item-price">{{ item.preco_unitario | currency:'BRL':'symbol' }}</p>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="order-footer" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                        <p style="flex-grow: 1;">Total: <strong>{{ pedido.valor_total | currency:'BRL':'symbol'
-                                }}</strong></p>
-
-                        <button *ngIf="pedido.status === 'pendente'" class="btn btn-glass btn-primary"
-                            (click)="pagarNovamente(pedido)">
-                            Pagar Novamente
-                        </button>
-
-                        <button *ngIf="pedido.status === 'pendente'" class="btn btn-glass btn-danger"
-                            (click)="cancelarPedido(pedido.id_pedido)">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g stroke-width="0" />
-                                <g stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="m14 8-4 4m0-4 4 4m-6.5 3.5H9m7.5 0H12M21 7v-.63c0-1.193 0-1.79-.158-2.27a3.05 3.05 0 0 0-1.881-1.937C18.493 2 17.914 2 16.755 2h-9.51c-1.159 0-1.738 0-2.206.163a3.05 3.05 0 0 0-1.881 1.936C3 4.581 3 5.177 3 6.37V15m18-4v9.374c0 .858-.985 1.314-1.608.744a.946.946 0 0 0-1.284 0l-.483.442a1.657 1.657 0 0 1-2.25 0 1.657 1.657 0 0 0-2.25 0 1.657 1.657 0 0 1-2.25 0 1.657 1.657 0 0 0-2.25 0 1.657 1.657 0 0 1-2.25 0l-.483-.442a.946.946 0 0 0-1.284 0c-.623.57-1.608.114-1.608-.744V19"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
-                            Cancelar
-                        </button>
-
-                        <button class="btn btn-glass btn-secondary" (click)="viewOrderDetails(pedido)"
-                            aria-label="Ver detalhes do pedido">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g stroke-width="0" />
-                                <g stroke-linecap="round" stroke-linejoin="round" />
-                                <g stroke="currentColor" stroke-width="1.5">
-                                    <path d="M5 14a2 2 0 1 0-2-2" stroke-linecap="round" />
-                                    <circle cx="12" cy="12" r="2" />
-                                    <path d="M21 12a2 2 0 1 1-2-2" stroke-linecap="round" />
-                                </g>
-                            </svg>
-                            Ver Detalhes
-                        </button>
-                    </div>
-
-                </div>
-            </div>
+          </form>
         </div>
+      }
 
-        <div *ngIf="activeTab === 'senha'" class="glass-container profile-card animate-fade">
+      @if (activeTab === 'detalhes-pedido' && selectedOrder) {
+        <div
+          class="glass-container profile-card profile-content animate-fade">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
             <div class="profile-title">
-                <h2>Alterar Senha</h2>
+              <h2>Pedido #{{ selectedOrder.id_pedido }}</h2>
+              <p>Realizado em {{ selectedOrder.data_pedido | date:'dd/MM/yyyy HH:mm' }}</p>
             </div>
-            <form (ngSubmit)="changePassword()" [formGroup]="passwordForm">
-                <div class="form-group">
-                    <label>Senha Atual</label>
-                    <input type="password" formControlName="currentPassword" placeholder="********">
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Nova Senha</label>
-                    <input type="password" formControlName="newPassword" placeholder="No mínimo 6 caracteres">
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Confirmar Nova Senha</label>
-                    <input type="password" formControlName="confirmPassword" placeholder="Repita a nova senha">
-                </div>
-
-                <div *ngIf="message && activeTab === 'senha'" class="alert" [ngClass]="message.type"
-                    style="margin-top: 20px;">
-                    {{ message.text }}
-                </div>
-
-                <div style="margin-top: 24px; text-align: right;">
-                    <button type="submit" class="btn btn-glass btn-primary"
-                        [disabled]="passwordForm.invalid || isLoading">
-                        {{ isLoading ? 'Atualizando...' : 'Atualizar Senha' }}
-                    </button>
-                </div>
-            </form>
+            <button class="btn btn-glass btn-secondary" (click)="activeTab = 'pedidos'">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke-width="0" />
+                <g stroke-linecap="round" stroke-linejoin="round" />
+                <path d="m4.5 12 5-5m-5 5 5 5m-5-5H11m3.5 0c1.667 0 5 1 5 5" stroke="currentColor"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Voltar
+            </button>
+          </div>
+          @if (message && activeTab === 'detalhes-pedido') {
+            <div class="alert" [ngClass]="message.type"
+              style="margin-bottom: 20px;">
+              {{ message.text }}
+            </div>
+          }
+          <div class="order-card" style="margin-bottom: 20px;">
+            <div class="order-header">
+              <h3>Informações Gerais</h3>
+              <span class="order-status" [ngClass]="selectedOrder.status || 'pendente'">
+                {{ selectedOrder.status || 'pendente' }}
+              </span>
+            </div>
+            <div style="color: var(--t-color-2); display: flex; flex-direction: column; gap: 8px;">
+              <p style="margin: 0;"><strong>Método de Pagamento:</strong> {{ selectedOrder.metodo_pagamento |
+            uppercase }}</p>
+          </div>
         </div>
-
-        <div *ngIf="activeTab === 'detalhes-pedido' && selectedOrder"
-            class="glass-container profile-card profile-content animate-fade">
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <div class="profile-title">
-                    <h2>Pedido #{{ selectedOrder.id_pedido }}</h2>
-                    <p>Realizado em {{ selectedOrder.data_pedido | date:'dd/MM/yyyy HH:mm' }}</p>
+        <div class="order-card">
+          <div class="order-header">
+            <h3>Itens do Pedido</h3>
+          </div>
+          <div class="order-items">
+            @for (item of selectedOrder.itens_pedido; track item) {
+              <div class="item"
+                style="border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px;">
+                <img [src]="getProductImage(item.produtos.imagem)" (error)="onImageError($event)"
+                  [alt]="item.produtos?.nome" class="item-img">
+                <div class="item-details" style="flex-grow: 1;">
+                  <p class="item-name">{{ item.produtos?.nome }}</p>
+                  <p class="item-price">{{ item.quantidade }}x {{ item.preco_unitario | currency:'BRL' }}</p>
                 </div>
-                <button class="btn btn-glass btn-secondary" (click)="activeTab = 'pedidos'">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g stroke-width="0" />
-                        <g stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="m4.5 12 5-5m-5 5 5 5m-5-5H11m3.5 0c1.667 0 5 1 5 5" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    Voltar
-                </button>
-            </div>
-
-            <div *ngIf="message && activeTab === 'detalhes-pedido'" class="alert" [ngClass]="message.type"
-                style="margin-bottom: 20px;">
-                {{ message.text }}
-            </div>
-
-            <div class="order-card" style="margin-bottom: 20px;">
-                <div class="order-header">
-                    <h3>Informações Gerais</h3>
-                    <span class="order-status" [ngClass]="selectedOrder.status || 'pendente'">
-                        {{ selectedOrder.status || 'pendente' }}
-                    </span>
+                <div style="font-weight: bold; color: var(--t-color-3); font-size: 1.1rem;">
+                  {{ (item.quantidade * item.preco_unitario) | currency:'BRL' }}
                 </div>
-                <div style="color: var(--t-color-2); display: flex; flex-direction: column; gap: 8px;">
-                    <p style="margin: 0;"><strong>Método de Pagamento:</strong> {{ selectedOrder.metodo_pagamento |
-                        uppercase }}</p>
-                </div>
-            </div>
-
-            <div class="order-card">
-                <div class="order-header">
-                    <h3>Itens do Pedido</h3>
-                </div>
-
-                <div class="order-items">
-                    <div class="item" *ngFor="let item of selectedOrder.itens_pedido"
-                        style="border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px;">
-                        <img [src]="getProductImage(item.produtos.imagem)" (error)="onImageError($event)"
-                            [alt]="item.produtos?.nome" class="item-img">
-
-                        <div class="item-details" style="flex-grow: 1;">
-                            <p class="item-name">{{ item.produtos?.nome }}</p>
-                            <p class="item-price">{{ item.quantidade }}x {{ item.preco_unitario | currency:'BRL' }}</p>
-                        </div>
-
-                        <div style="font-weight: bold; color: var(--t-color-3); font-size: 1.1rem;">
-                            {{ (item.quantidade * item.preco_unitario) | currency:'BRL' }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="order-footer" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <p style="flex-grow: 1;">Total pago: <strong>{{ selectedOrder.valor_total | currency:'BRL'
-                            }}</strong></p>
-
-                    <button *ngIf="selectedOrder.status === 'pendente'" class="btn btn-glass btn-primary"
-                        (click)="pagarNovamente(selectedOrder)">
-                        Pagar Novamente
-                    </button>
-
-                    <button *ngIf="selectedOrder.status === 'pendente'" class="btn btn-glass btn-danger"
-                        (click)="cancelarPedido(selectedOrder.id_pedido)">
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-
+              </div>
+            }
+          </div>
+          <div class="order-footer" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <p style="flex-grow: 1;">Total pago: <strong>{{ selectedOrder.valor_total | currency:'BRL'
+            }}</strong></p>
+            @if (selectedOrder.status === 'pendente') {
+              <button class="btn btn-glass btn-primary"
+                (click)="pagarNovamente(selectedOrder)">
+                Pagar Novamente
+              </button>
+            }
+            @if (selectedOrder.status === 'pendente') {
+              <button class="btn btn-glass btn-danger"
+                (click)="cancelarPedido(selectedOrder.id_pedido)">
+                Cancelar
+              </button>
+            }
+          </div>
         </div>
+      </div>
+    }
 
-    </div>
+  </div>
 </section>
