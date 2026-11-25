@@ -5,52 +5,57 @@
 
 <div class="container">
   <div class="notificationContainer">
-    
-    <button class="mark-as-read" (click)="marcarTodasComoLidas()" *ngIf="notificacoes.length > 0">
-      Marcar mensagens como lidas!
-    </button>
 
-    <div class="empty-state" *ngIf="notificacoes.length === 0">
-      <p>Você não tem novas notificações no momento.</p>
-    </div>
+    @if (notificacoes.length > 0) {
+      <button class="mark-as-read" (click)="marcarTodasComoLidas()">
+        Marcar mensagens como lidas!
+      </button>
+    }
 
-    <div class="notificationCard" [ngClass]="{'unread': !notificacao.lida}" *ngFor="let notificacao of notificacoes">
-      <img alt="icon" [src]="notificacao.icone" />
-      
-      <div class="description">
-        <p>{{ notificacao.mensagem }}</p>
-        <p id="notif-time">{{ notificacao.tempo }}</p>
+    @if (notificacoes.length === 0) {
+      <div class="empty-state">
+        <p>Você não tem novas notificações no momento.</p>
       </div>
+    }
 
-      <button class="close-btn" (click)="fecharNotificacao(notificacao.id)">&times;</button>
-    </div>
+    @for (notificacao of notificacoes; track notificacao) {
+      <div class="notificationCard" [ngClass]="{'unread': !notificacao.lida}">
+        <img alt="icon" [src]="notificacao.icone" />
+        <div class="description">
+          <p>{{ notificacao.mensagem }}</p>
+          <p id="notif-time">{{ notificacao.tempo }}</p>
+        </div>
+        <button class="close-btn" (click)="fecharNotificacao(notificacao.id)">&times;</button>
+      </div>
+    }
 
     <!-- PAGINAÇÃO -->
-    <div class="pagination" *ngIf="totalPaginas > 1">
-      <button 
-        class="page-btn prev" 
-        (click)="mudarPagina(paginaAtual - 1)"
-        [disabled]="paginaAtual === 1">
-        ← Anterior
-      </button>
-
-      <div class="page-numbers">
-        <button 
-          *ngFor="let pagina of obterPaginasArray()"
-          class="page-number"
-          [class.active]="pagina === paginaAtual"
-          (click)="mudarPagina(pagina)">
-          {{ pagina }}
+    @if (totalPaginas > 1) {
+      <div class="pagination">
+        <button
+          class="page-btn prev"
+          (click)="mudarPagina(paginaAtual - 1)"
+          [disabled]="paginaAtual === 1">
+          ← Anterior
+        </button>
+        <div class="page-numbers">
+          @for (pagina of obterPaginasArray(); track pagina) {
+            <button
+              class="page-number"
+              [class.active]="pagina === paginaAtual"
+              (click)="mudarPagina(pagina)">
+              {{ pagina }}
+            </button>
+          }
+        </div>
+        <button
+          class="page-btn next"
+          (click)="mudarPagina(paginaAtual + 1)"
+          [disabled]="paginaAtual === totalPaginas">
+          Próxima →
         </button>
       </div>
-
-      <button 
-        class="page-btn next" 
-        (click)="mudarPagina(paginaAtual + 1)"
-        [disabled]="paginaAtual === totalPaginas">
-        Próxima →
-      </button>
-    </div>
+    }
 
   </div>
 </div>
