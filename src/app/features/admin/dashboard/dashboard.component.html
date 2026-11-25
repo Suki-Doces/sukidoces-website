@@ -22,20 +22,26 @@
                  'text-red': resumo.aumentoVendas < 0, 
                  'text-gray': resumo.aumentoVendas === 0
                }">
-          <span *ngIf="resumo.aumentoVendas > 0" class="icone-seta">
-            <span class="material-symbols-rounded">trending_up</span>
-            +{{ resumo.aumentoVendas }}%
-          </span>
+          @if (resumo.aumentoVendas > 0) {
+            <span class="icone-seta">
+              <span class="material-symbols-rounded">trending_up</span>
+              +{{ resumo.aumentoVendas }}%
+            </span>
+          }
 
-          <span *ngIf="resumo.aumentoVendas < 0" class="icone-seta">
-            <span class="material-symbols-rounded">trending_down</span>
-            -{{ resumo.aumentoVendas * -1 }}%
-          </span>
+          @if (resumo.aumentoVendas < 0) {
+            <span class="icone-seta">
+              <span class="material-symbols-rounded">trending_down</span>
+              -{{ resumo.aumentoVendas * -1 }}%
+            </span>
+          }
 
-          <span *ngIf="resumo.aumentoVendas === 0" class="icone-seta">
-            <span class="material-symbols-rounded">remove</span>
-            0%
-          </span>
+          @if (resumo.aumentoVendas === 0) {
+            <span class="icone-seta">
+              <span class="material-symbols-rounded">remove</span>
+              0%
+            </span>
+          }
         </div>
       </div>
       <div class="previous-days">
@@ -63,20 +69,26 @@
                  'text-red': resumo.aumentoPedidos < 0, 
                  'text-gray': resumo.aumentoPedidos === 0
                }">
-          <span *ngIf="resumo.aumentoPedidos > 0" class="icone-seta">
-            <span class="material-symbols-rounded">trending_up</span>
-            +{{ resumo.aumentoPedidos }}%
-          </span>
+          @if (resumo.aumentoPedidos > 0) {
+            <span class="icone-seta">
+              <span class="material-symbols-rounded">trending_up</span>
+              +{{ resumo.aumentoPedidos }}%
+            </span>
+          }
 
-          <span *ngIf="resumo.aumentoPedidos < 0" class="icone-seta">
-            <span class="material-symbols-rounded">trending_down</span>
-            -{{ resumo.aumentoPedidos * -1 }}%
-          </span>
+          @if (resumo.aumentoPedidos < 0) {
+            <span class="icone-seta">
+              <span class="material-symbols-rounded">trending_down</span>
+              -{{ resumo.aumentoPedidos * -1 }}%
+            </span>
+          }
 
-          <span *ngIf="resumo.aumentoPedidos === 0" class="icone-seta">
-            <span class="material-symbols-rounded">remove</span>
-            0%
-          </span>
+          @if (resumo.aumentoPedidos === 0) {
+            <span class="icone-seta">
+              <span class="material-symbols-rounded">remove</span>
+              0%
+            </span>
+          }
         </div>
       </div>
       <div class="previous-days">
@@ -123,20 +135,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="active-row" *ngFor="let prod of produtosDestaque">
-          <td style="display: flex; align-items: center;">
-            <img class="kit-img" [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
-            <span class="kit-text" style="position:static; padding-left:10px;">{{ prod.nome }}</span>
-          </td>
-          <td style="padding-left: 50px;">{{ prod.vendas }}</td>
-          <td>
-            <img
-              [src]="prod.status === 'Em Estoque' ? 'assets/images/icons/Green-Ball.svg' : 'assets/images/icons/Red Ball - Icon.svg'"
-              alt="Status" style="vertical-align:middle; width:20px; height: 8px;">
-            <span [style.color]="prod.corStatus" style="margin-left:6px;">{{ prod.status }}</span>
-          </td>
-          <td>{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</td>
-        </tr>
+        @for (prod of produtosDestaque; track prod) {
+          <tr class="active-row">
+            <td style="display: flex; align-items: center;">
+              <img class="kit-img" [src]="getProductImage(prod.imagem)" (error)="onImageError($event)" [alt]="prod.nome">
+              <span class="kit-text" style="position:static; padding-left:10px;">{{ prod.nome }}</span>
+            </td>
+            <td style="padding-left: 50px;">{{ prod.vendas }}</td>
+            <td>
+              <img
+                [src]="prod.status === 'Em Estoque' ? 'assets/images/icons/Green-Ball.svg' : 'assets/images/icons/Red Ball - Icon.svg'"
+                alt="Status" style="vertical-align:middle; width:20px; height: 8px;">
+              <span [style.color]="prod.corStatus" style="margin-left:6px;">{{ prod.status }}</span>
+            </td>
+            <td>{{ prod.preco | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>
@@ -186,13 +200,15 @@
         </tr>
       </thead>
       <tbody id="transactions-tbody">
-        <tr *ngFor="let tx of transacoesPaginadas">
-          <td>{{ tx.id_pedido }}</td>
-          <td>{{ tx.cliente_nome }}</td>
-          <td>{{ formatarData(tx.data_pedido) }}</td>
-          <td><span class="status" [ngClass]="tx.status.toLowerCase()">{{ tx.status | titlecase }}</span></td>
-          <td><strong>{{ tx.valor_total | currency:'BRL':'symbol':'1.2-2' }}</strong></td>
-        </tr>
+        @for (tx of transacoesPaginadas; track tx) {
+          <tr>
+            <td>{{ tx.id_pedido }}</td>
+            <td>{{ tx.cliente_nome }}</td>
+            <td>{{ formatarData(tx.data_pedido) }}</td>
+            <td><span class="status" [ngClass]="tx.status.toLowerCase()">{{ tx.status | titlecase }}</span></td>
+            <td><strong>{{ tx.valor_total | currency:'BRL':'symbol':'1.2-2' }}</strong></td>
+          </tr>
+        }
       </tbody>
     </table>
     <div class="pagination">
