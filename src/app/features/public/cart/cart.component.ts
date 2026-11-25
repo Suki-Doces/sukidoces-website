@@ -8,20 +8,19 @@ import { CartService, CartItem, CartSummary } from 'src/app/core/services/cart.s
 import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
-  selector: 'app-cart',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-  ],
-  templateUrl: './cart.component.html',
-  styleUrl: './cart.component.css'
+    selector: 'app-cart',
+    imports: [
+        CommonModule,
+        RouterModule,
+    ],
+    templateUrl: './cart.component.html',
+    styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   
   // 🪄 PROBLEMA 1 RESOLVIDO: O componente agora recebe os três valores calculados
-  cartSummary: CartSummary = { subtotal: 0, frete: 0, total: 0 };
+  cartSummary: CartSummary = { subtotal: 0, frete: 0, total: 0, freteCalculado: false };
   
   readonly defaultImage = `assets/images/produtos/default-product.svg`;
 
