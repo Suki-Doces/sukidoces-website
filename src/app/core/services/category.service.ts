@@ -31,8 +31,10 @@ export class CategoryService {
       params = params.set('limit', limit.toString());
     }
 
-    return this.http.get<{categorias: Category[]}>(this.API_URL, { params }).pipe(
-      map(response => response.categorias) // Extrai apenas o array de categorias da resposta
+    // A API NestJS devolve a lista direto (o interceptor ja remove o envelope { success, data }).
+    return this.http.get<Category[] | { categorias: Category[] }>(this.API_URL, { params }).pipe(
+      map(response => (Array.isArray(response) ? response : response?.categorias ?? [])),
+      map(categorias => (limit ? categorias.slice(0, limit) : categorias))
     );
   }
 
