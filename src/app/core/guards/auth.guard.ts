@@ -22,11 +22,13 @@ export const authGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
     const token = localStorage.getItem('suki_token');
 
-    if (tokenIsValid(token)) {
+    // Access token vencido mas com refresh token: o interceptor renova na proxima requisicao.
+    if (tokenIsValid(token) || (token && localStorage.getItem('suki_refresh_token'))) {
         return true;
     }
 
     localStorage.removeItem('suki_token');
+    localStorage.removeItem('suki_refresh_token');
     localStorage.removeItem('suki_user');
     router.navigate(['/login']);
     return false;
