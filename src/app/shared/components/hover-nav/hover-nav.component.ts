@@ -8,11 +8,10 @@ import { AiChatComponent } from '../ai-chat/ai-chat.component';
 import { CartService } from 'src/app/core/services/cart.service';
 
 @Component({
-  selector: 'app-hover-nav',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AiChatComponent],
-  templateUrl: './hover-nav.component.html',
-  styleUrl: './hover-nav.component.css'
+    selector: 'app-hover-nav',
+    imports: [CommonModule, FormsModule, RouterModule, AiChatComponent],
+    templateUrl: './hover-nav.component.html',
+    styleUrl: './hover-nav.component.css'
 })
 export class HoverNavComponent implements OnInit {
   user: any = null;
