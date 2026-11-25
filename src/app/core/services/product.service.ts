@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface Product {
@@ -14,6 +14,13 @@ export interface Product {
   data_criacao?: string;
 }
 
+/** A API NestJS envia a categoria aninhada em `categorias`; a tela usa `nome_categoria`. */
+function toProduct(raw: any): Product {
+  return { ...raw, nome_categoria: raw?.nome_categoria ?? raw?.categorias?.nome ?? '' };
+}
+
+const toProducts = (list: any): Product[] => (Array.isArray(list) ? list.map(toProduct) : []);
+
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private readonly API_URL = `${environment.apiUrl}/produtos`;
@@ -21,15 +28,15 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   getBestSellers(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.API_URL}/mais-vendidos`);
+    return this.http.get<Product[]>(`${this.API_URL}/mais-vendidos`).pipe(map(toProducts));
   }
 
   getNewArrivals(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.API_URL}/novos`);
+    return this.http.get<Product[]>(`${this.API_URL}/novos`).pipe(map(toProducts));
   }
 
   getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.API_URL}/${id}`);
+    return this.http.get<Product>(`${this.API_URL}/${id}`).pipe(map(toProduct));
   }
 
   // ADICIONADO: minPreco e maxPreco para filtro por faixa de preço
@@ -50,6 +57,6 @@ export class ProductService {
     if (filters?.minPreco !== undefined) params = params.set('minPreco', filters.minPreco.toString());
     if (filters?.maxPreco !== undefined) params = params.set('maxPreco', filters.maxPreco.toString());
 
-    return this.http.get<Product[]>(this.API_URL, { params });
+    return this.http.get<Product[]>(this.API_URL, { params }).pipe(map(toProducts));
   }
 }
