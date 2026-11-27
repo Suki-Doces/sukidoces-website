@@ -44,7 +44,7 @@
             <tr>
               <th scope="col">Produto</th>
               <th scope="col">Vendidos</th>
-              <th scope="col">Valor vendido</th>
+              <th scope="col" class="text-right">Valor vendido</th>
             </tr>
           </thead>
           <tbody>
@@ -61,7 +61,7 @@
                   </div>
                 </td>
                 <td>{{ prod.vendas }}</td>
-                <td>{{ valorVendido(prod) | currency:'BRL':'symbol':'1.2-2' }}</td>
+                <td class="text-right">{{ valorVendido(prod) | currency:'BRL':'symbol':'1.2-2' }}</td>
               </tr>
             } @empty {
               <tr>
@@ -75,17 +75,19 @@
 
     <article class="admin-card inventory-card">
       <h2 class="admin-card-title">Resumo do estoque</h2>
-      <div class="admin-metric">
-        <span class="admin-metric-label">Unidades em estoque</span>
-        <strong class="admin-metric-value admin-metric-value--success">2504</strong>
-      </div>
-      <div class="admin-metric">
-        <span class="admin-metric-label">Produtos com estoque baixo</span>
-        <strong class="admin-metric-value admin-metric-value--warning">50</strong>
-      </div>
-      <div class="admin-metric">
-        <span class="admin-metric-label">Produtos sem estoque</span>
-        <strong class="admin-metric-value admin-metric-value--danger">10</strong>
+      <div class="inventory-metrics">
+        <div class="admin-metric">
+          <span class="admin-metric-label">Unidades em estoque</span>
+          <strong class="admin-metric-value admin-metric-value--success">2504</strong>
+        </div>
+        <div class="admin-metric">
+          <span class="admin-metric-label">Produtos com estoque baixo</span>
+          <strong class="admin-metric-value admin-metric-value--warning">50</strong>
+        </div>
+        <div class="admin-metric">
+          <span class="admin-metric-label">Produtos sem estoque</span>
+          <strong class="admin-metric-value admin-metric-value--danger">10</strong>
+        </div>
       </div>
     </article>
   </section>
@@ -112,7 +114,7 @@
             <th scope="col">Data</th>
             <th scope="col">Pagamento</th>
             <th scope="col">Status</th>
-            <th scope="col">Valor</th>
+            <th scope="col" class="text-right">Valor</th>
           </tr>
         </thead>
         <tbody>
@@ -127,7 +129,7 @@
                   {{ tx.status | titlecase }}
                 </span>
               </td>
-              <td>{{ tx.valor_total | currency:'BRL':'symbol':'1.2-2' }}</td>
+              <td class="text-right">{{ tx.valor_total | currency:'BRL':'symbol':'1.2-2' }}</td>
             </tr>
           } @empty {
             <tr>
