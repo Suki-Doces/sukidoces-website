@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 @Component({
     selector: 'app-lista-contatos',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, AdminPageHeaderComponent],
     templateUrl: './lista-contatos.component.html',
     styleUrls: ['./lista-contatos.component.css']
 })

@@ -1,573 +1,396 @@
-/* ==========================================================================
-   1. CABEÇALHOS DA PÁGINA (Baseado em index.css e page-headers.css)
-   ========================================================================== */
-#content-dashboard {
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #ecf0f1;
+:host {
+  display: block;
 }
 
-#content-dashboard h1 {
-  font-size: 2rem;
-  color: #2c3e50;
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-
-#content-dashboard p,
-.page-subtitle {
-  color: #7f8c8d;
-  font-size: 0.95rem;
-}
-
-/* ==========================================================================
-   2. CARDS SUPERIORES DE VENDAS E PEDIDOS (Baseado em pedidos.css e orders-improvements.css)
-   ========================================================================== */
-.painel-vendas {
+.dashboard-content {
   display: flex;
-  padding: 20px 0 40px 0;
-  overflow: hidden;
+  flex-direction: column;
   gap: 20px;
-  font-size: 16px;
+  padding-bottom: 24px;
 }
 
-/* Base dos 3 Cards */
-.dash-vendas,
-.dash-pedidos,
-.dash-pendentes {
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  height: 235px;
-  padding: 20px;
-  gap: 20px;
-  background: #fff;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-/* Efeitos de Hover */
-.dash-vendas:hover,
-.dash-pedidos:hover,
-.dash-pendentes:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-}
-
-.dash-vendas>div,
-.dash-pedidos>div {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.vendas-text,
-.pedidos-text {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: left;
-  font-size: 14px;
-  color: #6A717F;
-}
-
-.revenue {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 18px;
-  color: #44464b;
-}
-
-.revenue-title {
-  color: #23272e;
-  font-size: 18px;
-  line-height: 26px;
-  font-weight: bold;
-}
-
-.dots-icons {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-.revenue-value {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-size: 32px;
-  color: #023337;
-}
-
-.revenue-text {
-  font-size: 32px;
-  color: #023337;
-  text-align: left;
-}
-
-/* --- NOVAS CLASSES: COMPARATIVO DINÂMICO --- */
-.comparativo-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  /* Tamanho proporcional ao lado do valor principal */
-}
-
-.icone-seta {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Ajuste fino para os ícones do Google Material Symbols */
-.icone-seta .material-symbols-rounded {
-  font-size: 24px;
-}
-
-/* Cores dinâmicas para indicar Alta, Baixa ou Neutro */
-.text-green {
-  color: #10B981;
-}
-
-.text-red {
-  color: #EF4444;
-}
-
-.text-gray {
-  color: #6B7280;
-}
-
-.previous-days {
-  color: #6a717f;
-  font-size: 14px;
-}
-
-.blue-value {
-  color: #6467F2;
-}
-
-/* Pendentes e Cancelados */
-.dash-p-title {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dash-p-dados {
-  display: flex;
-  flex-direction: row;
-  gap: 22px;
-  justify-content: space-evenly;
-}
-
-.pend-canc-pai,
-.cancelados-parent {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  box-sizing: border-box;
-  gap: 7px;
-  text-align: left;
-  color: #000;
-}
-
-.pend-canc-pai {
-  align-items: center;
-}
-
-.cancelados-parent {
-  position: relative;
-  left: 24px;
-}
-
-.pendentes-text {
-  font-size: 14px;
-}
-
-.pen-value-text {
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.traco-icon {
-  height: 36px;
-  box-sizing: border-box;
-  position: relative;
-  top: 10px;
-  right: 18px;
-}
-
-.cancelados {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
-
-.cash {
-  color: #ef4343;
-  display: flex;
-  align-items: center;
-  font-size: 22px;
-}
-
-/* ==========================================================================
-   3. SEÇÃO ABAIXO (PRODUTOS EM DESTAQUE E ESTOQUE) - Design Modernizado
-   ========================================================================== */
-.below-vendas {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  margin-top: 20px;
-}
-
-.produtos-destaque-main {
-  flex: 1 1 60%;
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-}
-
-.produtos-destaque-main h3,
-.gerenciamento-estoque h3 {
-  margin: 0 0 20px 0;
-  color: #2c3e50;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-/* --- Tabela de Produtos em Destaque Clean --- */
-.content-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-  min-width: 400px;
-}
-
-.table-head {
-  border-bottom: 2px solid #ecf0f1;
-}
-
-.content-table th {
-  padding: 12px 15px;
-  text-align: left;
-  color: #7f8c8d;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.content-table td {
-  padding: 16px 15px;
-  color: #34495e;
-  border-bottom: 1px solid #f8f9fa;
-}
-
-.content-table tbody tr {
-  transition: all 0.2s ease;
-}
-
-.content-table tbody tr:hover {
-  background-color: #f8fafd;
-  transform: scale(1.005);
-}
-
-.kit-img {
-  width: 45px;
-  height: 45px;
-  border-radius: 8px;
-  object-fit: cover;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.kit-text {
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-/* --- Gerenciamento de Estoque Dinâmico --- */
-.gerenciamento-estoque {
-  width: 340px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-}
-
-.estoque-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.estoque-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 18px;
-  background: #ffffff;
-  border: 1px solid #ecf0f1;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-  transition: all 0.3s ease;
-  border-left: 4px solid #3498db;
-}
-
-.estoque-item:nth-child(1) {
-  border-left-color: #2ecc71;
-}
-
-.estoque-item:nth-child(2) {
-  border-left-color: #f1c40f;
-}
-
-.estoque-item:nth-child(3) {
-  border-left-color: #e74c3c;
-}
-
-.estoque-item:hover {
-  transform: translateX(5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  border-color: #d5dbdb;
-}
-
-.estoque-item span {
-  color: #7f8c8d;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.estoque-item b {
-  font-size: 1.3rem;
-  color: #2c3e50;
-}
-
-/* ==========================================================================
-   4. TABELA DE TRANSAÇÕES (FOOTER) - Baseado em orders-improvements.css
-   ========================================================================== */
-footer.table {
-  margin-top: 40px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.table_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: 2px solid #ecf0f1;
-  flex: 1;
-  min-width: 250px;
-  transition: all 0.2s ease;
-}
-
-.input-group:focus-within {
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-.input-group input {
-  border: none;
-  outline: none;
-  background: transparent;
-  flex: 1;
-  font-size: 0.95rem;
-  color: #2c3e50;
-}
-
-.input-group img {
-  width: 18px;
-  height: 18px;
-  opacity: 0.6;
-}
-
-.table_order {
-  display: flex;
+.admin-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
-.table_pedidos {
-  display: flex;
-  gap: 10px;
-  padding: 8px 16px;
+.admin-kpi,
+.admin-card {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #e9ecef;
   border-radius: 8px;
-  background: #3498db;
-  color: white;
-  font-weight: 500;
-  align-items: center;
 }
 
-.table_body table {
+.admin-kpi {
+  min-height: 116px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-kpi-label,
+.admin-metric-label {
+  color: #6c757d;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.admin-kpi-value {
+  color: #3498db;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.admin-kpi-value--warning,
+.admin-metric-value--warning {
+  color: #f39c12;
+}
+
+.admin-kpi-value--danger,
+.admin-metric-value--danger {
+  color: #ef4444;
+}
+
+.admin-metric-value--success {
+  color: #10b981;
+}
+
+.admin-kpi-note {
+  color: #6c757d;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.admin-kpi-note b {
+  font-weight: 600;
+}
+
+.text-green {
+  color: #10b981;
+}
+
+.text-red {
+  color: #ef4444;
+}
+
+.text-gray {
+  color: #6c757d;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.72fr) minmax(250px, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.admin-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+}
+
+.admin-card-title {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.admin-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
-}
-
-/* Definindo a largura exata de cada coluna para não "dançarem" */
-.table_body th:nth-child(1) {
-  width: 10%;
-}
-
-/* ID */
-.table_body th:nth-child(2) {
-  width: 35%;
-}
-
-/* Cliente (maior espaço) */
-.table_body th:nth-child(3) {
-  width: 20%;
-}
-
-/* Data */
-.table_body th:nth-child(4) {
-  width: 20%;
-}
-
-/* Status */
-.table_body th:nth-child(5) {
-  width: 15%;
-}
-
-/* Valor */
-
-.table_body thead tr {
-  background: linear-gradient(135deg, #ecf0f1, #d5dbdb);
-  border-bottom: 2px solid #bdc3c7;
-}
-
-.table_body th {
-  padding: 14px;
   text-align: left;
-  font-weight: 600;
-  color: #2c3e50;
-  font-size: 0.9rem;
 }
 
-.table_body td {
-  padding: 14px;
-  border-bottom: 1px solid #ecf0f1;
-  color: #34495e;
+.admin-table th {
+  padding: 10px 9px;
+  background: #f8f9fb;
+  color: #6c757d;
+  font-size: 10px;
+  font-weight: 500;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.table_body tbody tr {
-  transition: all 0.2s ease;
+.admin-table td {
+  height: 54px;
+  padding: 9px;
+  border-bottom: 1px solid #edf0f2;
+  color: #464746;
+  font-size: 10px;
+  line-height: 1.4;
+  vertical-align: middle;
 }
 
-.table_body tbody tr:hover {
-  background: #f8f9fa;
+.admin-table tbody tr:last-child td {
+  border-bottom: 0;
 }
 
-/* Badges de Status (Melhorias) */
-.status {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.admin-table--products {
+  min-width: 390px;
 }
 
-.status.pago {
-  background: linear-gradient(135deg, #d4edda, #c3e6cb);
-  color: #155724;
-  border: 1px solid #86efac;
-}
-
-.status.pendente {
-  background: linear-gradient(135deg, #fff3cd, #ffe69c);
-  color: #856404;
-  border: 1px solid #fbbf24;
-}
-
-.status.cancelado {
-  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-  color: #721c24;
-  border: 1px solid #f87171;
-}
-
-.status.enviado {
-  background: #cce5ff;
-  color: #004085;
-  border: 1px solid #3b82f6;
-}
-
-.status.entregue {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #86efac;
-}
-
-.pagination {
+.admin-product {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 9px;
+  min-width: 150px;
+  color: #2c3e50;
+  font-weight: 500;
 }
 
-.pagination button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  background: #3498db;
-  color: white;
+.admin-thumb {
+  display: block;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: #f4f6f9;
+  object-fit: cover;
+}
+
+.admin-empty {
+  height: auto !important;
+  padding: 24px 12px !important;
+  color: #6c757d !important;
+  text-align: center;
+}
+
+.inventory-card {
+  gap: 2px;
+}
+
+.admin-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 0;
+}
+
+.admin-metric-label {
+  font-size: 10px;
+}
+
+.admin-metric-value {
+  color: #3498db;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.transactions-card {
+  gap: 14px;
+}
+
+.transactions-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.admin-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: min(100%, 360px);
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  color: #6c757d;
+  --admin-icon-size: 16px;
+}
+
+.admin-search:focus-within {
+  border-color: #ff6b8b;
+}
+
+.admin-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #2c3e50;
+  font: inherit;
+  font-size: 11px;
+}
+
+.admin-search input::placeholder {
+  color: #8b9298;
+}
+
+.admin-table--transactions {
+  min-width: 620px;
+}
+
+.admin-table--transactions th,
+.admin-table--transactions td {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.admin-table--transactions th:nth-child(1) {
+  width: 12%;
+}
+
+.admin-table--transactions th:nth-child(2) {
+  width: 20%;
+}
+
+.admin-table--transactions th:nth-child(3),
+.admin-table--transactions th:nth-child(4),
+.admin-table--transactions th:nth-child(5) {
+  width: 16%;
+}
+
+.admin-table--transactions th:nth-child(6) {
+  width: 20%;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 100px;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.admin-badge--success {
+  background: #e8f8f1;
+  color: #10b981;
+}
+
+.admin-badge--pending {
+  background: #fff0fa;
+  color: #e92290;
+}
+
+.admin-badge--danger {
+  background: #fef0f0;
+  color: #ef4444;
+}
+
+.admin-badge--info {
+  background: #eaf4fc;
+  color: #3498db;
+}
+
+.admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-pagination-info {
+  color: #6c757d;
+  font-size: 10px;
+}
+
+.admin-pagination-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.admin-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: #f4f6f9;
+  color: #6c757d;
+  font: inherit;
+  font-size: 11px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.pagination button:hover:not(:disabled) {
-  background: #2980b9;
+.admin-page-btn:hover:not(:disabled):not(.active) {
+  background: #eaedf1;
 }
 
-.pagination button:disabled {
-  background: #bdc3c7;
+.admin-page-btn.active {
+  background: #e92290;
+  color: #fff;
+}
+
+.admin-page-btn:disabled {
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
-.pagination span {
-  font-weight: 600;
-  color: #2c3e50;
+.admin-page-btn:focus-visible {
+  outline: 2px solid #e92290;
+  outline-offset: 2px;
 }
 
-/* ==========================================================================
-   5. RESPONSIVIDADE
-   ========================================================================== */
-@media (max-width: 1024px) {
-  .painel-vendas {
-    flex-direction: column;
+@media (max-width: 900px) {
+  .admin-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .below-vendas {
-    flex-direction: column;
+  .dash-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-content {
+    gap: 14px;
   }
 
-  .gerenciamento-estoque {
-    width: 100%;
+  .admin-kpis {
+    gap: 9px;
+  }
+
+  .admin-kpi {
+    min-height: 104px;
+    padding: 13px;
+  }
+
+  .admin-kpi-value {
+    font-size: 21px;
+  }
+
+  .admin-card {
+    padding: 14px;
+  }
+
+  .admin-pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

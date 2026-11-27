@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
+import { AdminIconComponent } from 'src/app/shared/components/admin-icon/admin-icon.component';
 
 @Component({
     selector: 'app-dashboard',
-    imports: [CommonModule],
+    imports: [CommonModule, AdminPageHeaderComponent, AdminIconComponent],
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css']
 })
@@ -51,6 +53,60 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // 3. CORRIGIDO AQUI: Calcula o total de páginas com base na lista FILTRADA
   get totalPaginas(): number {
     return Math.ceil(this.transacoesFiltradas.length / this.itensPorPagina) || 1;
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, index) => index + 1);
+  }
+
+  get inicioRegistros(): number {
+    return this.transacoesFiltradas.length === 0
+      ? 0
+      : (this.paginaAtual - 1) * this.itensPorPagina + 1;
+  }
+
+  get fimRegistros(): number {
+    return Math.min(this.paginaAtual * this.itensPorPagina, this.transacoesFiltradas.length);
+  }
+
+  variacaoTexto(valor: number): string {
+    if (valor > 0) return `+${valor}%`;
+    if (valor < 0) return `${valor}%`;
+    return '0%';
+  }
+
+  variacaoClass(valor: number): string {
+    return valor > 0 ? 'text-green' : valor < 0 ? 'text-red' : 'text-gray';
+  }
+
+  valorVendido(produto: any): number {
+    return Number(produto.vendas || 0) * Number(produto.preco || 0);
+  }
+
+  getBadgeClass(status: string): string {
+    const classes: Record<string, string> = {
+      pago: 'admin-badge--success',
+      entregue: 'admin-badge--success',
+      pendente: 'admin-badge--pending',
+      cancelado: 'admin-badge--danger',
+      enviado: 'admin-badge--info'
+    };
+    return classes[(status || '').toLowerCase()] || 'admin-badge--info';
+  }
+
+  formatarPagamento(metodo?: string | null): string {
+    if (!metodo) return '—';
+    const valor = metodo.toLowerCase();
+    if (valor.includes('cart')) return 'Cartão';
+    if (valor === 'pix') return 'Pix';
+    if (valor === 'boleto') return 'Boleto';
+    return metodo.charAt(0).toUpperCase() + metodo.slice(1);
+  }
+
+  irParaPagina(pagina: number): void {
+    if (pagina >= 1 && pagina <= this.totalPaginas) {
+      this.paginaAtual = pagina;
+    }
   }
 
   proximaPagina(): void {
@@ -157,7 +213,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else {
       // Filtra por nome do cliente ou ID
       this.transacoesFiltradas = this.transacoes.filter(tx =>
-        tx.cliente_nome.toLowerCase().includes(termo) ||
+        (tx.cliente_nome ?? '').toLowerCase().includes(termo) ||
         tx.id_pedido.toString().includes(termo)
       );
     }

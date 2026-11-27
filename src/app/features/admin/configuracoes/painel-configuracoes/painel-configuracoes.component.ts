@@ -10,10 +10,11 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 @Component({
     selector: 'app-painel-configuracoes',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, AdminPageHeaderComponent],
     templateUrl: './painel-configuracoes.component.html',
     styleUrl: './painel-configuracoes.component.css'
 })

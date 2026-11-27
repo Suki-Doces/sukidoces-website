@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 interface PaginacaoProdutos {
   produtos: any[];
@@ -17,7 +19,7 @@ interface PaginacaoProdutos {
 
 @Component({
     selector: 'app-controle-estoque',
-    imports: [CommonModule, FormsModule, RouterModule],
+    imports: [CommonModule, FormsModule, RouterModule, AdminIconComponent, AdminPageHeaderComponent],
     templateUrl: './controle-estoque.component.html',
     styleUrls: ['./controle-estoque.component.css']
 })
@@ -37,7 +39,25 @@ export class ControleEstoqueComponent implements OnInit {
   totalPaginas = 1;
   totalProdutos = 0;
 
+  // Busca (filtra os produtos da página carregada, sem nova chamada à API)
+  termoBusca = '';
+
   readonly defaultImage = 'assets/images/produtos/default-product.svg';
+
+  get produtosFiltrados(): any[] {
+    const termo = this.termoBusca.trim().toLowerCase();
+    if (!termo) return this.produtos;
+    return this.produtos.filter(p => (p.nome ?? '').toLowerCase().includes(termo));
+  }
+
+  // "Mostrando 1 a 3 de 3 produtos"
+  get inicioPagina(): number {
+    return this.totalProdutos === 0 ? 0 : (this.paginaAtual - 1) * this.limite + 1;
+  }
+
+  get fimPagina(): number {
+    return Math.min(this.paginaAtual * this.limite, this.totalProdutos);
+  }
 
   ngOnInit() {
     this.carregarProdutos();

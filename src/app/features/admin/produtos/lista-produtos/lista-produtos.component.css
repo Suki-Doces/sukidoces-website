@@ -1,163 +1,267 @@
-/* Cabeçalho */
-   #content-dashboard {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #ecf0f1;
-  }
-  
-  #content-dashboard h1 {
-    font-size: 2rem;
-    color: #2c3e50;
-    font-weight: 800;
-    margin-bottom: 6px;
-  }
-  
-  #content-dashboard p,
-  .page-subtitle {
-    color: #7f8c8d;
-    font-size: 0.95rem;
-  }
-
-/* Container Principal */
-.container {
-  max-width: 1200px;
-  padding: 20px;
-  margin: 0 auto;
-}
-
-/* Botão de Gerenciar Categorias (Centralizado e menor) */
-.btn-categoria {
-  background: #151a2d; 
-  color: #fff;
-  display: block; 
-  width: fit-content;
-  margin: 0 auto 15px auto;
-  padding: 8px 16px;
-  text-decoration: none;
-  border-radius: 6px;
-  font-size: 0.95rem; /* Reduzido de 1.4rem */
-  font-weight: 500;
-  transition: background 0.3s ease;
-}
-
-.btn-categoria:hover {
-  background: #333;
-}
-
-/* Formulário de Adição de Produtos */
-.admin-product-form-container form {
-  max-width: 500px; /* Reduzido de 600px para ficar mais compacto */
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f0f0f0;
+.admin-page {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Espaço entre os campos */
+  gap: 0;
 }
 
-.admin-product-form-container form h3 {
-  text-transform: uppercase;
-  color: #151a2d;
-  margin-bottom: 10px;
-  text-align: center;
-  font-size: 1.25rem; /* Reduzido de 2.2rem */
-  font-weight: 600;
-  letter-spacing: 0.5px;
+#content-dashboard {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #ecf0f1;
 }
 
-/* Campos de Input e Select */
-.box {
-  width: 100%;
-  border-radius: 8px; /* Cantos menos exagerados */
-  padding: 10px 14px;
-  font-size: 0.9rem; /* Reduzido de 1.4rem - Padrão de formulário */
-  font-family: inherit;
+#content-dashboard h1 {
+  margin-bottom: 6px;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.page-subtitle {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.admin-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  padding: 24px;
   background: #fff;
-  border: 1px solid #dcdcdc;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  color: #333;
-}
-
-.box:focus {
-  outline: none;
-  border-color: #151a2d;
-  box-shadow: 0 0 0 3px rgba(21, 26, 45, 0.1);
-}
-
-/* Input de Arquivo (Foto) */
-input[type="file"].box {
-  padding: 8px;
-  font-size: 0.85rem;
-  background: #f9f9f9;
-  border: 1px dashed #bbb;
-  cursor: pointer;
-  color: #666;
-}
-
-/* Botão Submit (Adicionar Produto) */
-.btn-submit {
-  display: block;
-  width: 100%;
-  cursor: pointer;
+  outline: 1px solid #e9ecef;
+  outline-offset: -1px;
   border-radius: 8px;
-  margin-top: 10px;
-  font-size: 0.95rem; /* Reduzido de 1.6rem */
-  padding: 12px;
-  background: #28a745; /* Verde padronizado */
-  color: #fff;
-  text-align: center;
+}
+
+.admin-card-title {
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-toolbar--start {
+  align-items: flex-start;
+}
+
+.admin-lead {
+  flex: 1 1 240px;
+  min-width: 0;
+  color: #6c757d;
+  font-size: 14px;
+  line-height: 22.4px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.admin-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.admin-label {
+  color: #533931;
+  font-size: 14px;
   font-weight: 600;
-  border: none;
-  transition: background 0.3s ease, transform 0.1s ease;
+  line-height: normal;
 }
 
-.btn-submit:hover {
-  background: #218838;
+.admin-label--title {
+  color: #2c3e50;
 }
 
-.btn-submit:active {
-  transform: scale(0.98);
+.admin-field--section {
+  gap: 12px;
 }
 
-/* Caixa de Erro */
-.error-box {
-  background: #ffe6e6;
-  color: #9b1c1c;
-  padding: 10px;
-  border-radius: 6px;
-  margin: 0 auto 20px;
-  max-width: 500px;
+.admin-input {
+  width: 100%;
+  height: 50px;
+  padding: 0 15px;
+  background: #fff;
+  border: 1px solid #eedfe6;
+  border-radius: 12px;
+  color: #464746;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-input::placeholder {
+  color: #8b9298;
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: #e92290;
+  box-shadow: 0 0 0 3px rgba(233, 34, 144, 0.12);
+}
+
+.admin-select {
+  appearance: none;
+  padding-right: 44px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236C757D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
+}
+
+.admin-select.is-placeholder {
+  color: #8b9298;
+}
+
+.admin-select option {
+  color: #464746;
+}
+
+.admin-upload {
+  min-height: 210px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #fafbfc;
+  border: 1px dashed #cdd4db;
+  border-radius: 8px;
+  color: #6c757d;
   text-align: center;
-  font-size: 0.9rem;
+  --admin-icon-size: 36px;
+}
+
+.admin-upload app-admin-icon {
+  color: #8c98a4;
+}
+
+.admin-upload-text {
+  font-size: 14px;
+  line-height: normal;
+  overflow-wrap: anywhere;
+}
+
+.admin-upload.has-file .admin-upload-text {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.admin-btn-primary,
+.admin-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 17px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-btn-primary {
+  background: #e92290;
+  border-color: #e92290;
+  color: #fff;
+}
+
+.admin-btn-primary:hover {
+  background: #cf1d82;
+  border-color: #cf1d82;
+  color: #fff;
+}
+
+.admin-btn-secondary {
+  background: #fff;
+  border-color: #eedfe6;
+  color: #533931;
+}
+
+.admin-btn-secondary:hover {
+  background: #fff0f3;
+  border-color: #ff6b8b;
+  color: #e85578;
+}
+
+.admin-btn-primary::after,
+.admin-btn-secondary::after {
+  display: none;
+}
+
+.admin-btn-primary:focus-visible,
+.admin-btn-secondary:focus-visible {
+  outline: 2px solid #e92290;
+  outline-offset: 2px;
+}
+
+.admin-btn-lg {
+  padding: 14px 25px;
+  font-size: 15px;
+}
+
+.admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 500;
+  line-height: 1.4;
+}
+
+.admin-alert--error {
+  background: #fff1f1;
   border: 1px solid #f5c6cb;
+  color: #9b1c1c;
 }
 
 /* POPUP (MODAL) */
 .popup {
-  display: flex; 
   position: fixed;
+  inset: 0;
   z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Fundo um pouco mais suave */
-  justify-content: center;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .popup-content {
-  background: #ffffff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  text-align: center;
   width: 320px;
+  padding: 25px 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
   animation: fadeInScale 0.25s ease;
-  box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
 }
 
 .popup-content h2 {
@@ -168,35 +272,53 @@ input[type="file"].box {
 }
 
 .popup-content p {
+  margin-bottom: 20px;
   color: #666;
   font-size: 0.95rem;
-  margin-bottom: 20px;
 }
 
 .popup-content button {
   padding: 8px 24px;
+  background: #e92290;
   border: none;
-  background: #151a2d;
-  color: white;
   border-radius: 6px;
+  color: #fff;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: 0.2s;
+  transition: background-color 0.2s ease;
 }
 
 .popup-content button:hover {
-  background: #333;
+  background: #cf1d82;
 }
 
-/* ANIMAÇÃO MODAL */
 @keyframes fadeInScale {
   from {
-      opacity: 0;
-      transform: scale(0.95);
+    opacity: 0;
+    transform: scale(0.95);
   }
   to {
-      opacity: 1;
-      transform: scale(1);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  #content-dashboard h1 {
+    font-size: 1.75rem;
+  }
+
+  .admin-card {
+    padding: 16px;
+  }
+
+  .admin-field-row {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .admin-form-actions > * {
+    flex: 1 1 100%;
   }
 }

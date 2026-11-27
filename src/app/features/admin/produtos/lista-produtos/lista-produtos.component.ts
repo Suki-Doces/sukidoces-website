@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 type ProdutoForm = {
   nome?: string | null;
@@ -16,7 +18,7 @@ type ProdutoForm = {
 
 @Component({
     selector: 'app-lista-produtos',
-    imports: [FormsModule, RouterModule],
+    imports: [FormsModule, RouterModule, AdminIconComponent, AdminPageHeaderComponent],
     templateUrl: './lista-produtos.component.html',
     styleUrls: ['./lista-produtos.component.css']
 })

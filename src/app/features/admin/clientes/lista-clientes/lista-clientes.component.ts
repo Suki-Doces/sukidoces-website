@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 // 💡 ATUALIZAÇÃO: Adicionado o campo 'estatisticas' à interface
 interface PaginacaoClientes {
@@ -20,7 +21,7 @@ interface PaginacaoClientes {
 
 @Component({
     selector: 'app-lista-clientes',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, AdminPageHeaderComponent],
     templateUrl: './lista-clientes.component.html',
     styleUrls: ['./lista-clientes.component.css']
 })

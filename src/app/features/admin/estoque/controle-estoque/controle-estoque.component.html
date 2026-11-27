@@ -1,121 +1,142 @@
-<div id="content-estoque" class="content">
-  <h1>Estoque</h1>
-  <p class="page-subtitle">Gerencie seu Armazenamento aqui.</p>
+<div class="admin-page">
+  <app-admin-page-header
+    title="Estoque"
+    description="Gerencie seu armazenamento aqui."
+    icon="boxes" />
+
+  <section class="admin-card">
+    <h2 class="admin-card-title">Estoque de produtos</h2>
+
+    <div class="admin-toolbar">
+      <label class="admin-search">
+        <app-admin-icon name="search" />
+        <input type="search" placeholder="Pesquisar produto" aria-label="Pesquisar produto" [(ngModel)]="termoBusca">
+      </label>
+      <a routerLink="/admin/produtos" class="admin-btn-primary">Adicionar novo produto</a>
+    </div>
+
+    <p class="admin-hint">Consulte as quantidades e atualize os produtos cadastrados.</p>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Criado em</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of produtosFiltrados; track p) {
+            <tr>
+              <td>
+                <div class="admin-product">
+                  <img
+                    class="admin-thumb"
+                    [src]="getProductImage(p.imagem)"
+                    alt=""
+                    onerror="this.src='assets/images/produtos/default-product.svg'"
+                  >
+                  <span>{{ p.nome }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="admin-quantity">
+                  {{ p.quantidade }} {{ p.quantidade === 1 ? 'unidade' : 'unidades' }}
+                </span>
+              </td>
+              <td class="admin-price">R$ {{ p.preco | number:'1.2-2' }}</td>
+              <td>{{ p.data_criacao | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <div class="admin-actions">
+                  <button type="button" class="admin-icon-btn admin-icon-btn--edit" (click)="abrirModalEditar(p)" title="Editar" aria-label="Editar produto">
+                    <app-admin-icon name="pencil" />
+                  </button>
+                  <button type="button" class="admin-icon-btn admin-icon-btn--danger" (click)="deletarProduto(p.id_produto)" title="Deletar" aria-label="Deletar produto">
+                    <app-admin-icon name="trash-2" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+
+          @if (produtosFiltrados.length === 0) {
+            <tr>
+              <td colspan="5" class="admin-empty">{{ termoBusca.trim() ? 'Nenhum produto encontrado.' : 'Nenhum produto em estoque.' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-pagination">
+      <span class="admin-pagination-info">Mostrando {{ inicioPagina }} a {{ fimPagina }} de {{ totalProdutos }} produtos</span>
+      <div class="admin-pagination-pages">
+        <button type="button" class="admin-page-btn" aria-label="Página anterior"
+                (click)="mudarPagina(paginaAtual - 1)" [disabled]="paginaAtual === 1">‹</button>
+        @for (pagina of obterPaginasArray(); track pagina) {
+          <button type="button" class="admin-page-btn" [class.active]="pagina === paginaAtual"
+                  [attr.aria-current]="pagina === paginaAtual ? 'page' : null"
+                  (click)="mudarPagina(pagina)">{{ pagina }}</button>
+        }
+        <button type="button" class="admin-page-btn" aria-label="Próxima página"
+                (click)="mudarPagina(paginaAtual + 1)" [disabled]="paginaAtual === totalPaginas">›</button>
+      </div>
+    </div>
+  </section>
 </div>
 
-<br><br>
-
-<section class="primary-container">
-  <div class="table_container">
-    <h3>Produtos Cadastrados</h3>
-
-    <a routerLink="/admin/produtos" class="btn-novo-produto">+ Adicionar Novo Produto</a>
-
-    <table class="primary-table">
-      <thead class="table-head">
-        <tr>
-          <th>Produto</th>
-          <th>Nome</th>
-          <th>Quantidade</th>
-          <th>Valor</th>
-          <th>Data</th>
-          <th colspan="2" style="text-align: center;">Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (p of produtos; track p) {
-          <tr class="active-row">
-            <td>
-              <img
-                class="kit-img"
-                [src]="getProductImage(p.imagem)"
-                alt="img"
-                onerror="this.src='assets/images/produtos/default-product.svg'"
-                >
-            </td>
-            <td><span class="kit-text">{{ p.nome }}</span></td>
-            <td><b>{{ p.quantidade }}</b></td>
-            <td>R$ {{ p.preco | number:'1.2-2' }}</td>
-            <td>{{ p.data_criacao | date:'dd/MM/yyyy' }}</td>
-            <td style="text-align: right;">
-              <button class="btn-acao btn-edit" (click)="abrirModalEditar(p)" title="Editar">
-                <img src="assets/images/icons/Editar-Icon.svg" alt="Editar" style="width: 22px; vertical-align: middle;">
-              </button>
-            </td>
-            <td style="text-align: left;">
-              <button class="btn-acao btn-trash" (click)="deletarProduto(p.id_produto)" title="Deletar">
-                <img src="assets/images/icons/Trash - Icon.svg" alt="Deletar" style="width: 22px; vertical-align: middle;">
-              </button>
-            </td>
-          </tr>
-        }
-
-        @if (produtos.length === 0) {
-          <tr>
-            <td colspan="7" style="text-align: center; padding: 20px;">Nenhum produto em estoque.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-
-    <!-- PAGINAÇÃO -->
-    @if (totalPaginas > 1) {
-      <div class="pagination">
-        <button
-          class="page-btn prev"
-          (click)="mudarPagina(paginaAtual - 1)"
-          [disabled]="paginaAtual === 1">
-          ← Anterior
-        </button>
-        <div class="page-numbers">
-          @for (pagina of obterPaginasArray(); track pagina) {
-            <button
-              class="page-number"
-              [class.active]="pagina === paginaAtual"
-              (click)="mudarPagina(pagina)">
-              {{ pagina }}
-            </button>
-          }
-        </div>
-        <button
-          class="page-btn next"
-          (click)="mudarPagina(paginaAtual + 1)"
-          [disabled]="paginaAtual === totalPaginas">
-          Próxima →
-        </button>
-      </div>
-    }
-  </div>
-</section>
-
 @if (isEditModalOpen) {
-  <div class="modal">
-    <div class="modal-content">
-      <button class="modal-close" (click)="fecharModal()">✕</button>
-      <h2>Editar Produto no Estoque</h2>
-      <div class="form-group">
-        <label>Nome do Produto</label>
-        <input type="text" class="box" [(ngModel)]="produtoEditado.nome">
-      </div>
-      <div class="form-group">
-        <label>Descrição</label>
-        <textarea class="box" rows="3" [(ngModel)]="produtoEditado.descricao"></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group half">
-          <label>Quantidade</label>
-          <input type="number" class="box" [(ngModel)]="produtoEditado.quantidade">
+  <div class="modal" (click)="fecharModal()">
+    <section class="modal-content" role="dialog" aria-modal="true" aria-labelledby="edit-product-title" (click)="$event.stopPropagation()">
+      <header class="modal-header">
+        <div>
+          <h2 id="edit-product-title">Editar produto</h2>
+          <p>Atualize as informações do produto no estoque.</p>
         </div>
-        <div class="form-group half">
-          <label>Preço (R$)</label>
-          <input type="number" step="0.01" class="box" [(ngModel)]="produtoEditado.preco">
+        <button type="button" class="modal-close" (click)="fecharModal()" aria-label="Fechar edição">×</button>
+      </header>
+
+      <form class="edit-form" (ngSubmit)="salvarEdicao()">
+        <div class="edit-field">
+          <label for="editar-nome">Nome do produto</label>
+          <input id="editar-nome" type="text" class="edit-input" name="nome" [(ngModel)]="produtoEditado.nome">
         </div>
-      </div>
-      <div class="form-group">
-        <label>Nova Foto do Produto (Opcional)</label>
-        <input type="file" class="box" (change)="onFileSelected($event)" accept="image/jpeg,image/png,image/webp">
-      </div>
-      <button class="btn-salvar" (click)="salvarEdicao()">Salvar Alterações</button>
-    </div>
+
+        <div class="edit-field">
+          <label for="editar-descricao">Descrição</label>
+          <textarea id="editar-descricao" class="edit-input edit-textarea" rows="4" name="descricao" [(ngModel)]="produtoEditado.descricao"></textarea>
+        </div>
+
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="editar-quantidade">Quantidade</label>
+            <input id="editar-quantidade" type="number" min="0" class="edit-input" name="quantidade" [(ngModel)]="produtoEditado.quantidade">
+          </div>
+          <div class="edit-field">
+            <label for="editar-preco">Preço (R$)</label>
+            <input id="editar-preco" type="number" min="0" step="0.01" class="edit-input" name="preco" [(ngModel)]="produtoEditado.preco">
+          </div>
+        </div>
+
+        <div class="edit-field">
+          <label id="editar-imagem-label">Nova foto do produto <span>(opcional)</span></label>
+          <div class="edit-upload">
+            <app-admin-icon name="image-up" />
+            <span class="edit-upload-name">{{ novaFotoSelecionada?.name || 'Nenhuma nova imagem selecionada' }}</span>
+            <button type="button" class="edit-upload-button" (click)="arquivoFoto.value = ''; arquivoFoto.click()">Escolher imagem</button>
+            <input #arquivoFoto type="file" hidden (change)="onFileSelected($event)" accept="image/jpeg,image/png,image/webp" aria-labelledby="editar-imagem-label">
+          </div>
+          <small>JPG, PNG ou WEBP · até 5 MB</small>
+        </div>
+
+        <footer class="edit-actions">
+          <button type="button" class="edit-cancel" (click)="fecharModal()">Cancelar</button>
+          <button type="submit" class="edit-save">Salvar alterações</button>
+        </footer>
+      </form>
+    </section>
   </div>
 }

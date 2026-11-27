@@ -5,10 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../../core/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { filter } from 'rxjs/operators';
+import { AdminIconComponent } from '../../../../shared/components/admin-icon/admin-icon.component';
 
 @Component({
     selector: 'app-admin-layout',
-    imports: [RouterModule],
+    imports: [RouterModule, AdminIconComponent],
     templateUrl: './admin-layout.component.html',
     styleUrl: './admin-layout.component.css'
 })
@@ -22,7 +23,13 @@ export class AdminLayoutComponent implements OnInit {
   private router = inject(Router);
   private http = inject(HttpClient);
 
+  // Largura (px) até a qual a sidebar começa recolhida e vira menu sobreposto
+  private readonly mobileBreakpoint = 768;
+
   ngOnInit(): void {
+    // No mobile o menu começa recolhido para não cobrir o conteúdo
+    this.isCollapsed = this.isMobileViewport();
+
     // Escuta o usuário logado inicialmente
     this.authService.currentUser$.subscribe(user => {
       if (!user?.id) return;
@@ -59,8 +66,26 @@ export class AdminLayoutComponent implements OnInit {
       });
   }
 
+  // Iniciais exibidas no avatar quando o admin não tem foto (ex.: "Administrador" -> "AD")
+  get iniciaisAdmin(): string {
+    const partes = (this.nomeAdmin || 'Admin').trim().split(/\s+/);
+    const iniciais = partes.length > 1 ? partes[0][0] + partes[1][0] : partes[0].slice(0, 2);
+    return iniciais.toUpperCase();
+  }
+
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  // Após navegar no mobile, recolhe o menu para liberar a tela
+  onNavigate(): void {
+    if (this.isMobileViewport()) {
+      this.isCollapsed = true;
+    }
+  }
+
+  private isMobileViewport(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth <= this.mobileBreakpoint;
   }
 
   logout() {

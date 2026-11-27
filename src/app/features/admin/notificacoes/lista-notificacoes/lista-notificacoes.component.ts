@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 // Define o formato esperado para exibir a notificação no front
 interface Notificacao {
@@ -26,7 +27,7 @@ interface PaginacaoResponse {
 
 @Component({
     selector: 'app-lista-notificacoes',
-    imports: [CommonModule],
+    imports: [CommonModule, AdminPageHeaderComponent],
     templateUrl: './lista-notificacoes.component.html',
     styleUrls: ['./lista-notificacoes.component.css']
 })

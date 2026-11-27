@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 interface Categoria {
   id_categoria: number;
@@ -13,7 +14,7 @@ interface Categoria {
 
 @Component({
     selector: 'app-lista-categorias',
-    imports: [FormsModule, RouterModule],
+    imports: [FormsModule, RouterModule, AdminPageHeaderComponent],
     templateUrl: './lista-categorias.component.html',
     styleUrls: ['./lista-categorias.component.css']
 })

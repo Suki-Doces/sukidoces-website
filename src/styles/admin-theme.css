@@ -1,0 +1,29 @@
+:root {
+  --admin-font: 'Inter', sans-serif;
+
+  --admin-page-bg: #f4f6f9;
+  --admin-surface: #ffffff;
+
+  --admin-text-strong: #252525;
+  --admin-text-muted: #828282;
+  --admin-nav-text: #6c757d;
+
+  --admin-accent: #e85578;
+  --admin-accent-icon: #ff6b8b;
+  --admin-accent-soft: #fff0f3;
+
+  --admin-sidebar-width: 260px;
+  --admin-sidebar-width-collapsed: 85px;
+  --admin-sidebar-padding-y: 32px;
+  --admin-sidebar-padding-x: 20px;
+  --admin-sidebar-gap: 32px;
+  --admin-sidebar-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+
+  --admin-nav-item-gap: 8px;
+  --admin-nav-item-padding: 15px 12px;
+  --admin-nav-item-radius: 8px;
+  --admin-nav-font-size: 15px;
+
+  --admin-icon-size: 19px;
+  --admin-icon-stroke: 1.8;
+}

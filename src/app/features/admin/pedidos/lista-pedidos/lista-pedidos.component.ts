@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ImageFormatPipe } from 'src/app/shared/pipes/image-format.pipe';
 import { Subscription, interval } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AdminPageHeaderComponent } from 'src/app/shared/components/admin-page-header/admin-page-header.component';
 
 /** Intervalo de atualização automática: pedidos feitos no app aparecem sem recarregar a página. */
 const POLLING_MS = 15000;
@@ -28,7 +29,7 @@ interface Pedido {
 
 @Component({
     selector: 'app-lista-pedidos',
-    imports: [CommonModule, FormsModule, ImageFormatPipe],
+    imports: [CommonModule, FormsModule, ImageFormatPipe, AdminPageHeaderComponent],
     templateUrl: './lista-pedidos.component.html',
     styleUrls: ['./lista-pedidos.component.css']
 })

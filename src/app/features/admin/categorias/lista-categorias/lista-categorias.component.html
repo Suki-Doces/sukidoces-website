@@ -1,65 +1,116 @@
-<div id="content-dashboard" class="content active">
-  <h1>Categorias</h1>
-  <p class="page-subtitle">Organize os departamentos da sua loja.</p>
-</div>
+<main class="categories-page">
+  <app-admin-page-header
+    title="Categorias"
+    description="Organize os departamentos da sua loja."
+    icon="boxes" />
 
-<div class="container">
+  <section class="category-form-card" aria-labelledby="category-form-title">
+    <div class="category-form-heading">
+      <span class="category-form-icon" aria-hidden="true">+</span>
+      <div>
+        <h2 id="category-form-title">
+          {{ isEditMode ? 'Editar categoria' : 'Nova categoria' }}
+        </h2>
+        <p>{{ isEditMode ? 'Atualize os dados desta categoria.' : 'Adicione um departamento para organizar seus produtos.' }}</p>
+      </div>
+    </div>
 
-  <div class="admin-product-form-container">
-    <form (ngSubmit)="salvar()">
-      <h3>{{ isEditMode ? 'Editar Categoria #' + categoriaSelecionada.id_categoria : 'Nova Categoria' }}</h3>
+    <form class="category-form" (ngSubmit)="salvar()">
+      <div class="category-field">
+        <label for="category-name">Nome da categoria</label>
+        <input
+          id="category-name"
+          type="text"
+          name="nome"
+          placeholder="Ex.: Bolos e tortas"
+          class="category-input"
+          [(ngModel)]="categoriaSelecionada.nome"
+          required>
+      </div>
 
-      <input type="text" placeholder="Nome da Categoria" name="nome"
-        class="box" [(ngModel)]="categoriaSelecionada.nome" required>
+      <div class="category-field">
+        <label for="category-description">Descrição <span>(opcional)</span></label>
+        <input
+          id="category-description"
+          type="text"
+          name="descricao"
+          placeholder="Conte um pouco sobre esta categoria"
+          class="category-input"
+          [(ngModel)]="categoriaSelecionada.descricao">
+      </div>
 
-      <input type="text" placeholder="Descrição (Opcional)" name="descricao"
-        class="box" [(ngModel)]="categoriaSelecionada.descricao">
-
-      <div class="form-actions">
-        <input type="submit" class="btn" [value]="isEditMode ? 'Atualizar' : 'Salvar Categoria'">
+      <div class="category-form-actions">
+        <button type="submit" class="category-save-button">
+          {{ isEditMode ? 'Salvar alterações' : 'Salvar categoria' }}
+        </button>
         @if (isEditMode) {
-          <button type="button" class="btn btn-cancel" (click)="resetForm()">
+          <button type="button" class="category-cancel-button" (click)="resetForm()">
             Cancelar
           </button>
         }
       </div>
     </form>
-  </div>
+  </section>
 
-  <br><br>
-
-  <div class="table_container">
-    <div class="table-header-row">
-      <h3>Categorias Existentes</h3>
-      <a routerLink="/admin/produtos" class="back-link">← Voltar para Produtos</a>
+  <section class="category-list-card" aria-labelledby="category-list-title">
+    <div class="category-list-heading">
+      <div class="category-list-title-group">
+        <h2 id="category-list-title">Categorias existentes</h2>
+        <span class="category-count">{{ categorias.length }}</span>
+      </div>
+      <a routerLink="/admin/produtos" class="category-back-link">Voltar para produtos</a>
     </div>
 
-    <table class="content-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Descrição</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (cat of categorias; track cat) {
+    <div class="category-table-scroll">
+      <table class="category-table">
+        <thead>
           <tr>
-            <td>#{{ cat.id_categoria }}</td>
-            <td><strong class="cat-name">{{ cat.nome }}</strong></td>
-            <td>{{ cat.descricao }}</td>
-            <td class="action-buttons">
-              <button class="btn-edit" (click)="editar(cat)" title="Editar">
-                <img src="assets/images/icons/Editar-Icon.svg" alt="Editar" style="width: 22px; vertical-align: middle;">
-              </button>
-              <button class="btn-trash" (click)="deletar(cat.id_categoria)" title="Deletar">
-                <img src="assets/images/icons/Trash - Icon.svg" alt="Deletar" style="width: 22px; vertical-align: middle;">
-              </button>
-            </td>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Ações</th>
           </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-</div>
+        </thead>
+        <tbody>
+          @for (cat of categorias; track cat.id_categoria) {
+            <tr>
+              <td><span class="category-id">#{{ cat.id_categoria }}</span></td>
+              <td><strong class="category-name">{{ cat.nome }}</strong></td>
+              <td class="category-description">
+                {{ cat.descricao || 'Sem descrição cadastrada' }}
+              </td>
+              <td class="category-actions">
+                <button
+                  type="button"
+                  class="category-action-button category-action-edit"
+                  (click)="editar(cat)"
+                  [attr.aria-label]="'Editar categoria ' + cat.nome"
+                  title="Editar">
+                  <img src="assets/images/icons/Editar-Icon.svg" alt="">
+                </button>
+                <button
+                  type="button"
+                  class="category-action-button category-action-delete"
+                  (click)="deletar(cat.id_categoria)"
+                  [attr.aria-label]="'Excluir categoria ' + cat.nome"
+                  title="Excluir">
+                  <img src="assets/images/icons/Trash - Icon.svg" alt="">
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4">
+                <div class="category-empty-state">
+                  <span class="category-empty-icon" aria-hidden="true">+</span>
+                  <strong>Nenhuma categoria cadastrada</strong>
+                  <span>Use o formulário acima para criar a primeira.</span>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

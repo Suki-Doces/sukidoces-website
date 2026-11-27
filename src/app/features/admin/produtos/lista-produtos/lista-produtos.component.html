@@ -1,52 +1,72 @@
-<div id="content-dashboard" class="content active">
-  <h1 style="font-size: 32px;">Produtos</h1>
-  <p style="font-size: 15px;" class="page-subtitle">Gerencie sua Mercadoria aqui.</p>
-</div>
+<div class="admin-page">
+  <app-admin-page-header
+    title="Produtos"
+    description="Gerencie sua Mercadoria aqui."
+    icon="circle-plus" />
 
-<br><br>
+  <section class="admin-card">
+    <h2 class="admin-card-title">Informações do produto</h2>
 
-<div class="container">
-  <div style="margin-bottom: 20px; text-align: right;">
-    <a routerLink="/admin/categorias" class="btn-categoria">
-      Gerenciar Categorias
-    </a>
-  </div>
+    <div class="admin-toolbar admin-toolbar--start">
+      <p class="admin-lead">Cadastre os dados do novo produto no catálogo.</p>
+      <a routerLink="/admin/categorias" class="admin-btn-secondary">Gerenciar Categorias</a>
+    </div>
 
-  <div class="admin-product-form-container">
     @if (mensagemErro) {
-      <div class="error-box">
+      <div class="admin-alert admin-alert--error" role="alert">
         {{ mensagemErro }}
       </div>
     }
 
-    <form (ngSubmit)="adicionarProduto()">
-      <h3>Adicionar Produto</h3>
+    <form class="admin-form" (ngSubmit)="adicionarProduto()">
+      <div class="admin-field">
+        <label class="admin-label" for="produto-nome">Nome do produto</label>
+        <input id="produto-nome" type="text" class="admin-input" placeholder="Nome do produto" name="product_name" [(ngModel)]="produto.nome" required>
+      </div>
 
-      <input type="text" placeholder="Digite o nome do produto" name="product_name" class="box" [(ngModel)]="produto.nome" required>
+      <div class="admin-field-row">
+        <div class="admin-field">
+          <label class="admin-label" for="produto-categoria">Categoria</label>
+          <select id="produto-categoria" class="admin-input admin-select" [class.is-placeholder]="!produto.id_categoria" name="product_category" [(ngModel)]="produto.id_categoria" required>
+            <option value="" disabled selected>Selecione uma categoria</option>
 
-      <select name="product_category" class="box" [(ngModel)]="produto.id_categoria" required>
-        <option value="" disabled selected>Selecione uma Categoria</option>
+            @if (categorias.length === 0) {
+              <option value="" disabled>Nenhuma categoria cadastrada</option>
+            }
 
-        @if (categorias.length === 0) {
-          <option value="" disabled>Nenhuma categoria cadastrada</option>
-        }
+            @for (cat of categorias; track cat) {
+              <option [value]="cat.id_categoria">{{ cat.nome }}</option>
+            }
+          </select>
+        </div>
 
-        @for (cat of categorias; track cat) {
-          <option [value]="cat.id_categoria">
-            {{ cat.nome }}
-          </option>
-        }
-      </select>
+        <div class="admin-field">
+          <label class="admin-label" for="produto-preco">Preço (R$)</label>
+          <input id="produto-preco" type="number" min="0" step="0.01" class="admin-input" placeholder="0,00" name="product_price" [(ngModel)]="produto.preco" required>
+        </div>
+      </div>
 
-      <input type="number" step="0.01" placeholder="Insira o valor do produto" name="product_price" class="box" [(ngModel)]="produto.preco" required>
+      <div class="admin-field">
+        <label class="admin-label" for="produto-qtd">Quantidade em estoque</label>
+        <input id="produto-qtd" type="number" min="0" class="admin-input" placeholder="0" name="product_qtd" [(ngModel)]="produto.quantidade" required>
+      </div>
 
-      <input type="number" placeholder="Coloque a quantidade" name="product_qtd" class="box" [(ngModel)]="produto.quantidade" required>
+      <div class="admin-field admin-field--section">
+        <span class="admin-label admin-label--title" id="produto-imagem-label">Imagem do produto</span>
+        <div class="admin-upload" [class.has-file]="produto.imagem" role="group" aria-labelledby="produto-imagem-label">
+          <app-admin-icon name="image-up" />
+          <span class="admin-upload-text">{{ produto.imagem ? produto.imagem.name : 'Selecione uma imagem para o produto' }}</span>
+          <button type="button" class="admin-btn-secondary" (click)="arquivo.value = ''; arquivo.click()">Escolher arquivo</button>
+          <input #arquivo type="file" hidden accept="image/jpeg,image/png,image/webp" name="product_image" (change)="onFileSelected($event)">
+        </div>
+      </div>
 
-      <input type="file" accept="image/jpeg,image/png,image/webp" name="product_image" class="box" (change)="onFileSelected($event)" required>
-
-      <button type="submit" class="btn-submit">Adicionar Produto</button>
+      <div class="admin-form-actions">
+        <button type="submit" class="admin-btn-primary admin-btn-lg">Salvar produto</button>
+        <a routerLink="/admin/estoque" class="admin-btn-secondary admin-btn-lg">Cancelar</a>
+      </div>
     </form>
-  </div>
+  </section>
 </div>
 
 @if (mostrarPopupSucesso) {

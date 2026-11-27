@@ -1,85 +1,102 @@
 <div class="admin-body">
-  
+
+  @if (!isCollapsed) {
+    <div class="sidebar-backdrop" (click)="toggleSidebar()" aria-hidden="true"></div>
+  }
+
   <aside class="sidebar" [class.collapsed]="isCollapsed">
     <div class="sidebar-header">
-      <a class="header-logo">
-        <img src="assets/images/icons/suki-logo-adm-black.svg" alt="Suki Doces Logo">
-      </a>
-      <button class="toggler sidebar-toggler" (click)="toggleSidebar()">
-        <span class="material-symbols-rounded">chevron_left</span>
-      </button>
-      <button class="toggler menu-toggler" (click)="toggleSidebar()">
-        <span class="material-symbols-rounded">menu</span>
+      <div class="brand">
+        <span class="brand-name">Suki</span>
+        <span class="brand-tagline">doces</span>
+        <span class="brand-area">Administração</span>
+      </div>
+      <button
+        type="button"
+        class="toggler"
+        (click)="toggleSidebar()"
+        [attr.aria-label]="isCollapsed ? 'Expandir menu' : 'Recolher menu'"
+      >
+        <app-admin-icon name="chevron-left" />
       </button>
     </div>
 
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" aria-label="Menu administrativo">
       <ul class="nav-list primary-nav">
-        
+
         <li class="nav-item">
-          <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">monitoring</span>
-            <span class="nav-label">Dashboard</span>
+          <a routerLink="/admin/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Painel' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="monitoring" />
+            <span class="nav-label">Painel</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="/admin/pedidos" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">receipt_long</span>
+          <a routerLink="/admin/pedidos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Pedidos' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="package" />
             <span class="nav-label">Pedidos</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="/admin/produtos" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">analytics</span>
-            <span class="nav-label">Produtos</span>
+          <a routerLink="/admin/produtos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Adicionar Produto' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="circle-plus" />
+            <span class="nav-label">Adicionar Produto</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="/admin/estoque" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">inventory_2</span>
+          <a routerLink="/admin/estoque" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Estoque' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="boxes" />
             <span class="nav-label">Estoque</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="/admin/clientes" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">group</span>
+          <a routerLink="/admin/clientes" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Clientes' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="users" />
             <span class="nav-label">Clientes</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="notificacoes" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">notifications</span>
+          <a routerLink="notificacoes" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Notificações' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="bell" />
             <span class="nav-label">Notificações</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="contatos" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">chat</span>
+          <a routerLink="contatos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Contatos' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="mail" />
             <span class="nav-label">Contatos</span>
           </a>
         </li>
-        
+
         <li class="nav-item">
-          <a routerLink="/admin/configuracoes" routerLinkActive="active" class="nav-link">
-            <span class="nav-icon material-symbols-rounded">settings</span>
+          <a routerLink="/admin/configuracoes" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link"
+             [attr.title]="isCollapsed ? 'Configurações' : null" (click)="onNavigate()">
+            <app-admin-icon class="nav-icon" name="settings" />
             <span class="nav-label">Configurações</span>
           </a>
         </li>
-        
+
       </ul>
 
       <ul class="nav-list secondary-nav">
         <li class="nav-item">
-          <a (click)="logout()" class="nav-link" style="cursor: pointer;">
-            <span class="nav-icon material-symbols-rounded">logout</span>
+          <button type="button" class="nav-link nav-link--logout" (click)="logout()"
+                  [attr.title]="isCollapsed ? 'Sair' : null">
+            <app-admin-icon class="nav-icon" name="log-out" />
             <span class="nav-label">Sair</span>
-          </a>
+          </button>
         </li>
       </ul>
     </nav>
